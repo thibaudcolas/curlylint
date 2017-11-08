@@ -38,14 +38,16 @@ def resolve_file_paths(input_names, extensions):
     return flatten(path_lists)
 
 
-def parse_file(path):
+def parse_file(path_and_config):
     """
     Returns a tuple ([Issue], File | None).
     """
+    path, config = path_and_config
+
     with path.open('r') as f:
         source = f.read()
 
-    parser = make_parser()
+    parser = make_parser(config)
 
     try:
         file = File(
@@ -61,14 +63,15 @@ def parse_file(path):
         return [issue], None
 
 
-def lint(paths, verbose=False):
+def lint(paths, config):
     issues = []
     files = []
 
     from multiprocessing import Pool
     pool = Pool()
 
-    results = pool.map(parse_file, paths)
+    parse_file_args = ((p, config) for p in paths)
+    results = pool.map(parse_file, parse_file_args)
     for result in results:
         parse_issues, file = result
         issues += parse_issues

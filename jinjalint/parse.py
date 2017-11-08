@@ -437,7 +437,7 @@ quick_text = P.regex(r'[^{<]+', flags=re.DOTALL)
 def make_jinja_parser(config, content):
     jinja_structured_elements_names = (
         DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES +
-        config.get('jinja_structured_elements_names', [])
+        config.get('jinja_custom_elements_names', [])
     )
 
     jinja_structured_element = P.alt(*[
