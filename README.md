@@ -8,28 +8,28 @@ A prototype linter which checks the indentation and the correctness of
 This linter parses both HTML and Jinja tags and will report mismatched
 tags and indentation errors:
 
-```
+```html
 <div>
     {% if something %}
     </div>
 {% endif %}
 ```
 
-```
+```html
 <div>
     <span>
     </div>
 </span>
 ```
 
-```
+```html
   {% if something %}
  <div> not indented properly
       </div>
    {% endif %}
 ```
 
-```
+```html
 {% if something %}<a href="somewhere">{% endif %}
     <p>something</p>
 {% if not something %}</a>{% endif %}
