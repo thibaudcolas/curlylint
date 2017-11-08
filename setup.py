@@ -12,7 +12,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='jinjalint',
-    version='0.0.1',
+    version='0.0.3',
     description='A linter for Jinja-like templates',
     long_description=long_description,
     packages=['jinjalint'],
@@ -28,6 +28,6 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     entry_points={
-        'console_scripts': ['jinjalint=jinjalint:cli'],
+        'console_scripts': ['jinjalint=jinjalint.cli:main'],
     },
 )
