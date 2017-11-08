@@ -35,7 +35,7 @@ tags and indentation errors:
 {% if not something %}</a>{% endif %}
 ```
 
-This is a work in progress. Feel free to contribute :)
+This is a work in progress. Feel free to contribute :upside_down_face:
 
 [jinja]: http://jinja.pocoo.org/docs/2.9/
 [djangotemplates]: https://docs.djangoproject.com/en/1.11/ref/templates/language/
