@@ -30,7 +30,7 @@ strike tt
 DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
     ('autoescape', 'endautoescape'),
     ('block', 'endblock'),
-    ('blocktrans', 'endblocktrans'),
+    ('blocktrans', 'plural', 'endblocktrans'),
     ('comment', 'endcomment'),
     ('filter', 'endfilter'),
     ('for', 'else', 'empty', 'endfor'),
@@ -311,10 +311,24 @@ def make_attribute_parser(jinja):
     )
 
 
-@lru_cache(maxsize=8)
-def make_attributes_parser(jinja):
+def make_attributes_parser(config, jinja):
     attribute = make_attribute_parser(jinja)
-    return interpolated((jinja | attribute).sep_by(whitespace))
+
+    @P.generate
+    def attrs():
+        r = yield attrs_
+        return r
+
+    jinja_attrs = make_jinja_parser(
+        config,
+        whitespace.then(attrs.skip(whitespace)),
+    )
+
+    attrs_ = interpolated(
+        (jinja_attrs | attribute).sep_by(whitespace)
+    )
+
+    return attrs_
 
 
 def _combine_comment(locations, text):
@@ -360,10 +374,11 @@ def _combine_slash(locations, _):
     return locations['begin']
 
 
-def make_opening_tag_parser(jinja,
+def make_opening_tag_parser(config,
+                            jinja,
                             tag_name_parser=None,
                             allow_slash=False):
-    attributes = make_attributes_parser(jinja)
+    attributes = make_attributes_parser(config, jinja)
 
     if not tag_name_parser:
         tag_name_parser = tag_name | jinja
@@ -402,11 +417,12 @@ def _combine_element(locations, props):
     )
 
 
-def make_raw_text_element_parser(tag_name, jinja):
+def make_raw_text_element_parser(config, tag_name, jinja):
     """
     Used for <style> and <script>.
     """
     opening_tag = make_opening_tag_parser(
+        config,
         tag_name_parser=P.string(tag_name),
         jinja=jinja,
     )
@@ -472,8 +488,8 @@ def make_jinja_parser(config, content):
     return jinja_variable | jinja_comment | jinja_element
 
 
-def make_container_element_parser(content, jinja):
-    opening_tag = make_opening_tag_parser(jinja=jinja)
+def make_container_element_parser(config, content, jinja):
+    opening_tag = make_opening_tag_parser(config, jinja=jinja)
 
     @P.generate
     def container_element_impl():
@@ -494,13 +510,15 @@ def make_container_element_parser(content, jinja):
     )
 
 
-def make_element_parser(content, jinja):
+def make_element_parser(config, content, jinja):
     container_element = make_container_element_parser(
+        config,
         content=content,
         jinja=jinja,
     )
 
     self_closing_element_opening_tag = make_opening_tag_parser(
+        config,
         tag_name_parser=P.string_from(*SELF_CLOSING_ELEMENTS),
         allow_slash=True,
         jinja=jinja,
@@ -515,8 +533,8 @@ def make_element_parser(content, jinja):
         .combine(_combine_element)
     )
 
-    style = make_raw_text_element_parser('style', jinja=jinja)
-    script = make_raw_text_element_parser('script', jinja=jinja)
+    style = make_raw_text_element_parser(config, 'style', jinja=jinja)
+    script = make_raw_text_element_parser(config, 'script', jinja=jinja)
 
     return style | script | self_closing_element | container_element
 
@@ -534,7 +552,7 @@ def make_parser(config=None):
 
     jinja = make_jinja_parser(config, content)
 
-    element = make_element_parser(content, jinja)
+    element = make_element_parser(config, content, jinja)
 
     content_ = interpolated(
         (quick_text | comment | dtd | element | jinja | slow_text_char).many()

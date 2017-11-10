@@ -3,6 +3,7 @@ import parsy as P
 from .parse import (
     tag_name, tag_name_char, comment,
     make_attribute_value_parser, make_attribute_parser,
+    make_attributes_parser,
     make_closing_tag_parser, make_opening_tag_parser, make_parser,
 )
 
@@ -16,7 +17,7 @@ jinja = parser['jinja']
 content = parser['content']
 attribute_value = make_attribute_value_parser(jinja=jinja)
 attribute = make_attribute_parser(jinja=jinja)
-opening_tag = make_opening_tag_parser(jinja=jinja)
+opening_tag = make_opening_tag_parser({}, jinja=jinja)
 
 
 class DummyLocation():
@@ -343,6 +344,16 @@ def test_doctype():
     assert content.parse('<!DOCTYPE html>') == Interp('<!DOCTYPE html>')
 
 
+def test_attrs():
+    attrs = make_attributes_parser({}, jinja)
+    parse = attrs.parse
+
+    assert str(parse('{% if %}{% endif %}')) == '{% if %}{% endif %}'
+    assert str(parse('{% if %}  {% endif %}')) == '{% if %}{% endif %}'
+    assert str(parse('{% if %}a=b{% endif %}')) == '{% if %}a=b{% endif %}'
+    assert str(parse('{% if %} a=b {% endif %}')) == '{% if %}a=b{% endif %}'
+
+
 def test():
     test_dummy_location()
     test_tag_name()
@@ -356,6 +367,7 @@ def test():
     test_self_closing_elements()
     test_jinja_blocks()
     test_doctype()
+    test_attrs()
 
     src = '<html lang="fr"><body>Hello<br></body></html>'
     assert src == str(element.parse(src))

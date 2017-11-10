@@ -78,5 +78,5 @@ def lint(paths, config):
         if file is not None:
             files.append(file)
 
-    issues += check_files(files)
+    issues += check_files(files, config)
     return issues

@@ -49,9 +49,11 @@ class ClosingTag(Node):
 class Element(Node):
     opening_tag = attr.ib()  # OpeningTag
     closing_tag = attr.ib()  # ClosingTag | None
-    content = attr.ib()  # Text | None
+    content = attr.ib()  # Interpolated | None
 
     def __attrs_post_init__(self):
+        assert (self.closing_tag is None) == (self.content is None)
+
         if self.closing_tag is not None:
             if isinstance(self.opening_tag.name, str):
                 assert str(self.opening_tag.name) == self.closing_tag.name
