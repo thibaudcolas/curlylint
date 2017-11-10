@@ -1,5 +1,7 @@
 from setuptools import setup
 from pathlib import Path
+import versioneer
+
 
 here = Path(__file__).parent
 
@@ -12,7 +14,8 @@ with open('requirements.txt') as f:
 
 setup(
     name='jinjalint',
-    version='0.0.3',
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     description='A linter for Jinja-like templates',
     long_description=long_description,
     packages=['jinjalint'],

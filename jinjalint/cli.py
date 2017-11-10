@@ -5,6 +5,7 @@ Usage:
 
 Options:
   -h --help          Show this help message and exit.
+  --version          Show version information and exit.
   -v --verbose       Verbose mode.
   -c --config FILE   Specify the configuration file.
 
@@ -14,6 +15,7 @@ from docopt import docopt
 
 from .lint import lint, resolve_file_paths
 from .config import parse_config
+from ._version import get_versions
 
 
 def print_issues(issues, config):
@@ -31,6 +33,10 @@ def main():
 
     input_names = arguments['INPUT'] or ['.']
     verbose = arguments['--verbose']
+
+    if arguments['--version']:
+        print(get_versions()['version'])
+        return
 
     if arguments['--config']:
         if verbose:
