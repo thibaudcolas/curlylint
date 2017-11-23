@@ -1,0 +1,14 @@
+language: python
+
+python:
+  - "3.5"
+  - "3.6"
+  - "nightly"
+
+install:
+  - pip install pipenv pycodestyle
+  - pipenv install
+
+script:
+  - pipenv run python -m jinjalint.test
+  - pycodestyle jinjalint/
