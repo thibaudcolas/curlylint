@@ -1,4 +1,3 @@
-from collections import namedtuple
 from functools import lru_cache
 import re
 
@@ -7,7 +6,7 @@ import parsy as P
 from .ast import (
     Attribute, ClosingTag, Comment, Element, Integer, Interpolated,
     Jinja, JinjaComment, JinjaElement, JinjaElementPart, JinjaTag,
-    JinjaVariable, Location, Node, OpeningTag, String,
+    JinjaVariable, Location, OpeningTag, String,
 )
 from .util import flatten
 
@@ -212,6 +211,7 @@ def interpolated(parser):
         .combine(combine_interpolated)
     )
 
+
 tag_name_start_char = P.regex(r'[:a-z]')
 tag_name_char = tag_name_start_char | P.regex(r'[0-9-_.]')
 tag_name = tag_name_start_char + tag_name_char.many().concat()
@@ -322,6 +322,7 @@ def _combine_comment(locations, text):
         text=text,
         **locations,
     )
+
 
 comment = locate(
     P.string('<!--')

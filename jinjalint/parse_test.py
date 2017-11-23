@@ -54,8 +54,7 @@ Element = with_dummy_locations(ast.Element)
 ClosingTag = with_dummy_locations(ast.ClosingTag)
 Comment = with_dummy_locations(ast.Comment)
 Integer = with_dummy_locations(ast.Integer)
-Interpolated = with_dummy_locations(ast.Interpolated)
-I = Interpolated
+Interp = with_dummy_locations(ast.Interpolated)
 JinjaComment = with_dummy_locations(ast.JinjaComment)
 JinjaElement = with_dummy_locations(ast.JinjaElement)
 JinjaElementPart = with_dummy_locations(ast.JinjaElementPart)
@@ -82,12 +81,12 @@ def test_tag_name():
 
 def test_attribute_value():
     assert attribute_value.parse('hello-world') == String(
-        value=I('hello-world'),
+        value=Interp('hello-world'),
         quote=None,
     )
 
     assert attribute_value.parse('hello{{a}}world') == String(
-        value=I([
+        value=Interp([
             'hello',
             JinjaVariable(content='a'),
             'world',
@@ -101,22 +100,22 @@ def test_attribute_value():
     )
 
     assert attribute_value.parse('"hello"') == String(
-        value=I('hello'),
+        value=Interp('hello'),
         quote='"',
     )
 
     assert attribute_value.parse("'hello'") == String(
-        value=I('hello'),
+        value=Interp('hello'),
         quote="'",
     )
 
     assert attribute_value.parse("''") == String(
-        value=I([]),
+        value=Interp([]),
         quote="'",
     )
 
     assert attribute_value.parse("'hello{{b}}world'") == String(
-        value=I([
+        value=Interp([
             'hello',
             JinjaVariable(content='b'),
             'world',
@@ -127,37 +126,37 @@ def test_attribute_value():
 
 def test_attribute():
     assert attribute.parse('hello=world') == Attribute(
-        name=I('hello'),
-        value=I(
+        name=Interp('hello'),
+        value=Interp(
             String(
-                value=I('world'),
+                value=Interp('world'),
                 quote=None,
             ),
         ),
     )
 
     assert attribute.parse('a= "b"') == Attribute(
-        name=I('a'),
-        value=I(
+        name=Interp('a'),
+        value=Interp(
             String(
-                value=I('b'),
+                value=Interp('b'),
                 quote='"',
             ),
         ),
     )
 
     assert attribute.parse('a =b_c23') == Attribute(
-        name=I('a'),
-        value=I(
+        name=Interp('a'),
+        value=Interp(
             String(
-                value=I('b_c23'),
+                value=Interp('b_c23'),
                 quote=None,
             ),
         ),
     )
 
     assert attribute.parse('valueless-attribute') == Attribute(
-        name=I('valueless-attribute'),
+        name=Interp('valueless-attribute'),
         value=None,
     )
 
@@ -171,32 +170,32 @@ def test_comment():
 def test_opening_tag():
     assert opening_tag.parse('<div>') == OpeningTag(
         name='div',
-        attributes=I([]),
+        attributes=Interp([]),
     )
 
     assert opening_tag.parse('<div\n >') == OpeningTag(
         name='div',
-        attributes=I([]),
+        attributes=Interp([]),
     )
 
     assert opening_tag.parse('<div class="red" style="" >') == OpeningTag(
         name='div',
-        attributes=I([
+        attributes=Interp([
             Attribute(
-                name=I('class'),
-                value=I(
+                name=Interp('class'),
+                value=Interp(
                     String(
-                        value=I('red'),
+                        value=Interp('red'),
                         quote='"',
                     ),
                 ),
             ),
 
             Attribute(
-                name=I('style'),
-                value=I(
+                name=Interp('style'),
+                value=Interp(
                     String(
-                        value=I([]),
+                        value=Interp([]),
                         quote='"',
                     ),
                 ),
@@ -218,13 +217,13 @@ def test_raw_text_elements():
 
         opening_tag=OpeningTag(
             name='style',
-            attributes=I([
+            attributes=Interp([
 
                 Attribute(
-                    name=I('a'),
-                    value=I(
+                    name=Interp('a'),
+                    value=Interp(
                         String(
-                            value=I('b'),
+                            value=Interp('b'),
                             quote=None,
                         ),
                     ),
@@ -243,9 +242,9 @@ def test_element():
     assert element.parse('<div> hey </div>') == Element(
         opening_tag=OpeningTag(
             name='div',
-            attributes=I([]),
+            attributes=Interp([]),
         ),
-        content=I([' hey ']),
+        content=Interp([' hey ']),
         closing_tag=ClosingTag(
             name='div',
         ),
@@ -253,10 +252,10 @@ def test_element():
 
     attributes = [
         Attribute(
-            name=I('onclick'),
-            value=I(
+            name=Interp('onclick'),
+            value=Interp(
                 String(
-                    value=I([]),
+                    value=Interp([]),
                     quote='"',
                 ),
             ),
@@ -265,10 +264,10 @@ def test_element():
         JinjaVariable(content='var'),
 
         Attribute(
-            name=I('class'),
-            value=I(
+            name=Interp('class'),
+            value=Interp(
                 String(
-                    value=I('red'),
+                    value=Interp('red'),
                     quote='"',
                 ),
             ),
@@ -278,7 +277,7 @@ def test_element():
     assert element.parse('<br onclick="" {{var}} class="red">') == Element(
         opening_tag=OpeningTag(
             name='br',
-            attributes=I(attributes),
+            attributes=Interp(attributes),
         ),
         closing_tag=None,
         content=None,
@@ -292,7 +291,7 @@ def test_self_closing_elements():
     assert element.parse('<br>') == Element(
         opening_tag=OpeningTag(
             name='br',
-            attributes=I([]),
+            attributes=Interp([]),
         ),
         content=None,
         closing_tag=None,
@@ -320,14 +319,14 @@ def test_jinja_blocks():
                     name='if',
                     content='a',
                 ),
-                content=I(['b']),
+                content=Interp(['b']),
             ),
             JinjaElementPart(
                 tag=JinjaTag(
                     name='else',
                     content='',
                 ),
-                content=I(['c']),
+                content=Interp(['c']),
             ),
         ],
         closing_tag=JinjaTag(
@@ -341,7 +340,7 @@ def test_jinja_blocks():
 
 
 def test_doctype():
-    assert content.parse('<!DOCTYPE html>') == I('<!DOCTYPE html>')
+    assert content.parse('<!DOCTYPE html>') == Interp('<!DOCTYPE html>')
 
 
 def test():
