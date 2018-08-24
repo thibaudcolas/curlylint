@@ -7,8 +7,8 @@ python:
 
 install:
   - pip install pipenv pycodestyle
-  - pipenv install
+  - pipenv install --dev
 
 script:
   - pipenv run python -m jinjalint.test
-  - pycodestyle jinjalint/
+  - pipenv run pycodestyle jinjalint/

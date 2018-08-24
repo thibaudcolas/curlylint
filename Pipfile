@@ -7,7 +7,7 @@ url = "https://pypi.python.org/simple"
 
 [dev-packages]
 
-
+pycodestyle = "*"
 
 [packages]
 

@@ -1,7 +1,4 @@
-from pathlib import Path
 import re
-
-import attr
 
 from . import ast
 from .util import flatten
