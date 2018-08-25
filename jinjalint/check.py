@@ -123,7 +123,7 @@ def check_indentation(file):
 
 def check_no_tabs(file):
     issues = []
-    match_indent = re.compile('^\s*')
+    match_indent = re.compile(r'^\s*')
     for i, line in enumerate(file.lines):
         indent = match_indent.match(line).group(0)
         if not contains_exclusively(indent, ' '):
