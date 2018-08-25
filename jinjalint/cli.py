@@ -57,6 +57,9 @@ def main():
     issues = lint(paths, config)
     print_issues(issues, config)
 
+    if any(issues):
+        exit(1)
+
 
 if __name__ == '__main__':
     main()
