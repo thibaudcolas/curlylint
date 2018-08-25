@@ -1,4 +1,3 @@
-from functools import lru_cache
 import re
 
 import parsy as P
@@ -44,6 +43,10 @@ DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
 ]
 
 
+# `\s` in an `str` pattern does match Unicode fancy spaces (especially the
+# non-breaking ones). We’ll warn against some of these fancy spaces in the
+# check phase.
+# XXX: It could be better and simpler to only allow ASCII whitespaces here.
 whitespace = P.regex(r'\s*')
 
 
