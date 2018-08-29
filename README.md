@@ -38,7 +38,7 @@ tags and indentation errors:
 
 ## Usage
 
-Install it with `pip install jinjalint`, then run it with:
+Install it with `pip install jinjalint` (or `pip3 install jinjalint` if you are using Python v.3.x), then run it with:
 
 ```sh
 $ jinjalint template-directory/
