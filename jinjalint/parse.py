@@ -5,7 +5,7 @@ import parsy as P
 from .ast import (
     Attribute, ClosingTag, Comment, Element, Integer, Interpolated,
     Jinja, JinjaComment, JinjaElement, JinjaElementPart, JinjaTag,
-    JinjaVariable, Location, OpeningTag, String,
+    JinjaVariable, JinjaOptionalContainer, Location, OpeningTag, String,
 )
 from .util import flatten
 
@@ -34,7 +34,7 @@ DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
     ('filter', 'endfilter'),
     ('for', 'else', 'empty', 'endfor'),
     ('if', 'elif', 'else', 'endif'),
-    ('ifchanged', 'endifchanged'),
+    ('ifchanged', 'else', 'endifchanged'),
     ('ifequal', 'endifequal'),
     ('ifnotequal', 'endifnotequal'),
     ('spaceless', 'endspaceless'),
@@ -169,6 +169,13 @@ def make_jinja_element_part_parser(name_parser, content):
 
 
 def make_jinja_element_parser(name_parsers, content):
+    """
+    `name_parsers` must be a list of tag name parsers. For example,
+    `name_parsers` can be defined as follow in order to parse `if` statements:
+
+        name_parsers = [P.string(n) for n in ['if', 'elif', 'else', 'endif']]
+    """
+
     if len(name_parsers) == 1:
         tag = make_jinja_tag_parser(name_parsers[0])
         part = locate(P.seq(
@@ -454,11 +461,83 @@ slow_text_char = (
 quick_text = P.regex(r'[^{<]+', flags=re.DOTALL)
 
 
-def make_jinja_parser(config, content):
-    jinja_structured_elements_names = (
-        DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES +
-        config.get('jinja_custom_elements_names', [])
+def _combine_optional_container(locations, nodes):
+    return JinjaOptionalContainer(
+        first_opening_if=nodes[0],
+        opening_tag=nodes[1],
+        first_closing_if=nodes[2],
+        content=nodes[3],
+        second_opening_if=nodes[4],
+        closing_tag=nodes[5],
+        second_closing_if=nodes[6],
+        **locations,
     )
+
+
+# Awkward hack to handle optional HTML containers, for example:
+#
+#   {% if a %}
+#     <div>
+#   {% endif %}
+#   foo
+#   {% if a %}
+#     </div>
+#   {% endif %}
+#
+# Currently, this only works with `if` statements and the two conditions
+# must be exactly the same.
+def make_jinja_optional_container_parser(config, content, jinja):
+    jinja_if = make_jinja_tag_parser(P.string('if'))
+    jinja_endif = make_jinja_tag_parser(P.string('endif'))
+    opening_tag = make_opening_tag_parser(config, jinja, allow_slash=False)
+
+    @P.generate
+    def opt_container_impl():
+        o_first_if_node = yield jinja_if.skip(whitespace)
+        o_tag_node = yield opening_tag.skip(whitespace)
+        c_first_if_node = yield jinja_endif
+
+        content_nodes = yield content
+
+        o_second_if_node = yield jinja_if.skip(whitespace)
+        if o_second_if_node.content != o_first_if_node.content:
+            yield P.fail('expected `{% if ' + content + ' %}`')
+            return
+        html_tag_name = o_tag_node.name
+        if isinstance(html_tag_name, str):
+            closing_tag = make_closing_tag_parser(P.string(html_tag_name))
+        else:
+            assert isinstance(html_tag_name, Jinja)
+            closing_tag = make_closing_tag_parser(jinja)
+        c_tag_node = yield closing_tag.skip(whitespace)
+        c_second_if_node = yield jinja_endif
+
+        return [
+            o_first_if_node,
+            o_tag_node,
+            c_first_if_node,
+            content_nodes,
+            o_second_if_node,
+            c_tag_node,
+            c_second_if_node,
+        ]
+
+    return (
+        locate(opt_container_impl)
+        .combine(_combine_optional_container)
+    )
+
+
+def make_jinja_parser(config, content):
+    # Allow to override elements with the configuration
+    jinja_structured_elements_names = dict(
+        (names[0], names)
+        for names
+        in (
+            DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES +
+            config.get('jinja_custom_elements_names', [])
+        )
+    ).values()
 
     jinja_structured_element = P.alt(*[
         make_jinja_element_parser(
@@ -469,20 +548,29 @@ def make_jinja_parser(config, content):
     ])
 
     # These tag names can't begin a Jinja element
-    jinja_intermediate_tag_names = [
+    jinja_intermediate_tag_names = set(
         n
         for _, *sublist in jinja_structured_elements_names
         for n in sublist
-    ]
+    )
 
     jinja_intermediate_tag_name = P.alt(*(
         P.string(n) for n in jinja_intermediate_tag_names
     ))
 
     jinja_element_single = make_jinja_element_parser(
-        [jinja_intermediate_tag_name
-         .should_fail('not an intermediate Jinja tag name')
-         .then(jinja_name)],
+        [
+            P.alt(
+                # HACK: If we allow `{% if %}`s without `{% endif %}`s here,
+                # `make_jinja_optional_container_parser` doesn’t work. It
+                # is probably better to reject any structured tag name here.
+                P.string('if'),
+
+                jinja_intermediate_tag_name
+            )
+            .should_fail('not an intermediate Jinja tag name')
+            .then(jinja_name)
+        ],
         content=content,
     )
 
@@ -557,12 +645,18 @@ def make_parser(config=None):
 
     element = make_element_parser(config, content, jinja)
 
+    opt_container = make_jinja_optional_container_parser(
+        config, content, jinja)
+
     content_ = interpolated(
-        (quick_text | comment | dtd | element | jinja | slow_text_char).many()
+        (
+            quick_text | comment | dtd | element | opt_container | jinja |
+            slow_text_char
+        ).many()
     )
 
     return {
-        'content': content,
+        'content': content_,
         'jinja': jinja,
         'element': element,
     }

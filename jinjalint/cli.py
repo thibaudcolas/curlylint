@@ -21,7 +21,11 @@ from ._version import get_versions
 def print_issues(issues, config):
     sorted_issues = sorted(
         issues,
-        key=lambda i: (i.location.file_path, i.location.line),
+        key=lambda i: (
+            i.location.file_path,
+            i.location.line,
+            i.location.column
+        ),
     )
 
     for issue in sorted_issues:

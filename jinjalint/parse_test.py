@@ -1,7 +1,7 @@
 import parsy as P
 
 from .parse import (
-    tag_name, tag_name_char, comment,
+    tag_name, tag_name_char, comment, jinja_comment,
     make_attribute_value_parser, make_attribute_parser,
     make_attributes_parser,
     make_closing_tag_parser, make_opening_tag_parser, make_parser,
@@ -54,6 +54,7 @@ Attribute = with_dummy_locations(ast.Attribute)
 Element = with_dummy_locations(ast.Element)
 ClosingTag = with_dummy_locations(ast.ClosingTag)
 Comment = with_dummy_locations(ast.Comment)
+JinjaComment = with_dummy_locations(ast.JinjaComment)
 Integer = with_dummy_locations(ast.Integer)
 Interp = with_dummy_locations(ast.Interpolated)
 JinjaComment = with_dummy_locations(ast.JinjaComment)
@@ -165,6 +166,12 @@ def test_attribute():
 def test_comment():
     assert comment.parse('<!--hello--world-->') == Comment(
         text='hello--world',
+    )
+
+
+def test_jinja_comment():
+    assert jinja_comment.parse('{# hello world #}') == JinjaComment(
+        text='hello world',
     )
 
 
@@ -298,6 +305,9 @@ def test_self_closing_elements():
         closing_tag=None,
     )
 
+    src = '<br />'
+    assert src == str(element.parse(src))
+
 
 def test_jinja_blocks():
     assert jinja.parse('{% name something == 123 %}') == JinjaElement(
@@ -360,6 +370,7 @@ def test():
     test_attribute_value()
     test_attribute()
     test_comment()
+    test_jinja_comment()
     test_opening_tag()
     test_closing_tag()
     test_raw_text_elements()
@@ -372,5 +383,5 @@ def test():
     src = '<html lang="fr"><body>Hello<br></body></html>'
     assert src == str(element.parse(src))
 
-    src = '<br />'
-    assert src == str(element.parse(src))
+    src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
+    assert src == str(content.parse(src))

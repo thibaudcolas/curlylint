@@ -25,6 +25,10 @@ def contains_exclusively(string, char):
     return string.replace(char, '') == ''
 
 
+def truncate(s, length=16):
+    return s[:length] + (s[length:] and '…')
+
+
 def check_indentation(file, config):
     indent_size = config.get('indent_size', 4)
 
@@ -33,11 +37,13 @@ def check_indentation(file, config):
     def add_issue(location, msg):
         issues.append(Issue.from_ast(file, location, msg))
 
-    def check_indent(expected_level, node, inline=False):
+    def check_indent(expected_level, node, inline=False,
+                     allow_same_line=False):
         node_level = get_indent_level(file.source, node)
         if node_level is None:
-            if not inline and not isinstance(node, ast.Jinja):
-                add_issue(node.begin, 'Should be on the next line')
+            if not inline and not allow_same_line:
+                node_s = repr(truncate(str(node)))
+                add_issue(node.begin, node_s + ' should be on the next line')
             return
 
         if node_level != expected_level:
@@ -46,7 +52,7 @@ def check_indentation(file, config):
             )
             add_issue(node.begin, msg)
 
-    def check_attribute(expected_level, attr, inline=False):
+    def check_attribute(expected_level, attr, inline=False, **_):
         if not attr.value:
             return
 
@@ -55,9 +61,14 @@ def check_indentation(file, config):
                 attr.begin,
                 'The value must begin on line {}'.format(attr.begin.line),
             )
-        check_content(expected_level, attr.value, inline=True)
+        check_content(
+            expected_level,
+            attr.value,
+            inline=attr.value.begin.line == attr.value.end.line,
+            allow_same_line=True
+        )
 
-    def check_opening_tag(expected_level, tag, inline=False):
+    def check_opening_tag(expected_level, tag, inline=False, **_):
         if len(tag.attributes) and tag.begin.line != tag.end.line:
             first = tag.attributes[0]
             check_node(
@@ -74,21 +85,23 @@ def check_indentation(file, config):
                     inline=isinstance(attr, ast.Attribute),
                 )
 
-    def check_comment(expected_level, tag, inline=False):
+    def check_comment(expected_level, tag, **_):
         pass
 
-    def check_jinja_comment(expected_level, tag, inline=False):
+    def check_jinja_comment(expected_level, tag, **_):
         pass
 
-    def check_jinja_tag(expected_level, tag, inline=False):
+    def check_jinja_tag(expected_level, tag, **_):
         pass
 
-    def check_string(expected_level, string, inline=False):
+    def check_string(expected_level, string, inline=False,
+                     allow_same_line=False):
         if string.value.begin.line != string.value.end.line:
             inline = False
-        check_content(string.value.begin.column, string.value, inline=inline)
+        check_content(string.value.begin.column, string.value, inline=inline,
+                      allow_same_line=allow_same_line)
 
-    def check_integer(expected_level, integer, inline=False):
+    def check_integer(expected_level, integer, **_):
         pass
 
     def get_first_child_node(parent):
@@ -104,8 +117,10 @@ def check_indentation(file, config):
             child.parts[0].tag.name == tag_name
         )
 
-    def check_jinja_element_part(expected_level, part, inline=False):
-        check_node(expected_level, part.tag, inline=inline)
+    def check_jinja_element_part(expected_level, part, inline=False,
+                                 allow_same_line=False):
+        check_node(expected_level, part.tag, inline=inline,
+                   allow_same_line=allow_same_line)
         element_names_to_not_indent = (
             config.get('jinja_element_names_to_not_indent', [])
         )
@@ -118,18 +133,58 @@ def check_indentation(file, config):
         if part.content is not None:
             check_content(content_level, part.content, inline=inline)
 
-    def check_jinja_element(expected_level, element, inline=False):
+    def check_jinja_optional_container_if(expected_level, o_if, html_tag, c_if,
+                                          inline=False):
+        check_indent(expected_level, o_if, inline=inline)
+        shift = 0 if inline else indent_size
+        if isinstance(html_tag, ast.OpeningTag):
+            check_opening_tag(expected_level + shift, html_tag, inline=inline)
+        elif isinstance(html_tag, ast.ClosingTag):
+            check_indent(expected_level + shift, html_tag, inline=inline)
+        else:
+            raise AssertionError('invalid tag')
+        check_indent(expected_level, c_if, inline=inline)
+        return inline
+
+    def check_jinja_optional_container(expected_level, element,
+                                       inline=False, **_):
+        if element.first_opening_if.begin.line == \
+                element.second_opening_if.end.line:
+            inline = True
+
+        inline = check_jinja_optional_container_if(
+            expected_level,
+            element.first_opening_if,
+            element.opening_tag,
+            element.first_closing_if,
+            inline=inline)
+
+        check_content(expected_level, element.content, inline=inline)
+
+        check_jinja_optional_container_if(
+            expected_level,
+            element.second_opening_if,
+            element.closing_tag,
+            element.second_closing_if,
+            inline=inline)
+
+    def check_jinja_element(expected_level, element, inline=False,
+                            allow_same_line=False):
         if element.begin.line == element.end.line:
             inline = True
         for part in element.parts:
-            check_node(expected_level, part, inline=inline)
+            check_node(
+                expected_level,
+                part,
+                inline=inline,
+                allow_same_line=allow_same_line)
         if element.closing_tag is not None:
             check_indent(expected_level, element.closing_tag, inline=inline)
 
-    def check_jinja_variable(expected_level, var, inline=False):
+    def check_jinja_variable(expected_level, var, **_):
         pass
 
-    def check_element(expected_level, element, inline=False):
+    def check_element(expected_level, element, inline=False, **_):
         opening_tag = element.opening_tag
         closing_tag = element.closing_tag
         check_opening_tag(expected_level, opening_tag, inline=inline)
@@ -144,8 +199,14 @@ def check_indentation(file, config):
             )
             check_indent(expected_level, closing_tag)
 
-    def check_node(expected_level, node, inline=False):
-        check_indent(expected_level, node, inline=inline)
+    def check_node(expected_level, node, inline=False,
+                   allow_same_line=False, **_):
+        check_indent(
+            expected_level,
+            node,
+            inline=inline,
+            allow_same_line=allow_same_line
+        )
 
         types_to_functions = {
             ast.Attribute: check_attribute,
@@ -155,6 +216,7 @@ def check_indentation(file, config):
             ast.JinjaComment: check_jinja_comment,
             ast.JinjaElement: check_jinja_element,
             ast.JinjaElementPart: check_jinja_element_part,
+            ast.JinjaOptionalContainer: check_jinja_optional_container,
             ast.JinjaTag: check_jinja_tag,
             ast.JinjaVariable: check_jinja_variable,
             ast.String: check_string,
@@ -166,7 +228,8 @@ def check_indentation(file, config):
                 type(node), node.begin,
             ))
 
-        func(expected_level, node, inline=inline)
+        func(expected_level, node, inline=inline,
+             allow_same_line=allow_same_line)
 
     def check_content_str(expected_level, string, parent_node):
         lines = string.split('\n')
@@ -192,7 +255,8 @@ def check_indentation(file, config):
                 )
                 add_issue(parent_node.begin, msg)
 
-    def check_content(expected_level, parent_node, inline=False):
+    def check_content(expected_level, parent_node, inline=False,
+                      allow_same_line=False):
         inline_parent = inline
         for i, child in enumerate(parent_node):
             next_child = get_first_child_node(parent_node[i + 1:])
@@ -220,7 +284,12 @@ def check_indentation(file, config):
             if isinstance(child, ast.Node):
                 if next_child and child.begin.line == next_child.end.line:
                     inline = True
-                check_node(expected_level, child, inline=inline)
+                check_node(
+                    expected_level,
+                    child,
+                    inline=inline,
+                    allow_same_line=allow_same_line
+                )
                 continue
 
             raise Exception()
