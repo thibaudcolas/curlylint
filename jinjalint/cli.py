@@ -8,6 +8,7 @@ Options:
   --version          Show version information and exit.
   -v --verbose       Verbose mode.
   -c --config FILE   Specify the configuration file.
+  --parse-only       Don’t lint, check for syntax errors and exit.
 
 The configuration file must be a valid Python file.
 """
@@ -50,6 +51,7 @@ def main():
         config = {}
 
     config['verbose'] = verbose
+    config['parse_only'] = arguments['--parse-only']
 
     paths = list(resolve_file_paths(input_names, extensions=['.html']))
 
