@@ -364,6 +364,23 @@ def test_attrs():
     assert str(parse('{% if %} a=b {% endif %}')) == '{% if %}a=b{% endif %}'
 
 
+def test_optional_container():
+    src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
+    assert src == str(content.parse(src))
+
+    src = '''
+    {% if a %} <a href="b"> {% endif %}
+        c <b> d </b>
+    {% if a %} </a> {% endif %}
+    '''
+    content.parse(src)
+
+
+def test_whole_document():
+    src = '<html lang="fr"><body>Hello<br></body></html>'
+    assert src == str(element.parse(src))
+
+
 def test():
     test_dummy_location()
     test_tag_name()
@@ -379,9 +396,4 @@ def test():
     test_jinja_blocks()
     test_doctype()
     test_attrs()
-
-    src = '<html lang="fr"><body>Hello<br></body></html>'
-    assert src == str(element.parse(src))
-
-    src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
-    assert src == str(content.parse(src))
+    test_optional_container()
