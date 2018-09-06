@@ -42,10 +42,14 @@ def with_dummy_locations(node_class):
         kwargs['begin'] = DummyLocation()
         kwargs['end'] = DummyLocation()
 
-        return node_class(
-            *args,
-            **kwargs,
-        )
+        try:
+            return node_class(
+                *args,
+                **kwargs,
+            )
+        except Exception as error:
+            print(node_class)
+            raise error
 
     return create_node
 
@@ -350,6 +354,30 @@ def test_jinja_blocks():
     assert src == str(jinja.parse(src))
 
 
+def test_jinja_whitespace_controls():
+    assert jinja.parse('{%- foo -%}') == JinjaElement(
+        parts=[
+            JinjaElementPart(
+                tag=JinjaTag(
+                    name='foo',
+                    content='',
+                    left_minus=True,
+                    right_minus=True,
+                ),
+                content=None,
+            ),
+        ],
+        closing_tag=None,
+    )
+
+    assert str(jinja.parse('{%- foo -%}')) == '{%- foo -%}'
+    assert str(jinja.parse('{%- foo %}')) == '{%- foo %}'
+    assert str(jinja.parse('{{- bar -}}')) == '{{- bar -}}'
+    assert str(jinja.parse('{{ bar -}}')) == '{{ bar -}}'
+    assert str(jinja.parse('{%+ foo %}')) == '{%+ foo %}'
+    assert str(jinja.parse('{{+ bar }}')) == '{{+ bar }}'
+
+
 def test_doctype():
     assert content.parse('<!DOCTYPE html>') == Interp('<!DOCTYPE html>')
 
@@ -394,6 +422,7 @@ def test():
     test_element()
     test_self_closing_elements()
     test_jinja_blocks()
+    test_jinja_whitespace_controls()
     test_doctype()
     test_attrs()
     test_optional_container()

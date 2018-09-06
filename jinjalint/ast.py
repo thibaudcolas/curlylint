@@ -11,7 +11,7 @@ class Location:
         return '{}:{}'.format(self.line + 1, self.column)
 
 
-@attr.s
+@attr.s(frozen=True)
 class Node:
     begin = attr.ib()  # Location
     end = attr.ib()  # Location
@@ -27,7 +27,7 @@ class Slash(Node):
 class OpeningTag(Node):
     name = attr.ib()
     attributes = attr.ib()  # Interpolated<Attribute>
-    slash = attr.ib(default=None)  # Slash | None
+    slash = attr.ib(default=None)  # Slash | None (`Slash` if self-closing tag)
 
     def __str__(self):
         name = str(self.name)
@@ -123,9 +123,21 @@ class Jinja(Node):
 @attr.s(frozen=True)
 class JinjaVariable(Jinja):
     content = attr.ib()  # str
+    left_plus = attr.ib(default=False)
+    left_minus = attr.ib(default=False)
+    right_minus = attr.ib(default=False)
 
     def __str__(self):
-        return '{{ ' + self.content + ' }}'
+        return ''.join([
+            '{{',
+            '+' if self.left_plus else '',
+            '-' if self.left_minus else '',
+            ' ',
+            self.content,
+            ' ',
+            '-' if self.right_minus else '',
+            '}}'
+        ])
 
 
 @attr.s(frozen=True)
@@ -140,13 +152,21 @@ class JinjaComment(Jinja):
 class JinjaTag(Jinja):
     name = attr.ib()
     content = attr.ib()  # str | None
+    left_plus = attr.ib(default=False)
+    left_minus = attr.ib(default=False)
+    right_minus = attr.ib(default=False)
 
     def __str__(self):
-        s = '{% ' + self.name
-        if self.content:
-            s += ' ' + self.content
-
-        return s + ' %}'
+        return ''.join([
+            '{%',
+            '+' if self.left_plus else '',
+            '-' if self.left_minus else '',
+            (' ' + self.name) if self.name else '',
+            (' ' + self.content) if self.content else '',
+            ' ',
+            '-' if self.right_minus else '',
+            '%}'
+        ])
 
 
 @attr.s(frozen=True)

@@ -83,17 +83,22 @@ def locate(parser):
 
 
 def _combine_jinja_tag(locations, props):
-    head, name, content, tail = props
     return JinjaTag(
-        name=name,
-        content=content,
+        name=props['name'],
+        content=props['extra_content'],
+        left_plus=props['left_plus'],
+        left_minus=props['left_minus'],
+        right_minus=props['right_minus'],
         **locations,
     )
 
 
-def _combine_jinja_variable(locations, content):
+def _combine_jinja_variable(locations, props):
     return JinjaVariable(
-        content=content,
+        content=props['extra_content'],
+        left_plus=props['left_plus'],
+        left_minus=props['left_minus'],
+        right_minus=props['right_minus'],
         **locations,
     )
 
@@ -105,15 +110,39 @@ def _combine_jinja_comment(locations, text):
     )
 
 
-jinja_variable = (
-    locate(
-        P.string('{{')
-        .skip(whitespace)
-        .then(until(whitespace + P.string('}}')).concat())
-        .skip(whitespace + P.string('}}'))
+def _combine_jinja_tag_like(locations, props):
+    return (
+        locations,
+        {
+            'left_plus': props['left_plus'] is not None,
+            'left_minus': props['left_minus'] is not None,
+            'name': props['name'],
+            'extra_content': props['extra_content'],
+            'right_minus': props['right_minus'] is not None,
+        }
     )
-    .combine(_combine_jinja_variable)
-)
+
+
+def make_jinja_tag_like_parser(name, ml='{', mr='}'):
+    """
+    Create parsers for Jinja variables and regular Jinja tags.
+
+    `name` should be a parser to parse the tag name.
+    """
+    end = whitespace.then(P.string('-').optional()).skip(P.string(mr + '}'))
+    return locate(P.seq(
+        left_plus=P.string('{' + ml).then(P.string('+').optional()),
+        left_minus=P.string('-').optional().skip(whitespace),
+        name=name.skip(whitespace),
+        extra_content=until(end).concat(),
+        right_minus=end
+    )).combine(_combine_jinja_tag_like)
+
+
+jinja_variable = make_jinja_tag_like_parser(
+    P.success(None), '{', '}'
+).combine(_combine_jinja_variable)
+
 
 jinja_comment = (
     locate(
@@ -128,14 +157,7 @@ jinja_comment = (
 
 def make_jinja_tag_parser(name_parser):
     return (
-        locate(
-            P.seq(
-                P.string('{%') + whitespace,
-                name_parser.skip(whitespace),
-                until(whitespace + P.string('%}')).concat(),
-                whitespace + P.string('%}'),
-            )
-        )
+        make_jinja_tag_like_parser(name_parser, '%', '%')
         .combine(_combine_jinja_tag)
     )
 
