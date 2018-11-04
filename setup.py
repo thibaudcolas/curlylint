@@ -14,6 +14,9 @@ with open('requirements.txt') as f:
 
 setup(
     name='jinjalint',
+    author='Antoine Motet',
+    author_email='antoine.motet@gmail.com',
+    url='https://github.com/motet-a/jinjalint',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description='A linter for Jinja-like templates',
