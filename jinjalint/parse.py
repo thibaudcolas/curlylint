@@ -114,11 +114,11 @@ def _combine_jinja_tag_like(locations, props):
     return (
         locations,
         {
-            'left_plus': props['left_plus'] is not None,
-            'left_minus': props['left_minus'] is not None,
-            'name': props['name'],
-            'extra_content': props['extra_content'],
-            'right_minus': props['right_minus'] is not None,
+            'left_plus': props[0] is not None,
+            'left_minus': props[1] is not None,
+            'name': props[2],
+            'extra_content': props[3],
+            'right_minus': props[4] is not None,
         }
     )
 
@@ -131,11 +131,11 @@ def make_jinja_tag_like_parser(name, ml='{', mr='}'):
     """
     end = whitespace.then(P.string('-').optional()).skip(P.string(mr + '}'))
     return locate(P.seq(
-        left_plus=P.string('{' + ml).then(P.string('+').optional()),
-        left_minus=P.string('-').optional().skip(whitespace),
-        name=name.skip(whitespace),
-        extra_content=until(end).concat(),
-        right_minus=end
+        P.string('{' + ml).then(P.string('+').optional()),
+        P.string('-').optional().skip(whitespace),
+        name.skip(whitespace),
+        until(end).concat(),
+        end
     )).combine(_combine_jinja_tag_like)
 
 
