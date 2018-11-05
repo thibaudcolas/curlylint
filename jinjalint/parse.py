@@ -48,6 +48,7 @@ DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
 # check phase.
 # XXX: It could be better and simpler to only allow ASCII whitespaces here.
 whitespace = P.regex(r'\s*')
+mandatory_whitespace = P.regex(r'\s+')
 
 
 def until(parser):
@@ -411,6 +412,10 @@ def make_opening_tag_parser(config,
                             tag_name_parser=None,
                             allow_slash=False):
     attributes = make_attributes_parser(config, jinja)
+    whitespace_attributes = (
+        mandatory_whitespace.then(attributes).skip(whitespace) |
+        interpolated(P.string('').result([]))
+    )
 
     if not tag_name_parser:
         tag_name_parser = tag_name | jinja
@@ -430,8 +435,8 @@ def make_opening_tag_parser(config,
     return (
         locate(P.seq(
             P.string('<'),
-            tag_name_parser.skip(whitespace),
-            attributes.skip(whitespace),
+            tag_name_parser,
+            whitespace_attributes,
             slash,
             P.string('>'),
         ))
