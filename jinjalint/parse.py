@@ -332,11 +332,13 @@ def make_attribute_parser(jinja):
     return (
         locate(
             P.seq(
-                interpolated(tag_name).skip(whitespace),
-                P.seq(
-                    P.string('=').skip(whitespace).tag('equal'),
-                    interpolated(attribute_value).tag('value'),
-                ).map(dict).optional(),
+                interpolated(tag_name),
+                whitespace.then(
+                    P.seq(
+                        P.string('=').skip(whitespace).tag('equal'),
+                        interpolated(attribute_value).tag('value'),
+                    ).map(dict)
+                ).optional(),
             )
         )
         .combine(_combine_attribute)
@@ -347,21 +349,25 @@ def make_attribute_parser(jinja):
 def make_attributes_parser(config, jinja):
     attribute = make_attribute_parser(jinja)
 
-    @P.generate
-    def attrs():
-        r = yield attrs_
-        return r
-
-    jinja_attrs = make_jinja_parser(
+    jinja_attr = make_jinja_parser(
         config,
-        whitespace.then(attrs.skip(whitespace)),
+        interpolated(
+            whitespace
+            .then(
+                (attribute | jinja).sep_by(whitespace)
+            )
+            .skip(whitespace)
+        )
     )
 
-    attrs_ = interpolated(
-        (jinja_attrs | attribute).sep_by(whitespace)
+    attrs = interpolated(
+        (
+            whitespace.then(jinja_attr) |
+            mandatory_whitespace.then(attribute)
+        ).many()
     )
 
-    return attrs_
+    return attrs
 
 
 def _combine_comment(locations, text):
@@ -412,10 +418,6 @@ def make_opening_tag_parser(config,
                             tag_name_parser=None,
                             allow_slash=False):
     attributes = make_attributes_parser(config, jinja)
-    whitespace_attributes = (
-        mandatory_whitespace.then(attributes).skip(whitespace) |
-        interpolated(P.string('').result([]))
-    )
 
     if not tag_name_parser:
         tag_name_parser = tag_name | jinja
@@ -436,7 +438,7 @@ def make_opening_tag_parser(config,
         locate(P.seq(
             P.string('<'),
             tag_name_parser,
-            whitespace_attributes,
+            attributes.skip(whitespace),
             slash,
             P.string('>'),
         ))

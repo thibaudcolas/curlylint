@@ -298,6 +298,20 @@ def test_element():
     src = '<{% if a %}bcd{% endif %}></{% if a %}bcd{% endif %}>'
     assert src == str(element.parse(src))
 
+    src = '<div{{ "ider" }}></div>'
+    assert '<div {{ "ider" }}></div>' == str(element.parse(src))
+
+    src = '<div{% if a %}foo="bar"{% endif %}></div>'
+    assert '<div {% if a %}foo="bar"{% endif %}></div>' == \
+        str(element.parse(src))
+
+    src = '<div{% if a %} foo="bar"  a=2 {% endif %}></div>'
+    assert '<div {% if a %}foo="bar"a=2{% endif %}></div>' == \
+        str(element.parse(src))
+
+    src = '<colgroup></colgroup>'
+    assert src == str(element.parse(src))
+
 
 def test_self_closing_elements():
     assert element.parse('<br>') == Element(

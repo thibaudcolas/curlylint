@@ -95,7 +95,7 @@ class Integer(Node):
     has_percent = attr.ib()  # bool
 
     def __str__(self):
-        return self.value + ('%' if self.has_percent else '')
+        return str(self.value) + ('%' if self.has_percent else '')
 
 
 @attr.s(frozen=True)
