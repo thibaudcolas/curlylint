@@ -5,7 +5,7 @@ A prototype linter which checks the indentation and the correctness of
 
 It works with [Django’s templates][djangotemplates] too, it should
 work with [Twig](https://twig.symfony.com/) and similar template languages.
-It should work fine with any kind of HTML 4 and 5, hovewer XHTML is not
+It should work fine with any kind of HTML 4 and 5, however XHTML is not
 supported.
 
 This linter parses both HTML and Jinja tags and will report mismatched
