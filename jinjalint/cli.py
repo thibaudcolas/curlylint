@@ -1,14 +1,20 @@
 """jinjalint
 
 Usage:
-  jinjalint [options] [INPUT ...]
+  jinjalint [-v | --verbose] [--config CONFIG] [--parse-only]
+            [--extension EXT | -e EXT]... [INPUT ...]
+  jinjalint (-h | --help)
+  jinjalint --version
 
 Options:
-  -h --help          Show this help message and exit.
-  --version          Show version information and exit.
-  -v --verbose       Verbose mode.
-  -c --config FILE   Specify the configuration file.
-  --parse-only       Don’t lint, check for syntax errors and exit.
+  -h --help             Show this help message and exit.
+  --version             Show version information and exit.
+  -v --verbose          Verbose mode.
+  -c --config CONFIG    Specify the configuration file.
+  --parse-only          Don’t lint, check for syntax errors and exit.
+  -e --extension EXT    Extension of the files to analyze (used if INPUT
+                        contains directories to crawl).
+                        [default: html jinja twig]
 
 The configuration file must be a valid Python file.
 """
@@ -37,6 +43,7 @@ def main():
     arguments = docopt(__doc__)
 
     input_names = arguments['INPUT'] or ['.']
+    extensions = ['.' + e for e in arguments['--extension']]
     verbose = arguments['--verbose']
 
     if arguments['--version']:
@@ -53,7 +60,7 @@ def main():
     config['verbose'] = verbose
     config['parse_only'] = arguments['--parse-only']
 
-    paths = list(resolve_file_paths(input_names, extensions=['.html']))
+    paths = list(resolve_file_paths(input_names, extensions=extensions))
 
     if verbose:
         print('Files being analyzed:')
