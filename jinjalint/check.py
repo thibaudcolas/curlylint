@@ -15,6 +15,16 @@ def get_line_beginning(source, node):
 
 
 def get_indent_level(source, node):
+    """
+    Returns the number of whitespace characters before the given node,
+    in the first line of node.
+    Returns `None` if some characters before the given node in this
+    line aren’t whitespace.
+
+    For example, if the source file contains `   <br /> ` on a line,
+    `get_indent_level` will return 3 if called with the `<br />` tag
+    as `node`.
+    """
     beginning = get_line_beginning(source, node)
     if beginning and not beginning.isspace():
         return None

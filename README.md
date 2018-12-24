@@ -56,6 +56,14 @@ $ jinjalint some-file.html some-other-file.html
 
 This is a work in progress. Feel free to contribute :upside_down_face:
 
+## Hacking
+
+Jinjalint is powered by [Parsy][parsy]. Parsy is an extremely powerful
+library and Jinjalint’s parser relies heavily on it. You have to read
+Parsy’s documentation in order to understant what’s going on in
+`parse.py`.
+
 [jinja]: http://jinja.pocoo.org/docs/2.9/
 [django-commit]: https://github.com/django/djangoproject.com/commit/14a964d626196c857809d9b3b492ff4cfa4b3f40
 [djangotemplates]: https://docs.djangoproject.com/en/1.11/ref/templates/language/
+[parsy]: https://github.com/python-parsy/parsy

@@ -3,6 +3,7 @@ import attr
 
 @attr.s(frozen=True)
 class Location:
+    """A location in a source file."""
     line = attr.ib()  # 0-based
     column = attr.ib()
     index = attr.ib()
@@ -13,12 +14,14 @@ class Location:
 
 @attr.s(frozen=True)
 class Node:
-    begin = attr.ib()  # Location
-    end = attr.ib()  # Location
+    """Base abstract type for AST nodes."""
+    begin = attr.ib()  # Location of the first character of the node
+    end = attr.ib()  # Location of the last character
 
 
 @attr.s(frozen=True)
 class Slash(Node):
+    """The `/` of (self-)closing HTML tags"""
     def __str__(self):
         return '/'
 
