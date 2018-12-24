@@ -60,7 +60,7 @@ This is a work in progress. Feel free to contribute :upside_down_face:
 
 Jinjalint is powered by [Parsy][parsy]. Parsy is an extremely powerful
 library and Jinjalint’s parser relies heavily on it. You have to read
-Parsy’s documentation in order to understant what’s going on in
+Parsy’s documentation in order to understand what’s going on in
 `parse.py`.
 
 [jinja]: http://jinja.pocoo.org/docs/2.9/
