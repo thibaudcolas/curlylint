@@ -56,6 +56,30 @@ $ jinjalint some-file.html some-other-file.html
 
 This is a work in progress. Feel free to contribute :upside_down_face:
 
+
+## Usage with [pre-commit](https://pre-commit.com) git hooks framework
+
+Add to your `.pre-commit-config.yaml`:
+
+```yaml
+-   repo: https://github.com/motet-a/jinjalint
+    rev: ''  # select a tag / sha to point at
+    hooks:
+    -   id: jinjalint
+```
+
+Make sure to fill in the `rev` with a valid revision.
+
+_Note_: by default this configuration will only match `.jinja` and `.jinja2`
+files.  To match by regex pattern instead, override `types` and `files` as
+follows:
+
+```yaml
+    -   id: jinjalint
+        types: [file]  # restore the default `types` matching
+        files: \.(html|sls)$
+```
+
 ## Hacking
 
 Jinjalint is powered by [Parsy][parsy]. Parsy is an extremely powerful
