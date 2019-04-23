@@ -56,6 +56,31 @@ $ jinjalint some-file.html some-other-file.html
 
 This is a work in progress. Feel free to contribute :upside_down_face:
 
+### Configuration
+
+Jinjalint supports defining a config file with the flag `--config`. Here is an [example config](./example_config.py) file with the available options:
+
+```python
+# Specify additional Jinja elements which can wrap HTML here. You
+# don't neet to specify simple elements which can't wrap anything like
+# {% extends %} or {% include %}.
+# Default: [].
+jinja_custom_elements_names = [
+    ('cache', 'endcache'),
+    ('captureas', 'endcaptureas'),
+    # ('for', 'else', 'empty', 'endfor'),
+]
+
+# How many spaces to use when checking indentation.
+# Default: 4
+indent_size = 4
+```
+
+This config file can then be used with:
+
+```sh
+$ jinjalint --config example_config.py template-directory/
+```
 
 ## Usage with [pre-commit](https://pre-commit.com) git hooks framework
 
