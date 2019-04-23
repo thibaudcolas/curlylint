@@ -56,6 +56,25 @@ $ jinjalint some-file.html some-other-file.html
 
 This is a work in progress. Feel free to contribute :upside_down_face:
 
+
+### CLI flags
+
+#### `--verbose`
+
+Turns on verbose mode. This makes it easier to troubleshoot what configuration is used, and what files are being linted.
+
+```sh
+$ jinjalint --verbose template-directory/
+```
+
+#### `--parse-only`
+
+Don’t lint, check for syntax errors and exit.
+
+```sh
+$ jinjalint --parse-only template-directory/
+```
+
 ### Configuration
 
 Jinjalint supports defining a config file with the flag `--config`. Here is an [example config](./example_config.py) file with the available options:
