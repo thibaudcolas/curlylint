@@ -81,7 +81,7 @@ Jinjalint supports defining a config file with the flag `--config`. Here is an [
 
 ```python
 # Specify additional Jinja elements which can wrap HTML here. You
-# don't neet to specify simple elements which can't wrap anything like
+# don't need to specify simple elements which can't wrap anything like
 # {% extends %} or {% include %}.
 # Default: [].
 jinja_custom_elements_names = [
