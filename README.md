@@ -1,4 +1,4 @@
-# jinjalint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint)
+# jinjalint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
 
 A prototype linter which checks the indentation and the correctness of
 [Jinja][jinja]-like/HTML templates. Can [fix issues][django-commit].
@@ -13,8 +13,8 @@ tags and indentation errors:
 
 ```html+jinja
 <div>
-    {% if something %}
-    </div>
+  {% if something %}
+</div>
 {% endif %}
 ```
 
@@ -26,16 +26,17 @@ tags and indentation errors:
 ```
 
 ```html+jinja
-  {% if something %}
- <div> not indented properly
-      </div>
-   {% endif %}
+{% if something %}
+<div>not indented properly</div>
+{% endif %}
 ```
 
 ```html+jinja
-{% if something %}<a href="somewhere">{% endif %}
-    <p>something</p>
-{% if not something %}</a>{% endif %}
+{% if something %}<a href="somewhere"
+  >{% endif %}
+  <p>something</p>
+  {% if not something %}</a
+>{% endif %}
 ```
 
 ## Usage
@@ -56,28 +57,27 @@ $ jinjalint some-file.html some-other-file.html
 
 This is a work in progress. Feel free to contribute :upside_down_face:
 
-
 ## Usage with [pre-commit](https://pre-commit.com) git hooks framework
 
 Add to your `.pre-commit-config.yaml`:
 
 ```yaml
--   repo: https://github.com/motet-a/jinjalint
-    rev: ''  # select a tag / sha to point at
-    hooks:
-    -   id: jinjalint
+- repo: https://github.com/motet-a/jinjalint
+  rev: "" # select a tag / sha to point at
+  hooks:
+    - id: jinjalint
 ```
 
 Make sure to fill in the `rev` with a valid revision.
 
 _Note_: by default this configuration will only match `.jinja` and `.jinja2`
-files.  To match by regex pattern instead, override `types` and `files` as
+files. To match by regex pattern instead, override `types` and `files` as
 follows:
 
 ```yaml
-    -   id: jinjalint
-        types: [file]  # restore the default `types` matching
-        files: \.(html|sls)$
+- id: jinjalint
+  types: [file] # restore the default `types` matching
+  files: \.(html|sls)$
 ```
 
 ## Hacking
