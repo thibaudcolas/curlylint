@@ -10,9 +10,8 @@ jobs:
     - python: 3.5
     - python: 3.6
     - python: nightly
-    - python: 3.5
+    - language: node_js
       install:
-        - nvm install
         - npm install --no-optional --no-audit --progress=false
       script:
         - npm run lint
