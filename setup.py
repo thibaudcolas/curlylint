@@ -1,30 +1,29 @@
-from setuptools import setup
-from pathlib import Path
-import versioneer
+#!/usr/bin/env python
 
+import io
 
-here = Path(__file__).parent
+from setuptools import find_packages, setup
 
-with (here / 'README.md').open('r') as f:
-    long_description = '\n' + f.read()
-
-with open('requirements.txt') as f:
-    lines = f.read().split('\n')
-    install_requires = [line.split()[0] for line in lines if line]
+with io.open('README.md', encoding='utf-8') as readme_file:
+    long_description = readme_file.read()
 
 setup(
-    name='jinjalint',
-    author='Antoine Motet',
-    author_email='antoine.motet@gmail.com',
-    url='https://github.com/motet-a/jinjalint',
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
-    description='A linter for Jinja-like templates',
-    long_description=long_description,
-    packages=['jinjalint'],
-    include_package_data=True,
+    name='curlylint',
+    version='0.5.0',
     license='MIT',
-    install_requires=install_requires,
+    description='A linter for Jinja-like templates. Forked from jinjalint',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author='Thibaud Colas',
+    author_email='thibaudcolas@gmail.com',
+    url='https://github.com/thibaudcolas/curlylint',
+    packages=find_packages(exclude=['tests*']),
+    include_package_data=True,
+    install_requires=[
+        'parsy==1.1.0',
+        'attrs==17.2.0',
+        'docopt==0.6.2',
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',

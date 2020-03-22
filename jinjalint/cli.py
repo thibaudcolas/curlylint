@@ -22,7 +22,6 @@ from docopt import docopt
 
 from .lint import lint, resolve_file_paths
 from .config import parse_config
-from ._version import get_versions
 
 
 def print_issues(issues, config):
@@ -47,7 +46,7 @@ def main():
     verbose = arguments['--verbose']
 
     if arguments['--version']:
-        print(get_versions()['version'])
+        print('0.5.0')
         return
 
     if arguments['--config']:
