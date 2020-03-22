@@ -1,14 +1,24 @@
+version: ~> 1.0
+dist: bionic
 language: python
-
-python:
-  - "3.5"
-  - "3.6"
-  - "nightly"
-
+cache: pip
+jobs:
+  include:
+    - python: 3.5
+    - python: 3.6
+    - python: nightly
 install:
+  # - ./.githooks/deploy.sh
+  # - nvm install
+  # - npm ci
   - pip install pipenv pycodestyle
   - pipenv install --dev
-
+  - npm run lint
 script:
   - pipenv run python -m jinjalint.test
   - pipenv run pycodestyle jinjalint/
+branches:
+  except:
+    - gh-pages
+notifications:
+  email: false
