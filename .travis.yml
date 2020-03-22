@@ -13,7 +13,7 @@ install:
   # - npm ci
   - pip install pipenv pycodestyle
   - pipenv install --dev
-  - npm run lint
+  # - npm run lint
 script:
   - pipenv run python -m jinjalint.test
   - pipenv run pycodestyle jinjalint/
