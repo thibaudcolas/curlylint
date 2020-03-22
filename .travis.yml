@@ -1,19 +1,24 @@
 version: ~> 1.0
 dist: bionic
 language: python
-cache: pip
+cache:
+  pip: true
+  directories:
+    - node_modules
 jobs:
   include:
     - python: 3.5
     - python: 3.6
     - python: nightly
+    - python: 3.5
+      install:
+        - nvm install
+        - npm install --no-optional --no-audit --progress=false
+      script:
+        - npm run lint
 install:
-  # - ./.githooks/deploy.sh
-  # - nvm install
-  # - npm ci
   - pip install pipenv pycodestyle
   - pipenv install --dev
-  # - npm run lint
 script:
   - pipenv run python -m jinjalint.test
   - pipenv run pycodestyle jinjalint/

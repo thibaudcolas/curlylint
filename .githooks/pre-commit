@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Fail on first line that fails.
+set -e
+
+# Only keep staged files that are added (A), copied (C) or modified (M).
+STAGED=$(git --no-pager diff --name-only --cached --diff-filter=ACM)
+# Files which are only partly staged (eg. git add --patch).
+PATCH_STAGED=$(git --no-pager diff --name-only --diff-filter=ACM $STAGED)
+# Files which are fully staged.
+FULLY_STAGED=$(comm -23 <(echo "$STAGED") <(echo "$PATCH_STAGED"))
+
+JS_STAGED=$(grep -e '.js$' -e '.jsx$' <<< "$STAGED" || true)
+JS_FULLY_STAGED=$(grep -e '.js$' -e '.jsx$' <<< "$FULLY_STAGED" || true)
+PRETTIER_STAGED=$(grep -E '.(md|css|scss|js|json|yaml|yml|html)$' <<< "$STAGED" || true)
+PRETTIER_FULLY_STAGED=$(grep -E '.(md|css|scss|js|json|yaml|yml|html)$' <<< "$FULLY_STAGED" || true)
+SNAPSHOT_STAGED=$(grep .snap$ <<< "$STAGED" || true)
+PY_STAGED=$(grep .py$ <<< "$STAGED" || true)
+PY_FULLY_STAGED=$(grep .py$ <<< "$FULLY_STAGED" || true)
+
+# Uncomment, and add more variables to the list, for debugging help.
+# tr ' ' '\n' <<< "STAGED $STAGED PATCH_STAGED $PATCH_STAGED FULLY_STAGED $FULLY_STAGED JS_STAGED $JS_STAGED JS_FULLY_STAGED $JS_FULLY_STAGED SNAPSHOT_STAGED $SNAPSHOT_STAGED"
+
+# Execute each pre-commit hook.
+PROJECT_ROOT=`git rev-parse --show-toplevel`
+GIT_ROOT=`git rev-parse --git-dir`
+HOOKS=$PROJECT_ROOT/$GIT_ROOT/hooks/pre-commit.*
+
+for HOOK in $HOOKS
+do
+  source $HOOK
+done

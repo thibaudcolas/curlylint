@@ -1,0 +1,23 @@
+{
+  "name": "curlylint",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Thibaud Colas",
+  "license": "MIT",
+  "homepage": "https://github.com/thibaudcolas/curlylint",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thibaudcolas/curlylint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thibaudcolas/curlylint/issues"
+  },
+  "devDependencies": {
+    "prettier": "1.19.1"
+  },
+  "scripts": {
+    "prepare": "./.githooks/deploy.sh",
+    "lint": "prettier --check '**/?(.)*.{md,css,scss,js,json,json5,yaml,yml}'",
+    "format": "prettier --write '**/?(.)*.{md,css,scss,js,json,json5,yaml,yml}'"
+  }
+}
