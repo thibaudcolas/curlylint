@@ -1,4 +1,4 @@
-# jinjalint
+# jinjalint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint)
 
 A prototype linter which checks the indentation and the correctness of
 [Jinja][jinja]-like/HTML templates. Can [fix issues][django-commit].
