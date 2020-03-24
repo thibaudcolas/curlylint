@@ -1,9 +1,9 @@
 # curlylint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
 
 A prototype linter which checks the indentation and the correctness of
-[Jinja][jinja]-like/HTML templates. Can [fix issues][django-commit].
+[Jinja](http://jinja.pocoo.org/docs/2.9/)-like/HTML templates. Can [fix issues](https://github.com/django/djangoproject.com/commit/14a964d626196c857809d9b3b492ff4cfa4b3f40).
 
-It works with [Django’s templates][djangotemplates] too, it should
+It works with [Django’s templates](https://docs.djangoproject.com/en/1.11/ref/templates/language/) too, it should
 work with [Twig](https://twig.symfony.com/) and similar template languages.
 It should work fine with any kind of HTML 4 and 5, however XHTML is not
 supported.
@@ -82,12 +82,7 @@ follows:
 
 ## Hacking
 
-Curlylint is powered by [Parsy][parsy]. Parsy is an extremely powerful
+Curlylint is powered by [Parsy](https://github.com/python-parsy/parsy). Parsy is an extremely powerful
 library and curlylint’s parser relies heavily on it. You have to read
 Parsy’s documentation in order to understand what’s going on in
 `parse.py`.
-
-[jinja]: http://jinja.pocoo.org/docs/2.9/
-[django-commit]: https://github.com/django/djangoproject.com/commit/14a964d626196c857809d9b3b492ff4cfa4b3f40
-[djangotemplates]: https://docs.djangoproject.com/en/1.11/ref/templates/language/
-[parsy]: https://github.com/python-parsy/parsy
