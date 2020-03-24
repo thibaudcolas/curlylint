@@ -1,10 +1,10 @@
-"""jinjalint
+"""curlylint
 
 Usage:
-  jinjalint [-v | --verbose] [--config CONFIG] [--parse-only]
+  curlylint [-v | --verbose] [--config CONFIG] [--parse-only]
             [--extension EXT | -e EXT]... [INPUT ...]
-  jinjalint (-h | --help)
-  jinjalint --version
+  curlylint (-h | --help)
+  curlylint --version
 
 Options:
   -h --help             Show this help message and exit.

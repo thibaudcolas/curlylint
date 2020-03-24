@@ -1,4 +1,4 @@
-# jinjalint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
+# curlylint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
 
 A prototype linter which checks the indentation and the correctness of
 [Jinja][jinja]-like/HTML templates. Can [fix issues][django-commit].
@@ -41,18 +41,18 @@ tags and indentation errors:
 
 ## Usage
 
-You need Python 3. Jinjalint doesn’t work with Python 2. Install it with
-`pip install jinjalint` (or `pip3 install jinjalint` depending on how `pip` is
+You need Python 3. Curlylint doesn’t work with Python 2. Install it with
+`pip install curlylint` (or `pip3 install curlylint` depending on how `pip` is
 called on your system), then run it with:
 
 ```sh
-$ jinjalint template-directory/
+$ curlylint template-directory/
 ```
 
 …or:
 
 ```sh
-$ jinjalint some-file.html some-other-file.html
+$ curlylint some-file.html some-other-file.html
 ```
 
 This is a work in progress. Feel free to contribute :upside_down_face:
@@ -62,10 +62,10 @@ This is a work in progress. Feel free to contribute :upside_down_face:
 Add to your `.pre-commit-config.yaml`:
 
 ```yaml
-- repo: https://github.com/motet-a/jinjalint
+- repo: https://github.com/thibaudcolas/curlylint
   rev: "" # select a tag / sha to point at
   hooks:
-    - id: jinjalint
+    - id: curlylint
 ```
 
 Make sure to fill in the `rev` with a valid revision.
@@ -75,15 +75,15 @@ files. To match by regex pattern instead, override `types` and `files` as
 follows:
 
 ```yaml
-- id: jinjalint
+- id: curlylint
   types: [file] # restore the default `types` matching
   files: \.(html|sls)$
 ```
 
 ## Hacking
 
-Jinjalint is powered by [Parsy][parsy]. Parsy is an extremely powerful
-library and Jinjalint’s parser relies heavily on it. You have to read
+Curlylint is powered by [Parsy][parsy]. Parsy is an extremely powerful
+library and curlylint’s parser relies heavily on it. You have to read
 Parsy’s documentation in order to understand what’s going on in
 `parse.py`.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from jinjalint.cli import main
+from curlylint.cli import main
 
 
 main()

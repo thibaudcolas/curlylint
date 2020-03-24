@@ -4,7 +4,7 @@ import io
 
 from setuptools import find_packages, setup
 
-from jinjalint import (
+from curlylint import (
     __author__,
     __author_email__,
     __copyright__,
@@ -60,6 +60,6 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     entry_points={
-        'console_scripts': ['jinjalint=jinjalint.cli:main'],
+        'console_scripts': ['curlylint=curlylint.cli:main'],
     },
 )

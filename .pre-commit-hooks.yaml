@@ -1,7 +1,7 @@
-- id: jinjalint
-  name: jinjalint
+- id: curlylint
+  name: curlylint
   description: A linter which checks the indentation and the correctness of Jinja-like/HTML templates.
   language: python
   language_version: python3
-  entry: jinjalint
+  entry: curlylint
   types: [jinja]
