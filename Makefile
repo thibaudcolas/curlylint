@@ -6,8 +6,21 @@ help: ## See what commands are available.
 
 init: clean-pyc ## Install dependencies and initialise for development.
 	pip install --upgrade pip setuptools twine
-	pip install pipenv pycodestyle
-	pipenv install --dev
+	pip install -e '.[dev]'
+
+lint: ## Lint the project.
+	# black --check **/*.py
+	# flake8 **/*.py
+	# isort --check-only --diff --recursive **/*.py
+	npm run lint
+
+format: ## Format project files.
+	isort --recursive *.py **/*.py
+	# black **/*.py
+	npm run format
+
+test: ## Test the project.
+	python -m curlylint.test
 
 clean-pyc: ## Remove Python file artifacts.
 	find . -name '*.pyc' -exec rm -f {} +

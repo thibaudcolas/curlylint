@@ -1,0 +1,7 @@
+node_modules
+.venv
+.tox
+webpack-stats.html
+*.html
+.pytest_cache
+coverage_html_report

@@ -16,11 +16,10 @@ jobs:
       script:
         - npm run lint
 install:
-  - pip install pipenv pycodestyle
-  - pipenv install --dev
+  - pip install -e '.[dev]'
 script:
-  - pipenv run python -m curlylint.test
-  - pipenv run pycodestyle curlylint/
+  - make lint
+  - make test
 branches:
   except:
     - gh-pages

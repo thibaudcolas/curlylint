@@ -47,6 +47,13 @@ setup(
         'attrs==17.2.0',
         'docopt==0.6.2',
     ],
+    extras_require={
+        'dev': [
+            "black==19.3b0",
+            "isort==4.2.5",
+            "flake8==3.7.8",
+        ],
+    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',

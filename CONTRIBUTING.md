@@ -16,11 +16,11 @@ Please note that this project is released with a [Contributor Code of Conduct](d
 git clone git@github.com:thibaudcolas/curlylint.git
 cd curlylint/
 # Install required Python versions
-pyenv install --skip-existing 3.7.3
+pyenv install --skip-existing 3.6.8
 # Make required Python versions available globally.
-pyenv global system 3.7.3
+pyenv global system 3.6.8
 # Install the Python environment.
-virtualenv .venv -p python3.7
+virtualenv .venv -p python3.6
 source ./.venv/bin/activate
 make init
 ```
@@ -28,11 +28,15 @@ make init
 ### Commands
 
 ```sh
-make help            # See what commands are available.
-make clean-pyc       # Remove Python file artifacts.
-make sdist           # Builds package version
-make publish         # Publishes a new version to pypi.
-make publish-test    # Publishes a new version to test pypi.
+make help           # See what commands are available.
+make init           # Install dependencies and initialise for development.
+make lint           # Lint the project.
+make format         # Format project files.
+make test           # Test the project.
+make clean-pyc      # Remove Python file artifacts.
+make sdist          # Builds package version
+make publish        # Publishes a new version to pypi.
+make publish-test   # Publishes a new version to test pypi.
 ```
 
 ## Hacking
