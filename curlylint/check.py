@@ -1,17 +1,16 @@
 import re
 
 from . import ast
-from .util import flatten
 from .issue import Issue, IssueLocation
+from .util import flatten
 
-
-WHITESPACE_INDENT_RE = re.compile(r'^\s*')
-INDENT_RE = re.compile('^ *')
+WHITESPACE_INDENT_RE = re.compile(r"^\s*")
+INDENT_RE = re.compile("^ *")
 
 
 def get_line_beginning(source, node):
-    source = source[:node.begin.index]
-    return source.split('\n')[-1]
+    source = source[: node.begin.index]
+    return source.split("\n")[-1]
 
 
 def get_indent_level(source, node):
@@ -32,33 +31,32 @@ def get_indent_level(source, node):
 
 
 def contains_exclusively(string, char):
-    return string.replace(char, '') == ''
+    return string.replace(char, "") == ""
 
 
 def truncate(s, length=16):
-    return s[:length] + (s[length:] and '…')
+    return s[:length] + (s[length:] and "…")
 
 
 def check_indentation(file, config):
-    indent_size = config.get('indent_size', 4)
+    indent_size = config.get("indent_size", 4)
 
     issues = []
 
     def add_issue(location, msg):
         issues.append(Issue.from_ast(file, location, msg))
 
-    def check_indent(expected_level, node, inline=False,
-                     allow_same_line=False):
+    def check_indent(expected_level, node, inline=False, allow_same_line=False):
         node_level = get_indent_level(file.source, node)
         if node_level is None:
             if not inline and not allow_same_line:
                 node_s = repr(truncate(str(node)))
-                add_issue(node.begin, node_s + ' should be on the next line')
+                add_issue(node.begin, node_s + " should be on the next line")
             return
 
         if node_level != expected_level:
-            msg = 'Bad indentation, expected {}, got {}'.format(
-                expected_level, node_level,
+            msg = "Bad indentation, expected {}, got {}".format(
+                expected_level, node_level
             )
             add_issue(node.begin, msg)
 
@@ -69,13 +67,13 @@ def check_indentation(file, config):
         if attr.begin.line != attr.value.begin.line:
             add_issue(
                 attr.begin,
-                'The value must begin on line {}'.format(attr.begin.line),
+                "The value must begin on line {}".format(attr.begin.line),
             )
         check_content(
             expected_level,
             attr.value,
             inline=attr.value.begin.line == attr.value.end.line,
-            allow_same_line=True
+            allow_same_line=True,
         )
 
     def check_opening_tag(expected_level, tag, inline=False, **_):
@@ -104,12 +102,17 @@ def check_indentation(file, config):
     def check_jinja_tag(expected_level, tag, **_):
         pass
 
-    def check_string(expected_level, string, inline=False,
-                     allow_same_line=False):
+    def check_string(
+        expected_level, string, inline=False, allow_same_line=False
+    ):
         if string.value.begin.line != string.value.end.line:
             inline = False
-        check_content(string.value.begin.column, string.value, inline=inline,
-                      allow_same_line=allow_same_line)
+        check_content(
+            string.value.begin.column,
+            string.value,
+            inline=inline,
+            allow_same_line=allow_same_line,
+        )
 
     def check_integer(expected_level, integer, **_):
         pass
@@ -123,19 +126,26 @@ def check_indentation(file, config):
     def has_jinja_element_child(parent, tag_name):
         child = get_first_child_node(parent)
         return (
-            isinstance(child, ast.JinjaElement) and
-            child.parts[0].tag.name == tag_name
+            isinstance(child, ast.JinjaElement)
+            and child.parts[0].tag.name == tag_name
         )
 
-    def check_jinja_element_part(expected_level, part, inline=False,
-                                 allow_same_line=False):
-        check_node(expected_level, part.tag, inline=inline,
-                   allow_same_line=allow_same_line)
-        element_names_to_not_indent = (
-            config.get('jinja_element_names_to_not_indent', [])
+    def check_jinja_element_part(
+        expected_level, part, inline=False, allow_same_line=False
+    ):
+        check_node(
+            expected_level,
+            part.tag,
+            inline=inline,
+            allow_same_line=allow_same_line,
         )
-        do_not_indent = part.tag.name in element_names_to_not_indent and \
-            has_jinja_element_child(part.content, part.tag.name)
+        element_names_to_not_indent = config.get(
+            "jinja_element_names_to_not_indent", []
+        )
+        do_not_indent = (
+            part.tag.name in element_names_to_not_indent
+            and has_jinja_element_child(part.content, part.tag.name)
+        )
         if part.begin.line != part.end.line:
             inline = False
         shift = 0 if inline or do_not_indent else indent_size
@@ -143,8 +153,9 @@ def check_indentation(file, config):
         if part.content is not None:
             check_content(content_level, part.content, inline=inline)
 
-    def check_jinja_optional_container_if(expected_level, o_if, html_tag, c_if,
-                                          inline=False):
+    def check_jinja_optional_container_if(
+        expected_level, o_if, html_tag, c_if, inline=False
+    ):
         check_indent(expected_level, o_if, inline=inline)
         shift = 0 if inline else indent_size
         if isinstance(html_tag, ast.OpeningTag):
@@ -152,14 +163,17 @@ def check_indentation(file, config):
         elif isinstance(html_tag, ast.ClosingTag):
             check_indent(expected_level + shift, html_tag, inline=inline)
         else:
-            raise AssertionError('invalid tag')
+            raise AssertionError("invalid tag")
         check_indent(expected_level, c_if, inline=inline)
         return inline
 
-    def check_jinja_optional_container(expected_level, element,
-                                       inline=False, **_):
-        if element.first_opening_if.begin.line == \
-                element.second_opening_if.end.line:
+    def check_jinja_optional_container(
+        expected_level, element, inline=False, **_
+    ):
+        if (
+            element.first_opening_if.begin.line
+            == element.second_opening_if.end.line
+        ):
             inline = True
 
         inline = check_jinja_optional_container_if(
@@ -167,7 +181,8 @@ def check_indentation(file, config):
             element.first_opening_if,
             element.opening_tag,
             element.first_closing_if,
-            inline=inline)
+            inline=inline,
+        )
 
         check_content(expected_level, element.content, inline=inline)
 
@@ -176,10 +191,12 @@ def check_indentation(file, config):
             element.second_opening_if,
             element.closing_tag,
             element.second_closing_if,
-            inline=inline)
+            inline=inline,
+        )
 
-    def check_jinja_element(expected_level, element, inline=False,
-                            allow_same_line=False):
+    def check_jinja_element(
+        expected_level, element, inline=False, allow_same_line=False
+    ):
         if element.begin.line == element.end.line:
             inline = True
         for part in element.parts:
@@ -187,7 +204,8 @@ def check_indentation(file, config):
                 expected_level,
                 part,
                 inline=inline,
-                allow_same_line=allow_same_line)
+                allow_same_line=allow_same_line,
+            )
         if element.closing_tag is not None:
             check_indent(expected_level, element.closing_tag, inline=inline)
 
@@ -203,19 +221,14 @@ def check_indentation(file, config):
         if inline or opening_tag.end.line == closing_tag.begin.line:
             check_content(expected_level, element.content, inline=True)
         else:
-            check_content(
-                expected_level + indent_size,
-                element.content,
-            )
+            check_content(expected_level + indent_size, element.content)
             check_indent(expected_level, closing_tag)
 
-    def check_node(expected_level, node, inline=False,
-                   allow_same_line=False, **_):
+    def check_node(
+        expected_level, node, inline=False, allow_same_line=False, **_
+    ):
         check_indent(
-            expected_level,
-            node,
-            inline=inline,
-            allow_same_line=allow_same_line
+            expected_level, node, inline=inline, allow_same_line=allow_same_line
         )
 
         types_to_functions = {
@@ -234,59 +247,63 @@ def check_indentation(file, config):
 
         func = types_to_functions.get(type(node))
         if func is None:
-            raise Exception('Unexpected {!r} node at {}'.format(
-                type(node), node.begin,
-            ))
+            raise Exception(
+                "Unexpected {!r} node at {}".format(type(node), node.begin)
+            )
 
-        func(expected_level, node, inline=inline,
-             allow_same_line=allow_same_line)
+        func(
+            expected_level, node, inline=inline, allow_same_line=allow_same_line
+        )
 
     def check_content_str(expected_level, string, parent_node):
-        lines = string.split('\n')
-        expected_indent = expected_level * ' '
+        lines = string.split("\n")
+        expected_indent = expected_level * " "
 
         indent = INDENT_RE.match(lines[0]).group(0)
 
         if len(indent) > 1:
             msg = (
-                'Expected at most one space at the beginning of the text '
-                'node, got {} spaces'
+                "Expected at most one space at the beginning of the text "
+                "node, got {} spaces"
             ).format(len(indent))
             add_issue(parent_node.begin, msg)
 
         # skip the first line since there is certainly an HTML tag before
         for line in lines[1:]:
-            if line.strip() == '':
+            if line.strip() == "":
                 continue
             indent = INDENT_RE.match(line).group(0)
             if indent != expected_indent:
-                msg = 'Bad text indentation, expected {}, got {}'.format(
-                    expected_level, len(indent),
+                msg = "Bad text indentation, expected {}, got {}".format(
+                    expected_level, len(indent)
                 )
                 add_issue(parent_node.begin, msg)
 
-    def check_content(expected_level, parent_node, inline=False,
-                      allow_same_line=False):
+    def check_content(
+        expected_level, parent_node, inline=False, allow_same_line=False
+    ):
         inline_parent = inline
         for i, child in enumerate(parent_node):
-            next_child = get_first_child_node(parent_node[i + 1:])
+            next_child = get_first_child_node(parent_node[i + 1 :])
 
             if isinstance(child, str):
                 check_content_str(expected_level, child, parent_node)
-                if not child.strip(' '):
+                if not child.strip(" "):
                     inline = True
-                elif child.strip() and child.count('\n') <= 1:
+                elif child.strip() and child.count("\n") <= 1:
                     inline = True
-                elif (next_child and
-                      child.strip() and
-                      not child.replace(' ', '').endswith('\n')):
+                elif (
+                    next_child
+                    and child.strip()
+                    and not child.replace(" ", "").endswith("\n")
+                ):
                     inline = True
-                elif child.replace(' ', '').endswith('\n\n'):
+                elif child.replace(" ", "").endswith("\n\n"):
                     inline = False
                 if inline_parent and not inline:
                     msg = (
-                        'An inline parent element must only contain '
-                        'inline children'
+                        "An inline parent element must only contain "
+                        "inline children"
                     )
                     add_issue(parent_node.begin, msg)
                 continue
@@ -298,7 +315,7 @@ def check_indentation(file, config):
                     expected_level,
                     child,
                     inline=inline,
-                    allow_same_line=allow_same_line
+                    allow_same_line=allow_same_line,
                 )
                 continue
 
@@ -313,21 +330,14 @@ def check_space_only_indent(file, _config):
     issues = []
     for i, line in enumerate(file.lines):
         indent = WHITESPACE_INDENT_RE.match(line).group(0)
-        if not contains_exclusively(indent, ' '):
-            loc = IssueLocation(
-                file_path=file.path,
-                line=i,
-                column=0,
-            )
-            issue = Issue(loc, 'Should be indented with spaces')
+        if not contains_exclusively(indent, " "):
+            loc = IssueLocation(file_path=file.path, line=i, column=0)
+            issue = Issue(loc, "Should be indented with spaces")
             issues.append(issue)
     return issues
 
 
-checks = [
-    check_space_only_indent,
-    check_indentation,
-]
+checks = [check_space_only_indent, check_indentation]
 
 
 def check_file(file, config):

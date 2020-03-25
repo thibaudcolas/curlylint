@@ -9,14 +9,14 @@ init: clean-pyc ## Install dependencies and initialise for development.
 	pip install -e '.[dev]'
 
 lint: ## Lint the project.
-	# black --check **/*.py
+	black --check **/*.py
 	# flake8 **/*.py
-	# isort --check-only --diff --recursive **/*.py
+	isort --check-only --diff --recursive **/*.py
 	npm run lint
 
 format: ## Format project files.
 	isort --recursive *.py **/*.py
-	# black **/*.py
+	black **/*.py
 	npm run format
 
 test: ## Test the project.

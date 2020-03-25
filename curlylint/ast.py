@@ -4,17 +4,19 @@ import attr
 @attr.s(frozen=True)
 class Location:
     """A location in a source file."""
+
     line = attr.ib()  # 0-based
     column = attr.ib()
     index = attr.ib()
 
     def __str__(self):
-        return '{}:{}'.format(self.line + 1, self.column)
+        return "{}:{}".format(self.line + 1, self.column)
 
 
 @attr.s(frozen=True)
 class Node:
     """Base abstract type for AST nodes."""
+
     begin = attr.ib()  # Location of the first character of the node
     end = attr.ib()  # Location of the last character
 
@@ -22,8 +24,9 @@ class Node:
 @attr.s(frozen=True)
 class Slash(Node):
     """The `/` of (self-)closing HTML tags"""
+
     def __str__(self):
-        return '/'
+        return "/"
 
 
 @attr.s(frozen=True)
@@ -34,10 +37,10 @@ class OpeningTag(Node):
 
     def __str__(self):
         name = str(self.name)
-        inner = ' '.join([name] + [str(a) for a in self.attributes])
+        inner = " ".join([name] + [str(a) for a in self.attributes])
         if self.slash:
-            inner += ' /'
-        return '<' + inner + '>'
+            inner += " /"
+        return "<" + inner + ">"
 
 
 @attr.s(frozen=True)
@@ -45,7 +48,7 @@ class ClosingTag(Node):
     name = attr.ib()
 
     def __str__(self):
-        return '</{}>'.format(self.name)
+        return "</{}>".format(self.name)
 
 
 @attr.s(frozen=True)
@@ -71,14 +74,12 @@ class Element(Node):
 
     def __str__(self):
         if self.content is None:
-            content_str = ''
+            content_str = ""
         else:
-            content_str = ''.join(str(n) for n in self.content)
-        return ''.join([
-            str(self.opening_tag),
-            content_str,
-            str(self.closing_tag or ''),
-        ])
+            content_str = "".join(str(n) for n in self.content)
+        return "".join(
+            [str(self.opening_tag), content_str, str(self.closing_tag or "")]
+        )
 
 
 @attr.s(frozen=True)
@@ -98,7 +99,7 @@ class Integer(Node):
     has_percent = attr.ib()  # bool
 
     def __str__(self):
-        return str(self.value) + ('%' if self.has_percent else '')
+        return str(self.value) + ("%" if self.has_percent else "")
 
 
 @attr.s(frozen=True)
@@ -107,7 +108,7 @@ class Attribute(Node):
     value = attr.ib()  # String | Integer
 
     def __str__(self):
-        return '{}={}'.format(self.name, self.value)
+        return "{}={}".format(self.name, self.value)
 
 
 @attr.s(frozen=True)
@@ -115,7 +116,7 @@ class Comment(Node):
     text = attr.ib()  # str
 
     def __str__(self):
-        return '<!--{}-->'.format(self.text)
+        return "<!--{}-->".format(self.text)
 
 
 @attr.s(frozen=True)
@@ -131,16 +132,18 @@ class JinjaVariable(Jinja):
     right_minus = attr.ib(default=False)
 
     def __str__(self):
-        return ''.join([
-            '{{',
-            '+' if self.left_plus else '',
-            '-' if self.left_minus else '',
-            ' ',
-            self.content,
-            ' ',
-            '-' if self.right_minus else '',
-            '}}'
-        ])
+        return "".join(
+            [
+                "{{",
+                "+" if self.left_plus else "",
+                "-" if self.left_minus else "",
+                " ",
+                self.content,
+                " ",
+                "-" if self.right_minus else "",
+                "}}",
+            ]
+        )
 
 
 @attr.s(frozen=True)
@@ -148,7 +151,7 @@ class JinjaComment(Jinja):
     text = attr.ib()  # str
 
     def __str__(self):
-        return '{##}'
+        return "{##}"
 
 
 @attr.s(frozen=True)
@@ -160,16 +163,18 @@ class JinjaTag(Jinja):
     right_minus = attr.ib(default=False)
 
     def __str__(self):
-        return ''.join([
-            '{%',
-            '+' if self.left_plus else '',
-            '-' if self.left_minus else '',
-            (' ' + self.name) if self.name else '',
-            (' ' + self.content) if self.content else '',
-            ' ',
-            '-' if self.right_minus else '',
-            '%}'
-        ])
+        return "".join(
+            [
+                "{%",
+                "+" if self.left_plus else "",
+                "-" if self.left_minus else "",
+                (" " + self.name) if self.name else "",
+                (" " + self.content) if self.content else "",
+                " ",
+                "-" if self.right_minus else "",
+                "%}",
+            ]
+        )
 
 
 @attr.s(frozen=True)
@@ -178,7 +183,7 @@ class JinjaElementPart(Jinja):
     content = attr.ib()  # Interpolated | None
 
     def __str__(self):
-        return str(self.tag) + str(self.content or '')
+        return str(self.tag) + str(self.content or "")
 
 
 @attr.s(frozen=True)
@@ -187,10 +192,7 @@ class JinjaElement(Jinja):
     closing_tag = attr.ib()  # JinjaTag
 
     def __str__(self):
-        return (
-            ''.join(str(p) for p in self.parts) +
-            str(self.closing_tag or '')
-        )
+        return "".join(str(p) for p in self.parts) + str(self.closing_tag or "")
 
 
 @attr.s(frozen=True)
@@ -213,7 +215,7 @@ class JinjaOptionalContainer(Jinja):
             self.closing_tag,
             self.second_closing_if,
         ]
-        return ''.join(str(n) for n in nodes)
+        return "".join(str(n) for n in nodes)
 
 
 @attr.s(frozen=True)
@@ -239,7 +241,7 @@ class InterpolatedBase(Node):
         return len(self.nodes)
 
     def __str__(self):
-        return ''.join(str(n) for n in self.nodes)
+        return "".join(str(n) for n in self.nodes)
 
 
 def _concat_strings(nodes):
@@ -262,12 +264,12 @@ def _normalize_nodes(thing):
 class Interpolated(InterpolatedBase):
     def __init__(self, *args, **kwargs):
         if len(args) == 1:
-            assert 'nodes' not in kwargs
+            assert "nodes" not in kwargs
             nodes = _normalize_nodes(args[0])
             super().__init__(nodes=nodes, **kwargs)
             return
 
         assert len(args) == 0
         kwargs = kwargs.copy()
-        kwargs['nodes'] = _normalize_nodes(kwargs['nodes'])
+        kwargs["nodes"] = _normalize_nodes(kwargs["nodes"])
         super().__init__(**kwargs)

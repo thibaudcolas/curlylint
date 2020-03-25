@@ -11,11 +11,7 @@ class IssueLocation:
     line = attr.ib()
 
     def __str__(self):
-        return '{}:{}:{}'.format(
-            self.file_path,
-            self.line + 1,
-            self.column,
-        )
+        return "{}:{}:{}".format(self.file_path, self.line + 1, self.column)
 
     @staticmethod
     def from_ast(file_path, ast_location):
@@ -35,14 +31,11 @@ class Issue:
     message = attr.ib()
 
     def __str__(self):
-        return '{}: {}'.format(self.location, self.message)
+        return "{}: {}".format(self.location, self.message)
 
     def __attrs_post_init__(self):
         assert isinstance(self.location, IssueLocation)
 
     @staticmethod
     def from_ast(file_path, ast_location, message):
-        return Issue(
-            IssueLocation.from_ast(file_path, ast_location),
-            message,
-        )
+        return Issue(IssueLocation.from_ast(file_path, ast_location), message)

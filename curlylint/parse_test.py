@@ -1,29 +1,34 @@
 import parsy as P
 
-from .parse import (
-    tag_name, tag_name_char, comment, jinja_comment,
-    make_attribute_value_parser, make_attribute_parser,
-    make_attributes_parser,
-    make_closing_tag_parser, make_opening_tag_parser, make_parser,
-)
-
 from . import ast
 from .ast import Location
-
+from .parse import (
+    comment,
+    jinja_comment,
+    make_attribute_parser,
+    make_attribute_value_parser,
+    make_attributes_parser,
+    make_closing_tag_parser,
+    make_opening_tag_parser,
+    make_parser,
+    tag_name,
+    tag_name_char,
+)
 
 parser = make_parser()
-element = parser['element']
-jinja = parser['jinja']
-content = parser['content']
+element = parser["element"]
+jinja = parser["jinja"]
+content = parser["content"]
 attribute_value = make_attribute_value_parser(jinja=jinja)
 attribute = make_attribute_parser(jinja=jinja)
 opening_tag = make_opening_tag_parser({}, jinja=jinja)
 
 
-class DummyLocation():
+class DummyLocation:
     """
     Any instance of this class is equal to any Location.
     """
+
     def __eq__(self, other):
         if not isinstance(other, Location):
             return False
@@ -33,20 +38,17 @@ class DummyLocation():
         return not self.__eq__(other)
 
     def __repr__(self):
-        return self.__class__.__name__ + '()'
+        return self.__class__.__name__ + "()"
 
 
 def with_dummy_locations(node_class):
     def create_node(*args, **kwargs):
         kwargs = kwargs.copy()
-        kwargs['begin'] = DummyLocation()
-        kwargs['end'] = DummyLocation()
+        kwargs["begin"] = DummyLocation()
+        kwargs["end"] = DummyLocation()
 
         try:
-            return node_class(
-                *args,
-                **kwargs,
-            )
+            return node_class(*args, **kwargs)
         except Exception as error:
             print(node_class)
             raise error
@@ -81,340 +83,242 @@ def test_dummy_location():
 
 
 def test_tag_name():
-    assert tag_name_char.parse('a') == 'a'
-    assert tag_name.parse('bcd-ef9') == 'bcd-ef9'
+    assert tag_name_char.parse("a") == "a"
+    assert tag_name.parse("bcd-ef9") == "bcd-ef9"
 
 
 def test_attribute_value():
-    assert attribute_value.parse('hello-world') == String(
-        value=Interp('hello-world'),
-        quote=None,
+    assert attribute_value.parse("hello-world") == String(
+        value=Interp("hello-world"), quote=None
     )
 
-    assert attribute_value.parse('hello{{a}}world') == String(
-        value=Interp([
-            'hello',
-            JinjaVariable(content='a'),
-            'world',
-        ]),
-        quote=None,
+    assert attribute_value.parse("hello{{a}}world") == String(
+        value=Interp(["hello", JinjaVariable(content="a"), "world"]), quote=None
     )
 
-    assert attribute_value.parse('123') == Integer(
-        value=123,
-        has_percent=False,
-    )
+    assert attribute_value.parse("123") == Integer(value=123, has_percent=False)
 
     assert attribute_value.parse('"hello"') == String(
-        value=Interp('hello'),
-        quote='"',
+        value=Interp("hello"), quote='"'
     )
 
     assert attribute_value.parse("'hello'") == String(
-        value=Interp('hello'),
-        quote="'",
+        value=Interp("hello"), quote="'"
     )
 
-    assert attribute_value.parse("''") == String(
-        value=Interp([]),
-        quote="'",
-    )
+    assert attribute_value.parse("''") == String(value=Interp([]), quote="'")
 
     assert attribute_value.parse("'hello{{b}}world'") == String(
-        value=Interp([
-            'hello',
-            JinjaVariable(content='b'),
-            'world',
-        ]),
-        quote="'",
+        value=Interp(["hello", JinjaVariable(content="b"), "world"]), quote="'"
     )
 
 
 def test_attribute():
-    assert attribute.parse('hello=world') == Attribute(
-        name=Interp('hello'),
-        value=Interp(
-            String(
-                value=Interp('world'),
-                quote=None,
-            ),
-        ),
+    assert attribute.parse("hello=world") == Attribute(
+        name=Interp("hello"),
+        value=Interp(String(value=Interp("world"), quote=None)),
     )
 
     assert attribute.parse('a= "b"') == Attribute(
-        name=Interp('a'),
-        value=Interp(
-            String(
-                value=Interp('b'),
-                quote='"',
-            ),
-        ),
+        name=Interp("a"), value=Interp(String(value=Interp("b"), quote='"'))
     )
 
-    assert attribute.parse('a =b_c23') == Attribute(
-        name=Interp('a'),
-        value=Interp(
-            String(
-                value=Interp('b_c23'),
-                quote=None,
-            ),
-        ),
+    assert attribute.parse("a =b_c23") == Attribute(
+        name=Interp("a"),
+        value=Interp(String(value=Interp("b_c23"), quote=None)),
     )
 
-    assert attribute.parse('valueless-attribute') == Attribute(
-        name=Interp('valueless-attribute'),
-        value=None,
+    assert attribute.parse("valueless-attribute") == Attribute(
+        name=Interp("valueless-attribute"), value=None
     )
 
 
 def test_comment():
-    assert comment.parse('<!--hello--world-->') == Comment(
-        text='hello--world',
-    )
+    assert comment.parse("<!--hello--world-->") == Comment(text="hello--world")
 
 
 def test_jinja_comment():
-    assert jinja_comment.parse('{# hello world #}') == JinjaComment(
-        text='hello world',
+    assert jinja_comment.parse("{# hello world #}") == JinjaComment(
+        text="hello world"
     )
 
 
 def test_opening_tag():
-    assert opening_tag.parse('<div>') == OpeningTag(
-        name='div',
-        attributes=Interp([]),
+    assert opening_tag.parse("<div>") == OpeningTag(
+        name="div", attributes=Interp([])
     )
 
-    assert opening_tag.parse('<div\n >') == OpeningTag(
-        name='div',
-        attributes=Interp([]),
+    assert opening_tag.parse("<div\n >") == OpeningTag(
+        name="div", attributes=Interp([])
     )
 
     assert opening_tag.parse('<div class="red" style="" >') == OpeningTag(
-        name='div',
-        attributes=Interp([
-            Attribute(
-                name=Interp('class'),
-                value=Interp(
-                    String(
-                        value=Interp('red'),
-                        quote='"',
-                    ),
+        name="div",
+        attributes=Interp(
+            [
+                Attribute(
+                    name=Interp("class"),
+                    value=Interp(String(value=Interp("red"), quote='"')),
                 ),
-            ),
-
-            Attribute(
-                name=Interp('style'),
-                value=Interp(
-                    String(
-                        value=Interp([]),
-                        quote='"',
-                    ),
+                Attribute(
+                    name=Interp("style"),
+                    value=Interp(String(value=Interp([]), quote='"')),
                 ),
-            ),
-        ]),
+            ]
+        ),
     )
 
 
 def test_closing_tag():
-    closing_tag = make_closing_tag_parser(P.string('div'))
-    assert closing_tag.parse('</div>') == ClosingTag(
-        name='div',
-    )
+    closing_tag = make_closing_tag_parser(P.string("div"))
+    assert closing_tag.parse("</div>") == ClosingTag(name="div")
 
 
 def test_raw_text_elements():
-    assert element.parse('<style a=b> <wont-be-parsed> </style>') == Element(
-        content=' <wont-be-parsed> ',
-
+    assert element.parse("<style a=b> <wont-be-parsed> </style>") == Element(
+        content=" <wont-be-parsed> ",
         opening_tag=OpeningTag(
-            name='style',
-            attributes=Interp([
-
-                Attribute(
-                    name=Interp('a'),
-                    value=Interp(
-                        String(
-                            value=Interp('b'),
-                            quote=None,
-                        ),
-                    ),
-                ),
-
-            ]),
+            name="style",
+            attributes=Interp(
+                [
+                    Attribute(
+                        name=Interp("a"),
+                        value=Interp(String(value=Interp("b"), quote=None)),
+                    )
+                ]
+            ),
         ),
-
-        closing_tag=ClosingTag(
-            name='style',
-        ),
+        closing_tag=ClosingTag(name="style"),
     )
 
 
 def test_element():
-    assert element.parse('<div> hey </div>') == Element(
-        opening_tag=OpeningTag(
-            name='div',
-            attributes=Interp([]),
-        ),
-        content=Interp([' hey ']),
-        closing_tag=ClosingTag(
-            name='div',
-        ),
+    assert element.parse("<div> hey </div>") == Element(
+        opening_tag=OpeningTag(name="div", attributes=Interp([])),
+        content=Interp([" hey "]),
+        closing_tag=ClosingTag(name="div"),
     )
 
     attributes = [
         Attribute(
-            name=Interp('onclick'),
-            value=Interp(
-                String(
-                    value=Interp([]),
-                    quote='"',
-                ),
-            ),
+            name=Interp("onclick"),
+            value=Interp(String(value=Interp([]), quote='"')),
         ),
-
-        JinjaVariable(content='var'),
-
+        JinjaVariable(content="var"),
         Attribute(
-            name=Interp('class'),
-            value=Interp(
-                String(
-                    value=Interp('red'),
-                    quote='"',
-                ),
-            ),
+            name=Interp("class"),
+            value=Interp(String(value=Interp("red"), quote='"')),
         ),
     ]
 
     assert element.parse('<br onclick="" {{var}} class="red">') == Element(
-        opening_tag=OpeningTag(
-            name='br',
-            attributes=Interp(attributes),
-        ),
+        opening_tag=OpeningTag(name="br", attributes=Interp(attributes)),
         closing_tag=None,
         content=None,
     )
 
-    src = '<{% if a %}bcd{% endif %}></{% if a %}bcd{% endif %}>'
+    src = "<{% if a %}bcd{% endif %}></{% if a %}bcd{% endif %}>"
     assert src == str(element.parse(src))
 
     src = '<div{{ "ider" }}></div>'
     assert '<div {{ "ider" }}></div>' == str(element.parse(src))
 
     src = '<div{% if a %}foo="bar"{% endif %}></div>'
-    assert '<div {% if a %}foo="bar"{% endif %}></div>' == \
-        str(element.parse(src))
+    assert '<div {% if a %}foo="bar"{% endif %}></div>' == str(
+        element.parse(src)
+    )
 
     src = '<div{% if a %} foo="bar"  a=2 {% endif %}></div>'
-    assert '<div {% if a %}foo="bar"a=2{% endif %}></div>' == \
-        str(element.parse(src))
+    assert '<div {% if a %}foo="bar"a=2{% endif %}></div>' == str(
+        element.parse(src)
+    )
 
-    src = '<colgroup></colgroup>'
+    src = "<colgroup></colgroup>"
     assert src == str(element.parse(src))
 
 
 def test_self_closing_elements():
-    assert element.parse('<br>') == Element(
-        opening_tag=OpeningTag(
-            name='br',
-            attributes=Interp([]),
-        ),
+    assert element.parse("<br>") == Element(
+        opening_tag=OpeningTag(name="br", attributes=Interp([])),
         content=None,
         closing_tag=None,
     )
 
-    src = '<br />'
+    src = "<br />"
     assert src == str(element.parse(src))
 
 
 def test_jinja_blocks():
-    assert jinja.parse('{% name something == 123 %}') == JinjaElement(
+    assert jinja.parse("{% name something == 123 %}") == JinjaElement(
         parts=[
             JinjaElementPart(
-                tag=JinjaTag(
-                    name='name',
-                    content='something == 123',
-                ),
+                tag=JinjaTag(name="name", content="something == 123"),
                 content=None,
-            ),
+            )
         ],
         closing_tag=None,
     )
 
-    assert jinja.parse('{% if a %}b{% else %}c{% endif %}') == JinjaElement(
+    assert jinja.parse("{% if a %}b{% else %}c{% endif %}") == JinjaElement(
         parts=[
             JinjaElementPart(
-                tag=JinjaTag(
-                    name='if',
-                    content='a',
-                ),
-                content=Interp(['b']),
+                tag=JinjaTag(name="if", content="a"), content=Interp(["b"])
             ),
             JinjaElementPart(
-                tag=JinjaTag(
-                    name='else',
-                    content='',
-                ),
-                content=Interp(['c']),
+                tag=JinjaTag(name="else", content=""), content=Interp(["c"])
             ),
         ],
-        closing_tag=JinjaTag(
-            name='endif',
-            content='',
-        ),
+        closing_tag=JinjaTag(name="endif", content=""),
     )
 
-    src = '{% if a %}b{% elif %}c{% elif %}d{% else %}e{% endif %}'
+    src = "{% if a %}b{% elif %}c{% elif %}d{% else %}e{% endif %}"
     assert src == str(jinja.parse(src))
 
 
 def test_jinja_whitespace_controls():
-    assert jinja.parse('{%- foo -%}') == JinjaElement(
+    assert jinja.parse("{%- foo -%}") == JinjaElement(
         parts=[
             JinjaElementPart(
                 tag=JinjaTag(
-                    name='foo',
-                    content='',
-                    left_minus=True,
-                    right_minus=True,
+                    name="foo", content="", left_minus=True, right_minus=True
                 ),
                 content=None,
-            ),
+            )
         ],
         closing_tag=None,
     )
 
-    assert str(jinja.parse('{%- foo -%}')) == '{%- foo -%}'
-    assert str(jinja.parse('{%- foo %}')) == '{%- foo %}'
-    assert str(jinja.parse('{{- bar -}}')) == '{{- bar -}}'
-    assert str(jinja.parse('{{ bar -}}')) == '{{ bar -}}'
-    assert str(jinja.parse('{%+ foo %}')) == '{%+ foo %}'
-    assert str(jinja.parse('{{+ bar }}')) == '{{+ bar }}'
+    assert str(jinja.parse("{%- foo -%}")) == "{%- foo -%}"
+    assert str(jinja.parse("{%- foo %}")) == "{%- foo %}"
+    assert str(jinja.parse("{{- bar -}}")) == "{{- bar -}}"
+    assert str(jinja.parse("{{ bar -}}")) == "{{ bar -}}"
+    assert str(jinja.parse("{%+ foo %}")) == "{%+ foo %}"
+    assert str(jinja.parse("{{+ bar }}")) == "{{+ bar }}"
 
 
 def test_doctype():
-    assert content.parse('<!DOCTYPE html>') == Interp('<!DOCTYPE html>')
+    assert content.parse("<!DOCTYPE html>") == Interp("<!DOCTYPE html>")
 
 
 def test_attrs():
     attrs = make_attributes_parser({}, jinja)
     parse = attrs.parse
 
-    assert str(parse('{% if %}{% endif %}')) == '{% if %}{% endif %}'
-    assert str(parse('{% if %}  {% endif %}')) == '{% if %}{% endif %}'
-    assert str(parse('{% if %}a=b{% endif %}')) == '{% if %}a=b{% endif %}'
-    assert str(parse('{% if %} a=b {% endif %}')) == '{% if %}a=b{% endif %}'
+    assert str(parse("{% if %}{% endif %}")) == "{% if %}{% endif %}"
+    assert str(parse("{% if %}  {% endif %}")) == "{% if %}{% endif %}"
+    assert str(parse("{% if %}a=b{% endif %}")) == "{% if %}a=b{% endif %}"
+    assert str(parse("{% if %} a=b {% endif %}")) == "{% if %}a=b{% endif %}"
 
 
 def test_optional_container():
     src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
     assert src == str(content.parse(src))
 
-    src = '''
+    src = """
     {% if a %} <a href="b"> {% endif %}
         c <b> d </b>
     {% if a %} </a> {% endif %}
-    '''
+    """
     content.parse(src)
 
 

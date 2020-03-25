@@ -1,26 +1,23 @@
 from pathlib import Path
+
 import parsy
 
+from .check import check_files
+from .file import File
+from .issue import Issue, IssueLocation
 from .parse import make_parser
 from .util import flatten
-from .check import check_files
-from .issue import Issue, IssueLocation
-from .file import File
 
 
 def get_parsy_error_location(error, file_path):
     line, column = parsy.line_info_at(error.stream, error.index)
-    return IssueLocation(
-        line=line,
-        column=column,
-        file_path=file_path,
-    )
+    return IssueLocation(line=line, column=column, file_path=file_path)
 
 
 def resolve_file_paths_(input_name, extensions):
     path = Path(input_name)
     if not path.exists():
-        raise Exception('{} does not exist'.format(path))
+        raise Exception("{} does not exist".format(path))
 
     if path.is_dir():
         return flatten(
@@ -28,7 +25,7 @@ def resolve_file_paths_(input_name, extensions):
         )
 
     if not path.is_file():
-        raise Exception('{} is not a regular file'.format(path))
+        raise Exception("{} is not a regular file".format(path))
 
     return [path] if path.suffix in extensions else []
 
@@ -44,7 +41,7 @@ def parse_file(path_and_config):
     """
     path, config = path_and_config
 
-    with path.open('r') as f:
+    with path.open("r") as f:
         source = f.read()
 
     parser = make_parser(config)
@@ -53,13 +50,13 @@ def parse_file(path_and_config):
         file = File(
             path=path,
             source=source,
-            lines=source.split('\n'),
-            tree=parser['content'].parse(source),
+            lines=source.split("\n"),
+            tree=parser["content"].parse(source),
         )
         return [], file
     except parsy.ParseError as error:
         location = get_parsy_error_location(error, path)
-        issue = Issue(location, 'Parse error: ' + str(error))
+        issue = Issue(location, "Parse error: " + str(error))
         return [issue], None
 
 
@@ -68,6 +65,7 @@ def lint(paths, config):
     files = []
 
     from multiprocessing import Pool
+
     pool = Pool()
 
     parse_file_args = ((p, config) for p in paths)
@@ -78,7 +76,7 @@ def lint(paths, config):
         if file is not None:
             files.append(file)
 
-    if not config.get('parse_only', False):
+    if not config.get("parse_only", False):
         issues += check_files(files, config)
 
     return issues

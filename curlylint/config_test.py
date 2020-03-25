@@ -8,4 +8,4 @@ def test():
         f.write(b'hello = "worl" + "d"\n')
         f.seek(0)
         config = parse_config(f.name)
-        assert config == {'hello': 'world'}
+        assert config == {"hello": "world"}

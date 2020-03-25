@@ -1,17 +1,30 @@
 import re
 
+# TODO: Move it elsewhere
+import sys
+
 import parsy as P
 
 from .ast import (
-    Attribute, ClosingTag, Comment, Element, Integer, Interpolated,
-    Jinja, JinjaComment, JinjaElement, JinjaElementPart, JinjaTag,
-    JinjaVariable, JinjaOptionalContainer, Location, OpeningTag, String,
+    Attribute,
+    ClosingTag,
+    Comment,
+    Element,
+    Integer,
+    Interpolated,
+    Jinja,
+    JinjaComment,
+    JinjaElement,
+    JinjaElementPart,
+    JinjaOptionalContainer,
+    JinjaTag,
+    JinjaVariable,
+    Location,
+    OpeningTag,
+    String,
 )
 from .util import flatten
 
-
-# TODO: Move it elsewhere
-import sys
 sys.setrecursionlimit(10000)
 
 
@@ -27,19 +40,19 @@ strike tt
 """.split()
 
 DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
-    ('autoescape', 'endautoescape'),
-    ('block', 'endblock'),
-    ('blocktrans', 'plural', 'endblocktrans'),
-    ('comment', 'endcomment'),
-    ('filter', 'endfilter'),
-    ('for', 'else', 'empty', 'endfor'),
-    ('if', 'elif', 'else', 'endif'),
-    ('ifchanged', 'else', 'endifchanged'),
-    ('ifequal', 'endifequal'),
-    ('ifnotequal', 'endifnotequal'),
-    ('spaceless', 'endspaceless'),
-    ('verbatim', 'endverbatim'),
-    ('with', 'endwith'),
+    ("autoescape", "endautoescape"),
+    ("block", "endblock"),
+    ("blocktrans", "plural", "endblocktrans"),
+    ("comment", "endcomment"),
+    ("filter", "endfilter"),
+    ("for", "else", "empty", "endfor"),
+    ("if", "elif", "else", "endif"),
+    ("ifchanged", "else", "endifchanged"),
+    ("ifequal", "endifequal"),
+    ("ifnotequal", "endifnotequal"),
+    ("spaceless", "endspaceless"),
+    ("verbatim", "endverbatim"),
+    ("with", "endwith"),
 ]
 
 
@@ -47,8 +60,8 @@ DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
 # non-breaking ones). We’ll warn against some of these fancy spaces in the
 # check phase.
 # XXX: It could be better and simpler to only allow ASCII whitespaces here.
-whitespace = P.regex(r'\s*')
-mandatory_whitespace = P.regex(r'\s+')
+whitespace = P.regex(r"\s*")
+mandatory_whitespace = P.regex(r"\s+")
 
 
 def until(parser):
@@ -58,108 +71,90 @@ def until(parser):
 def combine_locations(begin_index, begin, result, end_index, end):
     begin_loc = Location(line=begin[0], column=begin[1], index=begin_index)
     end_loc = Location(line=end[0], column=end[1], index=end_index)
-    locations = {
-        'begin': begin_loc,
-        'end': end_loc,
-    }
+    locations = {"begin": begin_loc, "end": end_loc}
 
-    return (
-        locations,
-        result,
-    )
+    return (locations, result)
 
 
 def locate(parser):
 
-    return (
-        P.seq(
-            P.index,
-            P.line_info,
-            parser,
-            P.index,
-            P.line_info,
-        )
-        .combine(combine_locations)
+    return P.seq(P.index, P.line_info, parser, P.index, P.line_info).combine(
+        combine_locations
     )
 
 
 def _combine_jinja_tag(locations, props):
     return JinjaTag(
-        name=props['name'],
-        content=props['extra_content'],
-        left_plus=props['left_plus'],
-        left_minus=props['left_minus'],
-        right_minus=props['right_minus'],
+        name=props["name"],
+        content=props["extra_content"],
+        left_plus=props["left_plus"],
+        left_minus=props["left_minus"],
+        right_minus=props["right_minus"],
         **locations,
     )
 
 
 def _combine_jinja_variable(locations, props):
     return JinjaVariable(
-        content=props['extra_content'],
-        left_plus=props['left_plus'],
-        left_minus=props['left_minus'],
-        right_minus=props['right_minus'],
+        content=props["extra_content"],
+        left_plus=props["left_plus"],
+        left_minus=props["left_minus"],
+        right_minus=props["right_minus"],
         **locations,
     )
 
 
 def _combine_jinja_comment(locations, text):
-    return JinjaComment(
-        text=text,
-        **locations,
-    )
+    return JinjaComment(text=text, **locations)
 
 
 def _combine_jinja_tag_like(locations, props):
     return (
         locations,
         {
-            'left_plus': props[0] is not None,
-            'left_minus': props[1] is not None,
-            'name': props[2],
-            'extra_content': props[3],
-            'right_minus': props[4] is not None,
-        }
+            "left_plus": props[0] is not None,
+            "left_minus": props[1] is not None,
+            "name": props[2],
+            "extra_content": props[3],
+            "right_minus": props[4] is not None,
+        },
     )
 
 
-def make_jinja_tag_like_parser(name, ml='{', mr='}'):
+def make_jinja_tag_like_parser(name, ml="{", mr="}"):
     """
     Create parsers for Jinja variables and regular Jinja tags.
 
     `name` should be a parser to parse the tag name.
     """
-    end = whitespace.then(P.string('-').optional()).skip(P.string(mr + '}'))
-    return locate(P.seq(
-        P.string('{' + ml).then(P.string('+').optional()),
-        P.string('-').optional().skip(whitespace),
-        name.skip(whitespace),
-        until(end).concat(),
-        end
-    )).combine(_combine_jinja_tag_like)
+    end = whitespace.then(P.string("-").optional()).skip(P.string(mr + "}"))
+    return locate(
+        P.seq(
+            P.string("{" + ml).then(P.string("+").optional()),
+            P.string("-").optional().skip(whitespace),
+            name.skip(whitespace),
+            until(end).concat(),
+            end,
+        )
+    ).combine(_combine_jinja_tag_like)
 
 
-jinja_variable = make_jinja_tag_like_parser(
-    P.success(None), '{', '}'
-).combine(_combine_jinja_variable)
-
-
-jinja_comment = (
-    locate(
-        P.string('{#')
-        .skip(whitespace)
-        .then(until(whitespace + P.string('#}')).concat())
-        .skip(whitespace + P.string('#}'))
-    )
-    .combine(_combine_jinja_comment)
+jinja_variable = make_jinja_tag_like_parser(P.success(None), "{", "}").combine(
+    _combine_jinja_variable
 )
 
 
+jinja_comment = locate(
+    P.string("{#")
+    .skip(whitespace)
+    .then(until(whitespace + P.string("#}")).concat())
+    .skip(whitespace + P.string("#}"))
+).combine(_combine_jinja_comment)
+
+
 def make_jinja_tag_parser(name_parser):
-    return (
-        make_jinja_tag_like_parser(name_parser, '%', '%')
-        .combine(_combine_jinja_tag)
+    return make_jinja_tag_like_parser(name_parser, "%", "%").combine(
+        _combine_jinja_tag
     )
 
 
@@ -167,28 +162,19 @@ def _combine_jinja_element(locations, content):
     parts = list(flatten(content[0]))
     closing_tag = content[1] if len(content) == 2 else None
 
-    e = JinjaElement(
-        parts=parts,
-        closing_tag=closing_tag,
-        **locations,
-    )
+    e = JinjaElement(parts=parts, closing_tag=closing_tag, **locations)
     return e
 
 
 def _combine_jinja_element_part(locations, props):
     tag, content = props
-    return JinjaElementPart(
-        tag=tag,
-        content=content,
-        **locations,
-    )
+    return JinjaElementPart(tag=tag, content=content, **locations)
 
 
 def make_jinja_element_part_parser(name_parser, content):
-    return locate(P.seq(
-        make_jinja_tag_parser(name_parser),
-        content,
-    )).combine(_combine_jinja_element_part)
+    return locate(P.seq(make_jinja_tag_parser(name_parser), content)).combine(
+        _combine_jinja_element_part
+    )
 
 
 def make_jinja_element_parser(name_parsers, content):
@@ -201,15 +187,16 @@ def make_jinja_element_parser(name_parsers, content):
 
     if len(name_parsers) == 1:
         tag = make_jinja_tag_parser(name_parsers[0])
-        part = locate(P.seq(
-            tag, P.success(None),
-        )).combine(_combine_jinja_element_part)
+        part = locate(P.seq(tag, P.success(None))).combine(
+            _combine_jinja_element_part
+        )
         parts = [part]
         end_tag_parser = None
     else:
         part_names = name_parsers[:-1]
         first_part = make_jinja_element_part_parser(
-            part_names[0], content=content)
+            part_names[0], content=content
+        )
         next_parts = [
             make_jinja_element_part_parser(name, content=content).many()
             for name in part_names[1:]
@@ -221,110 +208,81 @@ def make_jinja_element_parser(name_parsers, content):
     if end_tag_parser:
         content.append(end_tag_parser)
 
-    return (
-        locate(P.seq(*content))
-        .combine(_combine_jinja_element)
-    )
+    return locate(P.seq(*content)).combine(_combine_jinja_element)
 
 
-jinja_name = P.letter + (
-    P.letter | P.decimal_digit | P.string('_')
-).many().concat()
+jinja_name = (
+    P.letter + (P.letter | P.decimal_digit | P.string("_")).many().concat()
+)
 
 
 def interpolated(parser):
     def combine_interpolated(locations, result):
-        return Interpolated(
-            nodes=result,
-            **locations,
-        )
+        return Interpolated(nodes=result, **locations)
 
-    return (
-        locate(parser)
-        .combine(combine_interpolated)
-    )
+    return locate(parser).combine(combine_interpolated)
 
 
-tag_name_start_char = P.regex(r'[:a-z]')
-tag_name_char = tag_name_start_char | P.regex(r'[0-9-_.]')
+tag_name_start_char = P.regex(r"[:a-z]")
+tag_name_char = tag_name_start_char | P.regex(r"[0-9-_.]")
 tag_name = tag_name_start_char + tag_name_char.many().concat()
 
-dtd = P.regex(r'<![^>]*>')
+dtd = P.regex(r"<![^>]*>")
 
-string_attribute_char = P.char_from('-_./+,?=:;#') | P.regex(r'[0-9a-zA-Z]')
+string_attribute_char = P.char_from("-_./+,?=:;#") | P.regex(r"[0-9a-zA-Z]")
 
 
 def make_quoted_string_attribute_parser(quote, jinja):
     """
     quote: A single or a double quote
     """
-    def combine(locations, value):
-        return String(
-            value=value,
-            quote=quote,
-            **locations,
-        )
 
-    value_char = P.regex(r'[^<]', flags=re.DOTALL)
+    def combine(locations, value):
+        return String(value=value, quote=quote, **locations)
+
+    value_char = P.regex(r"[^<]", flags=re.DOTALL)
     value = interpolated(
-        P.string(quote).should_fail('no ' + quote)
+        P.string(quote)
+        .should_fail("no " + quote)
         .then(jinja | value_char)
         .many()
     )
 
-    return locate(
-        P.string(quote)
-        .then(value)
-        .skip(P.string(quote))
-    ).combine(combine)
+    return locate(P.string(quote).then(value).skip(P.string(quote))).combine(
+        combine
+    )
 
 
 def _combine_string_attribute_value(locations, value):
-    return String(
-        value=value,
-        quote=None,
-        **locations,
-    )
+    return String(value=value, quote=None, **locations)
 
 
 def _combine_int_attribute_value(locations, value):
-    return Integer(
-        value=value,
-        has_percent=False,
-        **locations,
-    )
+    return Integer(value=value, has_percent=False, **locations)
 
 
-int_attribute_value = locate(
-    P.regex(r'[0-9]+')
-    .map(int)
-).combine(_combine_int_attribute_value)
+int_attribute_value = locate(P.regex(r"[0-9]+").map(int)).combine(
+    _combine_int_attribute_value
+)
 
 
 def _combine_attribute(locations, props):
     name, equal_and_value = props
-    value = None if equal_and_value is None else equal_and_value['value']
-    return Attribute(
-        name=name,
-        value=value,
-        **locations,
-    )
+    value = None if equal_and_value is None else equal_and_value["value"]
+    return Attribute(name=name, value=value, **locations)
 
 
 def make_attribute_value_parser(jinja):
     string_attribute_value = locate(
-        interpolated(
-            (jinja | string_attribute_char)
-            .at_least(1)
-        )
+        interpolated((jinja | string_attribute_char).at_least(1))
     ).combine(_combine_string_attribute_value)
 
     return (
-        make_quoted_string_attribute_parser('"', jinja) |
-        make_quoted_string_attribute_parser("'", jinja) |
-        int_attribute_value |
-        string_attribute_value
-    ).desc('attribute value')
+        make_quoted_string_attribute_parser('"', jinja)
+        | make_quoted_string_attribute_parser("'", jinja)
+        | int_attribute_value
+        | string_attribute_value
+    ).desc("attribute value")
 
 
 def make_attribute_parser(jinja):
@@ -335,14 +293,14 @@ def make_attribute_parser(jinja):
                 interpolated(tag_name),
                 whitespace.then(
                     P.seq(
-                        P.string('=').skip(whitespace).tag('equal'),
-                        interpolated(attribute_value).tag('value'),
+                        P.string("=").skip(whitespace).tag("equal"),
+                        interpolated(attribute_value).tag("value"),
                     ).map(dict)
                 ).optional(),
             )
         )
         .combine(_combine_attribute)
-        .desc('attribute')
+        .desc("attribute")
     )
 
 
@@ -352,18 +310,15 @@ def make_attributes_parser(config, jinja):
     jinja_attr = make_jinja_parser(
         config,
         interpolated(
-            whitespace
-            .then(
-                (attribute | jinja).sep_by(whitespace)
+            whitespace.then((attribute | jinja).sep_by(whitespace)).skip(
+                whitespace
             )
-            .skip(whitespace)
-        )
+        ),
     )
 
     attrs = interpolated(
         (
-            whitespace.then(jinja_attr) |
-            mandatory_whitespace.then(attribute)
+            whitespace.then(jinja_attr) | mandatory_whitespace.then(attribute)
         ).many()
     )
 
@@ -371,52 +326,40 @@ def make_attributes_parser(config, jinja):
 
 
 def _combine_comment(locations, text):
-    return Comment(
-        text=text,
-        **locations,
-    )
+    return Comment(text=text, **locations)
 
 
 comment = locate(
-    P.string('<!--')
-    .then(P.regex(r'.*?(?=-->)', flags=re.DOTALL))
-    .skip(P.string('-->'))
+    P.string("<!--")
+    .then(P.regex(r".*?(?=-->)", flags=re.DOTALL))
+    .skip(P.string("-->"))
 ).combine(_combine_comment)
 
 
 def _combine_opening_tag(locations, props):
     _lt, tag_name, attributes, slash, _gt = props
     return OpeningTag(
-        name=tag_name,
-        attributes=attributes,
-        slash=slash,
-        **locations,
+        name=tag_name, attributes=attributes, slash=slash, **locations
     )
 
 
 def _combine_closing_tag(locations, name):
-    return ClosingTag(
-        name=name,
-        **locations
-    )
+    return ClosingTag(name=name, **locations)
 
 
 def make_closing_tag_parser(tag_name_parser):
     return locate(
-        P.string('</')
-        .then(tag_name_parser)
-        .skip(P.string('>'))
+        P.string("</").then(tag_name_parser).skip(P.string(">"))
     ).combine(_combine_closing_tag)
 
 
 def _combine_slash(locations, _):
-    return locations['begin']
+    return locations["begin"]
 
 
-def make_opening_tag_parser(config,
-                            jinja,
-                            tag_name_parser=None,
-                            allow_slash=False):
+def make_opening_tag_parser(
+    config, jinja, tag_name_parser=None, allow_slash=False
+):
     attributes = make_attributes_parser(config, jinja)
 
     if not tag_name_parser:
@@ -424,26 +367,22 @@ def make_opening_tag_parser(config,
 
     if allow_slash:
         slash = (
-            locate(
-                P.string('/')
-                .skip(whitespace)
-            )
+            locate(P.string("/").skip(whitespace))
             .combine(_combine_slash)
             .optional()
         )
     else:
         slash = P.success(None)
 
-    return (
-        locate(P.seq(
-            P.string('<'),
+    return locate(
+        P.seq(
+            P.string("<"),
             tag_name_parser,
             attributes.skip(whitespace),
             slash,
-            P.string('>'),
-        ))
-        .combine(_combine_opening_tag)
-    )
+            P.string(">"),
+        )
+    ).combine(_combine_opening_tag)
 
 
 def _combine_element(locations, props):
@@ -461,33 +400,26 @@ def make_raw_text_element_parser(config, tag_name, jinja):
     Used for <style> and <script>.
     """
     opening_tag = make_opening_tag_parser(
-        config,
-        tag_name_parser=P.string(tag_name),
-        jinja=jinja,
+        config, tag_name_parser=P.string(tag_name), jinja=jinja
     )
 
-    body = P.regex(r'.*?(?=</' + tag_name + '>)', flags=re.DOTALL)
+    body = P.regex(r".*?(?=</" + tag_name + ">)", flags=re.DOTALL)
 
     closing_tag = make_closing_tag_parser(P.string(tag_name))
 
-    return (
-        locate(P.seq(
-            opening_tag,
-            body,
-            closing_tag,
-        ))
-        .combine(_combine_element)
+    return locate(P.seq(opening_tag, body, closing_tag)).combine(
+        _combine_element
     )
 
 
 slow_text_char = (
-    (P.string('<') | P.string('{%') | P.string('{#') | P.string('{{'))
-    .should_fail('text')
+    (P.string("<") | P.string("{%") | P.string("{#") | P.string("{{"))
+    .should_fail("text")
     .then(P.any_char)
 )
 
 # Not as precise as slow_text_char but must faster
-quick_text = P.regex(r'[^{<]+', flags=re.DOTALL)
+quick_text = P.regex(r"[^{<]+", flags=re.DOTALL)
 
 
 def _combine_optional_container(locations, nodes):
@@ -516,8 +448,8 @@ def _combine_optional_container(locations, nodes):
 # Currently, this only works with `if` statements and the two conditions
 # must be exactly the same.
 def make_jinja_optional_container_parser(config, content, jinja):
-    jinja_if = make_jinja_tag_parser(P.string('if'))
-    jinja_endif = make_jinja_tag_parser(P.string('endif'))
+    jinja_if = make_jinja_tag_parser(P.string("if"))
+    jinja_endif = make_jinja_tag_parser(P.string("endif"))
     opening_tag = make_opening_tag_parser(config, jinja, allow_slash=False)
 
     @P.generate
@@ -530,7 +462,7 @@ def make_jinja_optional_container_parser(config, content, jinja):
 
         o_second_if_node = yield jinja_if.skip(whitespace)
         if o_second_if_node.content != o_first_if_node.content:
-            yield P.fail('expected `{% if ' + content + ' %}`')
+            yield P.fail("expected `{% if " + content + " %}`")
             return
         html_tag_name = o_tag_node.name
         if isinstance(html_tag_name, str):
@@ -551,41 +483,36 @@ def make_jinja_optional_container_parser(config, content, jinja):
             c_second_if_node,
         ]
 
-    return (
-        locate(opt_container_impl)
-        .combine(_combine_optional_container)
-    )
+    return locate(opt_container_impl).combine(_combine_optional_container)
 
 
 def make_jinja_parser(config, content):
     # Allow to override elements with the configuration
     jinja_structured_elements_names = dict(
         (names[0], names)
-        for names
-        in (
-            DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES +
-            config.get('jinja_custom_elements_names', [])
+        for names in (
+            DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES
+            + config.get("jinja_custom_elements_names", [])
         )
     ).values()
 
-    jinja_structured_element = P.alt(*[
-        make_jinja_element_parser(
-            [P.string(name) for name in names],
-            content=content,
-        )
-        for names in jinja_structured_elements_names
-    ])
+    jinja_structured_element = P.alt(
+        *[
+            make_jinja_element_parser(
+                [P.string(name) for name in names], content=content
+            )
+            for names in jinja_structured_elements_names
+        ]
+    )
 
     # These tag names can't begin a Jinja element
     jinja_intermediate_tag_names = set(
-        n
-        for _, *sublist in jinja_structured_elements_names
-        for n in sublist
+        n for _, *sublist in jinja_structured_elements_names for n in sublist
     )
 
-    jinja_intermediate_tag_name = P.alt(*(
-        P.string(n) for n in jinja_intermediate_tag_names
-    ))
+    jinja_intermediate_tag_name = P.alt(
+        *(P.string(n) for n in jinja_intermediate_tag_names)
+    )
 
     jinja_element_single = make_jinja_element_parser(
         [
@@ -593,11 +520,10 @@ def make_jinja_parser(config, content):
                 # HACK: If we allow `{% if %}`s without `{% endif %}`s here,
                 # `make_jinja_optional_container_parser` doesn’t work. It
                 # is probably better to reject any structured tag name here.
-                P.string('if'),
-
-                jinja_intermediate_tag_name
+                P.string("if"),
+                jinja_intermediate_tag_name,
             )
-            .should_fail('not an intermediate Jinja tag name')
+            .should_fail("not an intermediate Jinja tag name")
             .then(jinja_name)
         ],
         content=content,
@@ -624,17 +550,12 @@ def make_container_element_parser(config, content, jinja):
         c_tag_node = yield closing_tag
         return [o_tag_node, content_nodes, c_tag_node]
 
-    return (
-        locate(container_element_impl)
-        .combine(_combine_element)
-    )
+    return locate(container_element_impl).combine(_combine_element)
 
 
 def make_element_parser(config, content, jinja):
     container_element = make_container_element_parser(
-        config,
-        content=content,
-        jinja=jinja,
+        config, content=content, jinja=jinja
     )
 
     self_closing_element_opening_tag = make_opening_tag_parser(
@@ -644,17 +565,16 @@ def make_element_parser(config, content, jinja):
         jinja=jinja,
     )
 
-    self_closing_element = (
-        locate(P.seq(
+    self_closing_element = locate(
+        P.seq(
             self_closing_element_opening_tag.skip(whitespace),
             P.success(None),  # No content
             P.success(None),  # No closing tag
-        ))
-        .combine(_combine_element)
-    )
+        )
+    ).combine(_combine_element)
 
-    style = make_raw_text_element_parser(config, 'style', jinja=jinja)
-    script = make_raw_text_element_parser(config, 'script', jinja=jinja)
+    style = make_raw_text_element_parser(config, "style", jinja=jinja)
+    script = make_raw_text_element_parser(config, "script", jinja=jinja)
 
     return style | script | self_closing_element | container_element
 
@@ -674,18 +594,18 @@ def make_parser(config=None):
 
     element = make_element_parser(config, content, jinja)
 
-    opt_container = make_jinja_optional_container_parser(
-        config, content, jinja)
+    opt_container = make_jinja_optional_container_parser(config, content, jinja)
 
     content_ = interpolated(
         (
-            quick_text | comment | dtd | element | opt_container | jinja |
-            slow_text_char
+            quick_text
+            | comment
+            | dtd
+            | element
+            | opt_container
+            | jinja
+            | slow_text_char
         ).many()
     )
 
-    return {
-        'content': content_,
-        'jinja': jinja,
-        'element': element,
-    }
+    return {"content": content_, "jinja": jinja, "element": element}

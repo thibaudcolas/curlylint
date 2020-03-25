@@ -20,8 +20,8 @@ The configuration file must be a valid Python file.
 """
 from docopt import docopt
 
-from .lint import lint, resolve_file_paths
 from .config import parse_config
+from .lint import lint, resolve_file_paths
 
 
 def print_issues(issues, config):
@@ -30,7 +30,7 @@ def print_issues(issues, config):
         key=lambda i: (
             i.location.file_path,
             i.location.line,
-            i.location.column
+            i.location.column,
         ),
     )
 
@@ -41,29 +41,29 @@ def print_issues(issues, config):
 def main():
     arguments = docopt(__doc__)
 
-    input_names = arguments['INPUT'] or ['.']
-    extensions = ['.' + e for e in arguments['--extension']]
-    verbose = arguments['--verbose']
+    input_names = arguments["INPUT"] or ["."]
+    extensions = ["." + e for e in arguments["--extension"]]
+    verbose = arguments["--verbose"]
 
-    if arguments['--version']:
-        print('0.5.0')
+    if arguments["--version"]:
+        print("0.5.0")
         return
 
-    if arguments['--config']:
+    if arguments["--config"]:
         if verbose:
-            print('Using configuration file {}'.format(arguments['--config']))
-        config = parse_config(arguments['--config'])
+            print("Using configuration file {}".format(arguments["--config"]))
+        config = parse_config(arguments["--config"])
     else:
         config = {}
 
-    config['verbose'] = verbose
-    config['parse_only'] = arguments['--parse-only']
+    config["verbose"] = verbose
+    config["parse_only"] = arguments["--parse-only"]
 
     paths = list(resolve_file_paths(input_names, extensions=extensions))
 
     if verbose:
-        print('Files being analyzed:')
-        print('\n'.join(str(p) for p in paths))
+        print("Files being analyzed:")
+        print("\n".join(str(p) for p in paths))
         print()
 
     issues = lint(paths, config)
@@ -73,5 +73,5 @@ def main():
         exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
