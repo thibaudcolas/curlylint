@@ -2,7 +2,7 @@ from .cli import main
 
 __name__ = "curlylint"
 __version__ = "0.5.0"
-__description__ = "A linter for Jinja-like templates. Forked from jinjalint"
+__description__ = "{{ 🎀}} Prototype linter for Jinja and Django templates, forked from jinjalint"
 __author__ = "Thibaud Colas"
 __author_email__ = "thibaudcolas@gmail.com"
 __url__ = "https://github.com/thibaudcolas/curlylint"
