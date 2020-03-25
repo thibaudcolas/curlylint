@@ -10,7 +10,7 @@ init: clean-pyc ## Install dependencies and initialise for development.
 
 lint: ## Lint the project.
 	black --check **/*.py
-	# flake8 **/*.py
+	flake8 **/*.py
 	isort --check-only --diff --recursive **/*.py
 	npm run lint
 

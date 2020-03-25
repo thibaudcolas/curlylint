@@ -1,6 +1,5 @@
 import attr
 
-from . import ast
 from .file import File
 
 
