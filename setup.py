@@ -15,7 +15,7 @@ from curlylint import (
     __version__,
 )
 
-with io.open('README.md', encoding='utf-8') as readme_file:
+with io.open("README.md", encoding="utf-8") as readme_file:
     long_description = readme_file.read()
 
 setup(
@@ -29,7 +29,7 @@ setup(
     author_email=__author_email__,
     license=__license__,
     copyright=__copyright__,
-    packages=find_packages(exclude=['tests*']),
+    packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
     keywords=[
         "curlylint",
@@ -42,31 +42,19 @@ setup(
         "html",
         "twig",
     ],
-    install_requires=[
-        'parsy==1.1.0',
-        'attrs>=17.2.0',
-        'docopt==0.6.2',
-    ],
-    extras_require={
-        'dev': [
-            "black==19.3b0",
-            "isort==4.2.5",
-            "flake8==3.7.8",
-        ],
-    },
+    install_requires=["parsy==1.1.0", "attrs>=17.2.0", "docopt==0.6.2"],
+    extras_require={"dev": ["black==19.10b0", "isort==4.2.5", "flake8==3.7.8"]},
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: MIT License',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Quality Assurance',
-        'Environment :: Console',
-        'Framework :: Django',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        "Development Status :: 3 - Alpha",
+        "License :: OSI Approved :: MIT License",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Quality Assurance",
+        "Environment :: Console",
+        "Framework :: Django",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ],
-    entry_points={
-        'console_scripts': ['curlylint=curlylint.cli:main'],
-    },
+    entry_points={"console_scripts": ["curlylint=curlylint.cli:main"]},
 )
