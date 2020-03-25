@@ -44,7 +44,7 @@ setup(
     ],
     install_requires=[
         'parsy==1.1.0',
-        'attrs==17.2.0',
+        'attrs>=17.2.0',
         'docopt==0.6.2',
     ],
     extras_require={

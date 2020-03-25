@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Open `attrs` dependency from `attrs==17.2.0` to `attrs>=17.2.0`.
+
 ## [v0.5.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.5.0) 2020-03-24
 
 First usable release as `curlylint`! This release is functionally equivalent to [jinjalint 0.5](https://pypi.org/project/jinjalint/0.5/), with different metadata, and a different package & executable name.
