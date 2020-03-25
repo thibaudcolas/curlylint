@@ -35,7 +35,13 @@ make publish         # Publishes a new version to pypi.
 make publish-test    # Publishes a new version to test pypi.
 ```
 
-### Releases
+## Hacking
+
+Curlylint is powered by [Parsy](https://github.com/python-parsy/parsy). Parsy is an extremely powerful library and curlylint’s parser relies heavily on it. You have to read
+Parsy’s documentation in order to understand what’s going on in
+`parse.py`.
+
+## Releases
 
 - Make a new branch for the release of the new version.
 - Update the [CHANGELOG](https://github.com/thibaudcolas/curlylint/CHANGELOG.md).

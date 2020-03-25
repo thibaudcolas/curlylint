@@ -1,7 +1,8 @@
-# curlylint [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
+# [curlylint](https://pypi.org/project/curlylint/) [<img src="https://raw.githubusercontent.com/thibaudcolas/curlylint/master/.github/curlylint-logo.svg?sanitize=true" width="250" height="100" align="right" alt="">](https://pypi.org/project/curlylint/)
 
-A prototype linter which checks the indentation and the correctness of
-[Jinja](http://jinja.pocoo.org/docs/2.9/)-like/HTML templates. Can [fix issues](https://github.com/django/djangoproject.com/commit/14a964d626196c857809d9b3b492ff4cfa4b3f40).
+[![PyPI](https://img.shields.io/pypi/v/curlylint.svg)](https://pypi.org/project/curlylint/) [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
+
+> {{ 🎀}} Prototype linter for [Jinja](https://jinja.palletsprojects.com/) and [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), forked from [jinjalint](https://github.com/motet-a/jinjalint).
 
 It works with [Django’s templates](https://docs.djangoproject.com/en/1.11/ref/templates/language/) too, it should
 work with [Twig](https://twig.symfony.com/) and similar template languages.
@@ -124,9 +125,12 @@ follows:
   files: \.(html|sls)$
 ```
 
-## Hacking
+## Contributing
 
-Curlylint is powered by [Parsy](https://github.com/python-parsy/parsy). Parsy is an extremely powerful
-library and curlylint’s parser relies heavily on it. You have to read
-Parsy’s documentation in order to understand what’s going on in
-`parse.py`.
+See anything you like in here? Anything missing? We welcome all support, whether on bug reports, feature requests, code, design, reviews, tests, documentation, and more. Please have a look at our [contribution guidelines](CONTRIBUTING.md).
+
+If you just want to set up the project on your own computer, the contribution guidelines also contain all of the setup commands.
+
+## Credits
+
+Image credit: [FxEmojis](https://github.com/mozilla/fxemoji).
