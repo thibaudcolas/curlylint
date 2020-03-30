@@ -49,7 +49,7 @@ Parsy’s documentation in order to understand what’s going on in
 
 - Make a new branch for the release of the new version.
 - Update the [CHANGELOG](https://github.com/thibaudcolas/curlylint/CHANGELOG.md).
-- Update the version number in `draftail/__init__.py`, following semver.
+- Update the version number in `curlylint/__init__.py`, following semver.
 - Make a PR and squash merge it.
 - Back on master with the PR merged, use `make publish-test` (confirm, and enter your password, confirm everything good on test.pypi.org).
 - Back on master with the PR merged, use `make publish` (confirm, and enter your password).
