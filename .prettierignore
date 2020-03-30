@@ -3,5 +3,9 @@ node_modules
 .tox
 webpack-stats.html
 *.html
+*.twig
+*.njk
+*.jinja2
+*.liquid
 .pytest_cache
 coverage_html_report
