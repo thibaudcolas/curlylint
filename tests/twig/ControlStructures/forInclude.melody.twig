@@ -1,0 +1,5 @@
+{% for foo in range(1, category) %}
+<span key="{{ foo }}" class="qtp-item__star icon-ic icon-icn_star--white {{ foo }}">
+  {% include './Star.twig' only %}
+</span>
+{% endfor %}

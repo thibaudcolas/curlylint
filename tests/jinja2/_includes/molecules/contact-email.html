@@ -1,0 +1,33 @@
+{# ==========================================================================
+
+   Contact Email
+
+   ==========================================================================
+
+   Description:
+
+   Create a Contact Email molecule when given:
+
+   value:                   ContactEmail block StreamValue.
+
+   value.emails:            An array containing the email addresses.
+
+   email.address:           Email address to link to.
+
+   email.text:              Alternate link text (optional).
+
+   ========================================================================== #}
+
+<div class="m-contact m-contact-email">
+    <span class="h5">
+        {{ svg_icon('email') }}
+        Email
+    </span>
+    <p>
+        {% for email in value.emails %}
+            <a href="mailto:{{ email.url }}">
+                {{ email.text | default( email.url, true ) }}
+            </a><br>
+        {% endfor %}
+    </p>
+</div>

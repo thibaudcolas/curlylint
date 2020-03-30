@@ -1,0 +1,6 @@
+<svg class="icon{% if props.color %} icon--{{ props.color }}{% endif %}{% if props.class %} {{ props.class }}{% endif %}" {% if not props.title %} aria-hidden="true" {% endif %}>
+    {%- if props.title %}
+    <title>{{ props.title }}</title>
+    {%- endif %}
+    <use xlink:href="#icon-{{ props.icon }}" {% if props.title %} aria-hidden="true" {% endif %}></use>
+</svg>

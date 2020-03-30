@@ -1,0 +1,18 @@
+<div class="c-breadcrumb">
+    <a href="/components/{{ component.id }}">{{ component.displayName }}</a>
+    {% if component.activeFlavour %}
+
+        {% if component.shallowFlavour %}
+        – {{ component.activeFlavour.config.title }}
+        {% endif %}
+         {% if not component.shallowFlavour %}
+            –  <a href="/components/{{ component.slug }}/{{ component.activeFlavour.name }}">
+            {{ component.activeFlavour.config.title }}</a>
+
+            {% if component.activeVariant.config.title %}
+            – {{ component.activeVariant.config.title }}
+            {% endif %}
+
+        {% endif %}
+    {% endif %}
+</div>

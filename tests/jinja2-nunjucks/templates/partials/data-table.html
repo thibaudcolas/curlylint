@@ -1,0 +1,27 @@
+<table class='font-small table'>
+    <thead>
+        <tr>
+            <td class='table__colheader'>Property</td>
+            <td class='table__colheader'>Type</td>
+            <td class='table__colheader'>Example</td>
+            <td class='table__colheader'>Description</td>
+        </tr>
+    </thead>
+    {% for key, val in component.schema %}
+        <tr>
+            <td><code class="language-html">{{ key }}</code></td>
+            <td>
+                <span class="pill t-{{val.type}}"><code>{{ val.type }}</code></span>
+                {% if val.component %}of <a href="/component/{{ val.component  }}">{{ val.component }}</a>{% endif %}
+            </td>
+            <td>
+                {% if val.example %}
+                    <code class="language-javascript">{{ val.example|python_value }}</code>
+                {% endif %}
+            </td>
+            <td>
+                {{ val.description|markdown|safe }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

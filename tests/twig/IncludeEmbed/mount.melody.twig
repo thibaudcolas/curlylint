@@ -1,0 +1,49 @@
+{%- mount './component' as 'bar' -%}
+
+{% mount async './parts/#{ part }.twig' as 'bar-#{part}' with {foo: 'bar'} delay placeholder by 1s -%}
+  Loading...
+{%- catch err -%}
+  Failed to load with {{ err }}
+{%- endmount -%}
+
+<div class="profile-wrapper account">
+    {% if isProfilePageDisplayed %}
+        {% mount '../Profile' as 'profile' with {
+            user: user,
+            expressBookingIframeUrl: expressBookingIframeUrl,
+            paymentMethodsIframeUrl: paymentMethodsIframeUrl,
+            isAboveScreenMedium: isAboveScreenMedium,
+            anchor: anchor,
+            recentlyViewedExpanded: recentlyViewedExpanded
+        } %}
+    {% endif %}
+</div>
+
+<li>
+    <article>
+        {% mount "@hotelsearch/accommodation-list/src/Slideout/index"
+                as "accommodation-slideout-" ~ accommodation.id.id with {
+                    "key": "accommodation-slideout-" ~ accommodation.id.id,
+                    "itemId": accommodation.id.id,
+                    "item": accommodation,
+                    "isSearchedItem": isSearchedItem,
+                    "bestPrice": accommodation.deals.bestPrice,
+                    "insights": hasInsights ? insightsData.accommodation.id.id,
+                    "clickedAltDealPartnerId": clickedAltDealPartnerId,
+                    "entirePlace": isEntirePlace
+                        ? entirePlaceData.accommodation.id.id
+                }
+        %}
+    </article>
+</li>
+
+<div class="popover__body">
+    {% mount ContentComponent as 'popover-component' ~ activeView with _context %}
+</div>
+
+<div id="js_homepage_tabs" class="tabs no-select" key="SEOTabs">
+    {% mount Tabs from '@trivago/components' as seotabs with {
+        tabs: tabs,
+        classList: 'tabs--homepage',
+    } %}
+</div>

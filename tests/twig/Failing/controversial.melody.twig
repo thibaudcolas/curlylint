@@ -1,0 +1,38 @@
+{% set isRewardRate = isMarriottRewardRate or (rewardRateAltIds and deal.dealId in rewardRateAltIds[accommodation.id.id]) %}
+
+<!-- Alternatively, introduce another variable -->
+{% set altIds = rewardRateAltIds[accommodation.id.id] %}
+{% set isRewardRate = isMarriottRewardRate or (rewardRateAltIds and deal.dealId in altIds) %}
+
+<!-- Always break objects -->
+<section class="{{ {
+    base: css.prices
+} | classes }}">
+</section>
+
+<!-- This is what happens if we reduce indentation depth here:
+    "as" and object keys at same indentation level
+-->
+<article>
+    {% mount '@hotelsearch/accommodation-list/src/Slideout/index'
+        as 'accommodation-slideout-' ~ accommodation.id.id with {
+        key: 'accommodation-slideout-' ~ accommodation.id.id,
+        itemId: accommodation.id.id,
+        item: accommodation,
+        isSearchedItem: isSearchedItem,
+        bestPrice: accommodation.deals.bestPrice,
+        insights: hasInsights ? insightsData.accommodation.id.id,
+        clickedAltDealPartnerId: clickedAltDealPartnerId,
+        entirePlace: isEntirePlace ? entirePlaceData.accommodation.id.id
+    } %}
+</article>
+
+<!-- Parentheses stripped. Cannot fix this. Either always parentheses, or never when args empty. -->
+{% include './partials/arrowBtn.melody.twig' with {
+    ref: prev | default(),
+} only %}
+
+<!-- A lot of line breaks with a width of 80 and twigAlwaysBreakObjects = true -->
+<p class="alert__message">
+    {{ 'results_for' | translate({ 'searchedterm': '<mark class="highlight-search-term">' ~ semKeyword ~ '</mark>'}) | raw }}
+</p>

@@ -1,0 +1,25 @@
+{% set componentPath = component.template %}
+
+<html>
+    <head>
+        <script src="/static/js/iframeResizer.contentWindow.min.js"></script>
+        <link rel="stylesheet" href="/static/css/ui.css">
+        <link rel='shortcut icon' href='/static/favicon.ico'>
+        <style>
+            body {
+                background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%202%202%22%3E%3Cpath%20d%3D%22M1%202V0h1v1H0v1z%22%20fill-opacity%3D%22.05%22%2F%3E%3C%2Fsvg%3E');
+                background-size: 16px 16px;
+                padding: 1.5rem;
+            }
+        </style>
+        <title>{{ componentPath }}</title>
+    </head>
+    <body>
+        <div class="u-hide">
+            <svg xmlns="http://www.w3.org/2000/svg"><symbol id="icon-beaker" viewBox="0 -256 1792 1792"><path d="M1595.34 1189.83q56 89 21.5 152.5t-140.5 63.5h-1152q-106 0-140.5-63.5t21.5-152.5l503-793v-399h-64q-26 0-45-19t-19-45q0-26 19-45t45-19h512q26 0 45 19t19 45q0 26-19 45t-45 19h-64v399zm-779-725l-272 429h712l-272-429-20-31v-436h-128v436z"/></symbol></svg>
+        </div>
+        {% set component = state.data %}
+        {% set props = state.data %}
+        {% include componentPath %}
+    </body>
+</html>

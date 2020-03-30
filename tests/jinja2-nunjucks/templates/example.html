@@ -1,0 +1,10 @@
+<div class="component__specs" id="flavour-{{ flavour.id }}/{{state.id}}">
+    <div>
+        <iframe id="example-{{ flavour.id }}/{{state.id}}" name="example" class='component__iframe' src="/raw/{{ component.id }}/{{ flavour.id  }}/{{ state.id }}"></iframe>
+        <script>iFrameResize({}, '#example-{{ flavour.id }}/{{state.id}}')</script>
+    </div>
+</div>
+<div class="component__specs panel-code">
+{% set template = component.template %}
+{% include "code-sample.html" %}
+</div>

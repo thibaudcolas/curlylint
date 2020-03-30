@@ -1,0 +1,55 @@
+<div>Foo</div>
+
+{% block foo3 %}<span></span>{% endblock %}
+
+{% block foo5 %}<div><span>Foo</span></div>{% endblock %}
+
+{% block foo7 %}{% set bar = 'true' %}{% endblock %}
+
+<div {% block bar9 %}class="attribute"{% endblock %}></div>
+<div {% block bar10 %}class="attribute"{% endblock %}></div>
+
+<div
+  {% block bar13 %}
+  class="attribute"{% endblock %}></div>
+
+<div {% block bar16 %}{{ attribute16 }}{% endblock %}></div>
+
+<div>
+{% block foo19 %}<span>foo</span>{% endblock %}
+
+{% block bar21 %}<div>bar</div>{% endblock %}
+</div>
+
+{% block foo24 %}
+{% block bar25 %}
+{% block baz26 %}
+{% endblock %}
+{% endblock %}
+{% endblock %}
+
+{% block bar31 %}
+{{ super() }}
+Foobar
+{% endblock %}
+
+{% block bar35 %}
+{{ value36 }}
+{% endblock %}
+
+{% block bar41 %}{% endblock %}
+
+{% block foo43 %}
+{% block bar44 %}
+<div>foo-bar</div>
+{% endblock %}
+{% endblock %}
+
+<div {% block bar54 %}
+  {{ value55 }}
+{% endblock %}></div>
+<div {% block bar57 %}   {{  value57  }}    {% endblock %}></div>
+
+{% block foo61 %}
+{{ value62 }}
+{% endblock %}

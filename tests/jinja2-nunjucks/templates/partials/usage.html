@@ -1,0 +1,51 @@
+<div class="component__options">
+    <table class="table">
+        <thead>
+            <tr>
+                <td class="table__colheader">Class name</td>
+                <td class="table__colheader">Usage</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in component.usage %}
+                <tr>
+                    <td class="w-4/10 v-top">
+
+                        <code class="language-css u-text-small">
+                            {{ row.class }}
+                        </code>
+                    </td>
+                    <td>
+                        <div class="def">
+                            <h4 class="u-xtight"> Required:</h4>
+                            {% if row.required %}Yes{% endif %}
+                            {% if not row.required %}No, optional{% endif %}
+                        </div>
+                        <div class="def">
+                            <h4 class="u-xtight">Applied to:</h4>
+                            {% for el in row.elements %}
+                            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/{{ el }}" target="_blank" rel="noopener noreferrer">
+                                {{ el }}
+                            </a>{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="def">
+                            <h4 class="u-xtight">
+                            Outcome:
+                            </h4>
+                            {{ row.outcome|markdown|safe }}
+                        </div>
+                        <div class="def">
+                            <h4 class="u-xtight">Comments:</h4>
+                            {% if row.comment %}
+                            {{ row.comment|markdown|safe }}
+                            {% else %}
+                            -
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

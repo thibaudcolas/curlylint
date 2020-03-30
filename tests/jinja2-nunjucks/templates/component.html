@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}{{ config.app.seo.title }} {{ component.name }} {% endblock %}
+
+{% block body %}
+<script src="/static/js/iframeResizer.min.js"></script>
+
+<div class="comp-header">
+    <h1>
+        {{ component.displayName }}
+    </h1>
+</div>
+
+<div class="panel-right-flex">
+    <div class="panel-right-content">
+        <div class="panel-right-padding panel-intro">
+            <div class="markdown component__description">
+                {{ component.readme|markdown|safe }}
+            </div>
+        </div>
+        <div class="panel-right-padding">
+            {% for flavour in component.flavours %}
+                <h2 id="flavour-{{ flavour.id }}">
+                    {{ flavour.displayName }}
+                    {{ flavour.title }}
+                    <small class='u-tiny'>
+                        <span class='pill'>{{ flavour.status }}</span>
+                    </small>
+                </h2>
+
+                {% for state in flavour.states %}
+                    <h3 id="flavour-{{ flavour.id }}/{{ state.id }}">{{ state.title }}</h3>
+                    {% include "example.html" %}
+                {% endfor %}
+            {% endfor %}
+
+            <hr class="divider-body">
+
+            <h4>Data</h4>
+
+            <div class="" id="{{ component.name }}">
+                <div class="component__options">
+                    {% include "partials/data-table.html" %}
+                </div>
+            </div>
+
+            {% if component.usage %}
+            <h4>Usage</h4>
+            <p>
+            This table gives you a quick overview of the classes that can be applied to the {{ component.title }}.
+            </p>
+            <div class="">
+                {% include "partials/usage.html" %}
+            </div>
+            {% endif %}
+
+            {% if not component.usage %}
+            <h4>Usage</h4>
+            <p>
+                This component has no configurable options.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="right-container">
+        <p>
+            <small>
+                <a href="{{ config.targetPkg.repository.url|replace('git+', '')|replace('.git', '') }}/blob/master/client/ui/components/{{ component.id }}" target="_blank" rel="noopener noreferrer">View code on GitHub</a>
+            </small>
+        </p>
+        <p>
+            <small>
+                Flavours and variations
+            </small>
+        </p>
+
+        {% for flavour in component.flavours %}
+            <h4 class='u-tight  '>
+                <a class="u-dark-text" href="/components/{{ component.id }}/#flavour-{{ flavour.id }}">
+                    {{ flavour.title }}
+                </a>
+            </h4>
+
+            {% for state in flavour.states %}
+            <div class="nav__item">
+                <a href="/components/{{ component.id }}/#flavour-{{ flavour.id }}/{{ state.id }}">
+                    {{ state.title }}
+                </a>
+            </div>
+            {% endfor %}
+
+            <hr class="divider">
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

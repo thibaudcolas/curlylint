@@ -1,0 +1,35 @@
+<div>Foo</div>
+
+{% asyncAll item in items %}
+<div></div> {% endall %}
+
+{% asyncAll key, value in items %}
+  <div></div> {% endall %}
+
+{% asyncAll item in items %} <div><span>Foo</span></div> {% endall %}
+
+{% asyncAll item in items %}{% set bar = "true" %}{% endall %}
+
+<div {% asyncAll item in items %}class="attribute"{% endall %}></div>
+
+<div
+{% asyncAll item in items %}
+class="attribute"
+{% endall %}></div>
+
+<div>
+
+{% asyncAll item in items %}<div>bar</div>{% else %}<div>foo</div>{% endall %}
+</div>
+
+{% asyncAll item in items %}
+{% asyncAll item2 in items2 %}
+{% endall %}
+{% endall %}
+
+{% asyncAll item in items %}
+<div>{{ item }}</div>
+{% else %}
+{% asyncAll item2 in items2 %}
+{% endall %}
+{% endall %}

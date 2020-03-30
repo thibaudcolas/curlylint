@@ -1,0 +1,7 @@
+<ul class="list-{{ component.list_type }}">
+    {%- for item in component.elements -%}
+        <li>
+            {{- item|safe -}}
+        </li>
+    {%- endfor -%}
+</ul>

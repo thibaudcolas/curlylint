@@ -1,0 +1,35 @@
+<div>Foo</div>
+
+{% for item in items %}
+<div></div> {% endfor %}
+
+{% for key, value in items %}
+  <div></div> {% endfor %}
+
+{% for item in items %} <div><span>Foo</span></div> {% endfor %}
+
+{% for item in items %}{% set bar = "true" %}{% endfor %}
+
+<div {% for item in items %}class="attribute"{% endfor %}></div>
+
+<div
+{% for item in items %}
+class="attribute"
+{% endfor %}></div>
+
+<div>
+
+{% for item in items %}<div>bar</div>{% else %}<div>foo</div>{% endfor %}
+</div>
+
+{% for item in items %}
+{% for item2 in items2 %}
+{% endfor %}
+{% endfor %}
+
+{% for item in items %}
+<div>{{ item }}</div>
+{% else %}
+{% for item2 in items2 %}
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,62 @@
+
+{# ==========================================================================
+
+   category_icon.render()
+
+   ==========================================================================
+
+   Description:
+
+   Create an HTML icon when given:
+
+   category:           A document type category.
+
+   additional_classes: Extra classes you wish to add to the icon, space
+                       separated.
+
+   ========================================================================== #}
+
+{% macro render(category, is_round) %}
+    {% set icons = {
+        'at the cfpb': 'bullhorn',
+        'auto loans': 'buying-car',
+        'bank accounts': 'bank-account',
+        'bank accounts and services': 'bank-account',
+        'blog': 'speech-bubble',
+        'credit cards': 'credit-card',
+        'credit reporting': 'credit-report',
+        'credit reports and scores': 'credit-report',
+        'data, research, and reports': 'chart',
+        'debt collection': 'debt-collection',
+        "director's notebook": 'pencil',
+        'events': 'date',
+        'families and money': 'money',
+        'featured event': 'date',
+        'featured blog': 'speech-bubble',
+        'featured video': 'play-round',
+        'featured tool': 'settings',
+        'featured news': 'newspaper',
+        'featured': 'favorite',
+        'fraud and scams': 'money',
+        'info for consumers': 'information',
+        'mortgages': 'mortgage',
+        'money basics': 'money',
+        'money transfers': 'money-transfer',
+        'newsroom': 'newspaper',
+        'op-ed': 'contract',
+        'payday loans': 'payday-loan',
+        'policy and compliance': 'bank-account',
+        'prepaid cards': 'prepaid-cards',
+        'press release': 'bullhorn',
+        'report': 'chart',
+        'reverse mortgages': 'loan',
+        'speech': 'microphone',
+        'student loans': 'college',
+        'testimony': 'open-quote',
+      }
+    %}
+    {% set icon_name = icons[category | lower] %}
+    {% if icon_name %}
+        {{ svg_icon( icon_name ~ ( '-round' if is_round else '' ) ) | safe }}
+    {% endif %}
+{% endmacro %}

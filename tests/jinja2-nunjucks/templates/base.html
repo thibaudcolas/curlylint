@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{{ config.app.seo.title }}{% endblock %}</title>
+    <link rel='shortcut icon' href='/static/favicon.ico'>
+    <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+    <div class="panels">
+        <div class="depth-1 panel-left">
+            <div class="nav">
+            {% block nav %}
+                <h4 class="u-dark-text">
+                    <a href="/">Design System</a>
+                </h4>
+                {% for nav in navigation.children %}
+                    <hr>
+                    <h4 class="u-dark-text u-tight">
+                        {% if nav.children.length %}
+                            {{ nav.label }}
+                        {% endif %}
+
+                        {% if not nav.children.length %}
+                            <a href="{{ nav.path }}">{{ nav.label }}</a>
+                        {% endif %}
+                    </h4>
+
+                    {% for child in nav.children %}
+                        <div class="nav__item">
+                            <a href="{{ child.path }}">
+                                {{ child.label }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock %}
+
+            </div>
+        </div>
+        <div class="panel-right">
+            <div class="container">
+            {% block body %}
+
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/prism.js"></script>
+</body>
+</html>

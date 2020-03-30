@@ -1,0 +1,19 @@
+<section key="0">
+{% block hello %}
+    <div key="1" class="test">
+        <span>Hello</span>
+    </div>
+{% endblock %}
+</section>
+
+{% block bar foo %}
+
+{{ block('hello') }}
+
+{% block content %}{% endblock %}
+
+{%- block hello -%}
+    Hello
+{%- endblock -%}
+
+{%- block bar foo -%}

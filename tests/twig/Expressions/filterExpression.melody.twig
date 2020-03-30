@@ -1,0 +1,18 @@
+{{ 'test.foo' | split('.') }}
+{{ range(3) | sort | join(',') }}
+{{ 'SHOUTING' | lower|escape('html') | upper | escape('markdown') | lower | upper | escape('markdown') }}
+
+{% include './usefulDeal.melody.twig' with deal | merge(
+    {
+        'index': loop.index0,
+        'isOverview': isOverview,
+        'isRTL': isRTL,
+        'useWiderItems': useWiderItems
+    }
+) only %}
+
+{{ (hasAdvertiserRatings
+            ? 'tri_based_on' | translate({ 'iBasedOn': '<b>' ~ reviewCount ~ '</b>' })
+            : 'tri_based_on_no_partners' | translate({ 'iBasedOn': '<b>' ~ reviewCount ~ '</b>' })
+        ) | raw
+        }}

@@ -1,0 +1,9 @@
+{% include "item.html" %}
+
+{% for item in items %}
+{% include "item.html" %}
+{% endfor %}
+
+{% include name + ".html" %}
+
+{% include "missing.html" ignore missing %}

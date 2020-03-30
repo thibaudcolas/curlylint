@@ -1,0 +1,10 @@
+{% nav entry in entries %}
+    <li>
+        <a href="{{ entry.url }}">{{ entry.title }}</a>
+        {% ifchildren %}
+            <ul>
+                {% children %}
+            </ul>
+        {% endifchildren %}
+    </li>
+{% endnav %}

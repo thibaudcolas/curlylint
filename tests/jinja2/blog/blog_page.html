@@ -1,0 +1,47 @@
+{% extends 'layout-2-1-bleedbar.html' %}
+
+{% import 'templates/streamfield-sidefoot.html' as streamfield_sidefoot with context %}
+
+{% block og_type -%}
+    article
+{%- endblock %}
+
+{% block og_article_prefix -%}
+    article: http://ogp.me/ns/article#
+{%- endblock %}
+
+{% block og_article_author -%}
+    <meta property="article:author" content="https://www.facebook.com/CFPB">
+{%- endblock %}
+
+{% block content_main %}
+    {% include 'article.html' %}
+    {% block post_article_content %}
+    <div class="block">
+        <p>
+            Join the conversation. Follow CFPB on
+            <a class="a-link
+                      a-link__icon"
+                href="{{ unsigned_redirect('https://twitter.com/cfpb') }}">
+                    <span class="a-link_text">Twitter</span>
+                    {{ svg_icon('external-link') }}
+            </a> and <a class="a-link
+                               a-link__icon"
+                         href="{{ unsigned_redirect('https://facebook.com/cfpb') }}">
+                    <span class="a-link_text">Facebook</span>
+                    {{ svg_icon('external-link') }}
+            </a>.
+        </p>
+    </div>
+    {% endblock %}
+{% endblock %}
+
+{% block content_sidebar %}
+    {{ streamfield_sidefoot.render(page.sidefoot) }}
+    {% if rss_feed %}
+    <div class="block block__sub">
+        {% import 'molecules/rss-feed.html' as rss %}
+        {{ rss.render(rss_feed) }}
+    </div>
+    {% endif %}
+{% endblock %}

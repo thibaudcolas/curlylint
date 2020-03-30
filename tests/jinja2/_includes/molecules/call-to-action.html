@@ -1,0 +1,47 @@
+{# ==========================================================================
+
+   Call to Action
+
+   ==========================================================================
+
+   Description:
+
+   Creates a call to action when given:
+
+   value.slug_text:      The text to display within the header slug.
+
+   value.paragraph_text: The text to display within the paragraph.
+
+   value.button:         A dictionary containing options used to create
+                         the Button markup.
+
+   value.button.url:     A link to a page.
+                         Defaults to '/'.
+
+   value.button.text:    The text to display on button.
+
+   ========================================================================== #}
+
+<div class="m-call-to-action">
+    {% if value.slug_text %}
+    <header class="m-slug-header">
+        <h2 class="a-heading">
+            {{ value.slug_text }}
+        </h2>
+    </header>
+    {% endif %}
+
+    {% if value.paragraph_text %}
+    <div class="m-call-to-action_text">
+        {{ value.paragraph_text | safe }}
+    </div>
+    {% endif %}
+
+    {% if value.button %}
+    <a class="a-btn a-btn__full-on-xs
+             {{ 'a-btn__super' if value.button.size == 'large' else '' }}"
+       href="{{ value.button.url or '/' }}">
+        {{ value.button.text }}
+    </a>
+    {% endif %}
+</div>

@@ -1,0 +1,65 @@
+<div>Foo</div>
+
+{% if foo3 %}<span></span>{% endif %}
+
+{% if foo5 %}<div><span>Foo</span></div>{% endif %}
+
+{% if foo7 %}{% set bar = "true" %}{% endif %}
+
+<div {% if bar9 %}class="attribute"{% endif %}></div>
+<div {% if bar10 %}class="attribute"{%  else %}class="attribute"{% endif %}></div>
+
+<div {% if bar12_1 %} class="attribute" class="attribute" {% if bar12_2 %} class="attribute" class="attribute" {%  else %} class="attribute" class="attribute" class="attribute"{% endif %} class="attribute" class="attribute"{% endif %}></div>
+<div {% if bar13 %} class="attribute" class="attribute" {%  elseif %} class="attribute" class="attribute" {%  else %} class="attribute" class="attribute" class="attribute" class="attribute" class="attribute"{% endif %}></div>
+
+
+<div
+  {% if bar17 %}
+  class="attribute"{% endif %}></div>
+
+<div {% if bar20 %}{{ attribute20 }}{% endif %}></div>
+
+<div>
+{% if foo23 %}<span>foo</span>{% endif %}
+
+{% if bar25 %}<div>bar</div>{% endif %}
+</div>
+
+{% if foo28 %}
+{% if bar29 %}
+{% if baz30 %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if bar35 %}
+{% else %}
+{% endif %}
+
+{% if bar39 %}
+{{ value40 }}
+{% else %}
+{{ value42 }}
+{% endif %}
+
+{% if bar45 %}{% else %}{% endif %}
+
+{% if foo47 %}
+{% if bar48 %}
+<div>foo-bar</div>
+{% else %}
+<div>bar-foo</div>
+{% endif %}
+{% else %}
+{% if bar54 %}
+{% endif %}
+{% endif %}
+
+<div {% if bar58 %}
+  {{ value59 }}
+{% endif %}></div>
+<div {% if bar61 %}{% else %}   {{  value61  }}    {% endif %}></div>
+
+{% if foo63 %}
+{{ value64 }}
+{% endif %}

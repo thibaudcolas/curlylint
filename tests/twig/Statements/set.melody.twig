@@ -1,0 +1,35 @@
+{% set list = [1, 2] %}
+{%- set foo = 0 -%}
+{% set foo = 'foo' ~ 'bar' %}
+{% set foo = {'fruit': 'apple', 'shape': 'round', 'taste': 'sweet', 'region': 'Europe' } %}
+{% set foo = {'fruit': 'apple', 'shape': 'round', 'taste': 'sweet', 'region': 'Europe', 'colour': 'reddish' } %}
+{% set foo, bar = 'foo', 'bar' %}
+{%- set foo -%}
+
+    <div id="pagination">
+
+        Some text
+    </div>
+
+
+    <p>Some more text</p>
+{%- endset -%}
+
+{% set showArrows = hideArrowWhenDisabled | default(false)
+    ? shouldShowArrows | default(false) and scrollEnabled | default(false)
+    : shouldShowArrows | default(false)
+%}
+
+{% set recommendedClickoutAttributes = hasRecommendedPrice ? clickoutAttributes | merge({
+    'data-id': recommendedPrice.dealId,
+    'data-co_params': recommendedPrice.clcklB | json_encode(),
+    'data-co_li_lo': 1
+}) : {} %}
+
+{% set showAAScoreRating = isAAScoreActive and isAAAccommodation and aaScoreRatingData and aaScoreRatingData.score > 0 %}
+
+{% set displayLegalPaymentInfo = not (isFrance and isAtLeastScreenTabletWide) %}
+
+{% set displayLegalPaymentInfo = not (isAAScoreActive and isAAAccommodation and aaScoreRatingData and aaScoreRatingDataABC > 0 and aaScoreRatingDataABC < 5) %}
+
+{% set flavours = ['banana', 'strawberry', 'pineapple', 'lemon', 'raspberry', 'vanilla'] %}

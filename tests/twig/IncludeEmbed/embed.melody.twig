@@ -1,0 +1,18 @@
+{% extends "parent.twig" %}
+
+{% block hello %}
+    <div class="test-{{ foo }} bar">
+        {%- embed "foo.twig" with { foo: 'bar' } %}
+            {% block hello %}
+                {{ fun }}
+                {% embed "bar.twig" -%}
+                    {% block hello %}
+                        {{ message }}
+                    {% endblock %}
+                    {% block test %}
+                    {% endblock %}
+                {%- endembed %}
+            {% endblock hello %}
+        {% endembed -%}
+    </div>
+{% endblock %}

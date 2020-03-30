@@ -1,0 +1,15 @@
+<ul>
+    {% for item in items %}
+        <li class="{{ loop.last ? 'last' : '' }}">
+            {{ loop.index0 // 2 }} {{ item.name }} {{ loop.index }}
+        </li>
+    {% endfor %}
+</ul>
+
+<ul>
+    {%- for item in items -%}
+        <li class="{{ loop.last ? 'last' : '' }}">
+            {{ loop.index0 // 2 }} {{ item.name }} {{ loop.index }}
+        </li>
+    {%- endfor -%}
+</ul>

@@ -1,0 +1,35 @@
+<div>Foo</div>
+
+{% asyncEach item in items %}
+<div></div> {% endeach %}
+
+{% asyncEach key, value in items %}
+  <div></div> {% endeach %}
+
+{% asyncEach item in items %} <div><span>Foo</span></div> {% endeach %}
+
+{% asyncEach item in items %}{% set bar = "true" %}{% endeach %}
+
+<div {% asyncEach item in items %}class="attribute"{% endeach %}></div>
+
+<div
+{% asyncEach item in items %}
+class="attribute"
+{% endeach %}></div>
+
+<div>
+
+{% asyncEach item in items %}<div>bar</div>{% else %}<div>foo</div>{% endeach %}
+</div>
+
+{% asyncEach item in items %}
+{% asyncEach item2 in items2 %}
+{% endeach %}
+{% endeach %}
+
+{% asyncEach item in items %}
+<div>{{ item }}</div>
+{% else %}
+{% asyncEach item2 in items2 %}
+{% endeach %}
+{% endeach %}

@@ -1,0 +1,29 @@
+<li class="{{ css.item }}">
+    <div class="{{ css.priceInfo }}">
+        <span class="{{ css.miniPriceBars }}">
+            <span class="{{ {
+                    base: css.dot,
+                    (css.dotLeft): concept.medianPrice < overviewPrices.medianPrice - middleRange,
+                    (css.dotFarLeft): concept.medianPrice < overviewPrices.percentile25Price,
+                    (css.dotRight): concept.medianPrice > overviewPrices.medianPrice + middleRange,
+                    (css.dotFarRight): concept.medianPrice > overviewPrices.percentile75Price
+                } | classes }}"></span>
+            <span class="{{ css.averagePrice }}">{{ overviewPrices.medianPriceDisplay }}</span>
+        </span>
+    </div>
+</li>
+
+{#
+<select name="purchasableId" id="purchasableId" class="purchasableId">
+    {%- for purchasable in product.getVariants() -%}
+        <option {% if not purchasable.isAvailable %}disabled{% endif %}>
+            {{ purchasable.description }}
+            {{
+                purchasable.salePrice|commerceCurrency(
+                    cart.currency
+                )
+            }}
+        </option>
+    {%- endfor -%}
+</select>
+#}

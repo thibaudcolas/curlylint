@@ -1,0 +1,12 @@
+{% cache globally using key craft.some.rather.long.property.chain.request.path for 3 weeks %}
+    {% for block in entry.myMatrixField %}
+        <p>{{ block.text }}</p>
+    {% endfor %}
+{% endcache %}
+
+{# prettier-ignore #}
+{% cache globally using key craft.some.rather.long.property.chain.request.path for 3 weeks %}
+    {% for block in entry.myMatrixField %}
+        <p>{{ block.text }}</p>
+    {% endfor %}
+{% endcache %}

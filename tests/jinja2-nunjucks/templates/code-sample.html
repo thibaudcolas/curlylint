@@ -1,0 +1,44 @@
+<table class="table">
+    <thead>
+        <tr>
+            <td class="table_colheader">Language</td>
+            <td class="table_colheader">Sample</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="w-1/10 v-top">Jinja2 &amp; Nunjucks</td>
+            <td>
+<pre class="language-js"><code>{% raw %}{% import "components.html" as components %}
+{{ components.{% endraw %}{{ component.id }}({% for key, value in state.data %}{% if value != None %}
+    {{ key }}={{ value|python_value }}{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}{% raw %}
+) }}{% endraw %}</code></pre>
+            </td>
+        </tr>
+        {#<tr>
+            <td class="w-1/10 v-top">Django Templates</td>
+            <td>
+<pre class="language-js"><code>{% raw %}{% include "{% endraw %}{{ template }}" with component={{ state.data|dump }} {% raw %}%}{% endraw %}</code></pre>
+            </td>
+        </tr>#}
+        <tr>
+            <td class="w-1/10 v-top">HTML</td>
+            <td>
+{% set component_save=component %}
+{% set component=state.data %}
+<pre><code class="language-html">{% filter pretty -%}{% include template %}{% endfilter %}</code></pre>
+{% set component=component_save %}
+            </td>
+        </tr>
+        {#<tr>
+            <td class="w-1/10 v-top">React</td>
+            <td>
+{% set reactComponentName = component.title | replace(' ', '') %}
+<pre class="language-js"><code>import {{ reactComponentName }} from 'components/{{ component.id}}';
+&lt;{{ reactComponentName }} {% for key, value in state.data %}
+    {{ key }}={{ value|reactProp }} {% endfor %}
+/&gt;</code></pre>
+            </td>
+        </tr>#}
+    </tbody>
+</table>

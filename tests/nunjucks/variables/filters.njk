@@ -1,0 +1,23 @@
+{{ -3|abs }}
+
+{{ "3.5" | float }}
+
+{{ "This Is A Test" | capitalize }}
+
+{{ items | dump(2) }}
+
+{{ items | dump('\t') }}
+
+{{ "one\ntwo\nthree" | indent(6, true) }}
+
+{{ letters | replace("a", "x", 2) }}
+
+{{ deep.variable.somehow | thing }}
+
+{{ "foo\nbar" | replace("a", "x", 2) | striptags(true) | escape | nl2br }}
+
+{% for item in items | batch(2) | striptags(true) %}
+{% endfor %}
+
+{% for type, items in items | groupby("type") %}
+{% endfor %}

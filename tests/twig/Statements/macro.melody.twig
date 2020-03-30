@@ -1,0 +1,25 @@
+{% macro input(name, value, type, size, shape, colour, taste, flash, broom, lawn, cloud, sky, hedgehog) %}
+    <input type="{{ type }}" name="{{ name }}" value="{{ value|e }}" size="{{ size }}" />
+{% endmacro %}
+
+{%- macro wrapped_input(name, value, type, size) %}
+    {% import _self as forms %}
+
+    <div class="field">
+        {{ forms.input(name, value, type, size) }}
+    </div>
+{% endmacro -%}
+
+{% macro whitespaceRemoval(name, value, type, size) -%}
+
+    <div class="field">
+        {{ forms.input(name, value, type, size) }}
+    </div>
+
+
+{%- endmacro %}
+
+{% macro partner(groupId, value) %}
+    {# 80 is the groupid of specific hotel websites that may not have a correct partner name #}
+    {{ groupId == 80 ? 'book_hotel_website_test' | translate : value }}
+{% endmacro %}

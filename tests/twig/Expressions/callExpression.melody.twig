@@ -1,0 +1,22 @@
+{{ range(3) }}
+
+{{ date('d/m/Y H:i', timezone="Europe/Paris") }}
+
+<span class="{{ css.partner }}">
+    <div>
+        <div>
+            {{
+                helpers.partner(cheapestPrice.group.groupId, cheapestPrice.name.value)
+            }}
+        </div>
+    </div>
+</span>
+
+{{ date({
+    index: 5,
+    isOverview: true,
+    isLongPropertyName: true,
+    hasBeenWaiting: true
+}) }}
+
+{{ craft.someCoolObject.someMethodToUse({ foo: 'bar', bar: 'baz', baz: 'foo' }).all() }}

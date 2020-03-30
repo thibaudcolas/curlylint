@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ config.app.seo.title }} {{ component.name }} {% endblock %}
+
+{% block body %}
+<div class="comp-header">
+    {% block header %}
+    <h1>
+        {{ title }}
+    </h1>
+    {% endblock %}
+</div>
+<div class="panel-right-flex">
+    <div class="panel-right-content">
+        {% block intro %}
+        {% endblock %}
+        <div class="panel-right-padding">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
