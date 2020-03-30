@@ -21,6 +21,9 @@ format: ## Format project files.
 test: ## Test the project.
 	python -m curlylint.test
 
+test-watch: ## Restarts the tests whenever a file changes.
+	nodemon -q -e py -w tests -w curlylint  -x "clear && make test -s || true"
+
 clean-pyc: ## Remove Python file artifacts.
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
