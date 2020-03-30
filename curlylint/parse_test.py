@@ -123,6 +123,15 @@ def test_attribute():
         name=Interp("a"), value=Interp(String(value=Interp("b"), quote='"'))
     )
 
+    assert attribute.parse('A="b"') == Attribute(
+        name=Interp("A"), value=Interp(String(value=Interp("b"), quote='"'))
+    )
+
+    assert attribute.parse('viewBox="b"') == Attribute(
+        name=Interp("viewBox"),
+        value=Interp(String(value=Interp("b"), quote='"')),
+    )
+
     assert attribute.parse("a =b_c23") == Attribute(
         name=Interp("a"),
         value=Interp(String(value=Interp("b_c23"), quote=None)),
