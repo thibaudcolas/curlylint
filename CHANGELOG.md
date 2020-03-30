@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [v0.6.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.6.0) 2020-03-30
+
 ### Changed
 
 - Open `attrs` dependency from `attrs==17.2.0` to `attrs>=17.2.0`.
