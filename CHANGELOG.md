@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### Added
+
+- Improve command line output, matching experience provided by black.
+
 ### Changed
 
 - Add a `python_requires` to enforce support of Python 3.6+ only.

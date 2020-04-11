@@ -99,9 +99,8 @@ def main(
 ) -> None:
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
 
-    if config:
-        if verbose:
-            print("Using configuration file {}".format(config))
+    if config and verbose:
+        out(f"Using configuration from {config}.", bold=False, fg="blue")
         config = parse_config(config)
     else:
         config = {}
@@ -115,16 +114,25 @@ def main(
 
     paths = list(resolve_file_paths(src, extensions=extensions))
 
+    if len(paths) == 0:
+        if verbose or not quiet:
+            out(
+                "No template files are present to be formatted. Nothing to do 😴"
+            )
+        ctx.exit(0)
+
     if verbose:
-        print("Files being analyzed:")
-        print("\n".join(str(p) for p in paths))
-        print()
+        out("Files being analyzed:")
+        out("\n".join(str(p) for p in paths), bold=False, fg="blue")
+        out()
 
     issues = lint(paths, config)
     print_issues(issues, config)
 
-    if any(issues):
-        ctx.exit(1)
+    return_code = 1 if any(issues) else 0
+    if verbose or not quiet:
+        out("Oh no! 💥 💔 💥" if return_code == 1 else "All done! ✨ 🍰 ✨")
+    ctx.exit(return_code)
 
 
 def patch_click() -> None:
