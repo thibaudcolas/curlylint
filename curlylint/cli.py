@@ -1,10 +1,14 @@
 import click
+from functools import partial
 
 from . import __version__
 from .config import parse_config
 from .lint import lint, resolve_file_paths
 
 from typing import List, Optional, Tuple
+
+out = partial(click.secho, bold=True, err=True)
+err = partial(click.secho, fg="red", err=True)
 
 
 def print_issues(issues, config):
@@ -19,6 +23,18 @@ def print_issues(issues, config):
 
     for issue in sorted_issues:
         print(str(issue))
+
+
+def path_empty(
+    src: Tuple[str, ...], quiet: bool, verbose: bool, ctx: click.Context
+) -> None:
+    """
+    Exit if there is no `src` provided for formatting
+    """
+    if not src:
+        if verbose or not quiet:
+            out("No Path provided. Nothing to do 😴")
+            ctx.exit(0)
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -73,8 +89,6 @@ def main(
 ) -> None:
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
 
-    input_names = src or (".")
-
     if config:
         if verbose:
             print("Using configuration file {}".format(config))
@@ -86,7 +100,10 @@ def main(
     config["parse_only"] = parse_only
 
     extensions = ["." + e for e in extension]
-    paths = list(resolve_file_paths(input_names, extensions=extensions))
+
+    path_empty(src, False, verbose, ctx)
+
+    paths = list(resolve_file_paths(src, extensions=extensions))
 
     if verbose:
         print("Files being analyzed:")
@@ -97,7 +114,7 @@ def main(
     print_issues(issues, config)
 
     if any(issues):
-        exit(1)
+        ctx.exit(1)
 
 
 def patch_click() -> None:
