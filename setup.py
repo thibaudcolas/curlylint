@@ -43,7 +43,12 @@ setup(
         "twig",
     ],
     python_requires=">=3.6",
-    install_requires=["parsy==1.1.0", "attrs>=17.2.0", "click>=6.5"],
+    install_requires=[
+        "parsy==1.1.0",
+        "attrs>=17.2.0",
+        "click>=6.5",
+        "toml>=0.9.4",
+    ],
     extras_require={"dev": ["black==19.10b0", "isort==4.2.5", "flake8==3.7.8"]},
     classifiers=[
         "Development Status :: 3 - Alpha",

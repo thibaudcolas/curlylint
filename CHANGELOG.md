@@ -7,6 +7,8 @@
 ### Added
 
 - Improve command line output, matching experience provided by black.
+- Add dependency on `toml`.
+- Automatically look for the configuration based on provided source paths.
 
 ### Changed
 
@@ -14,6 +16,7 @@
 - Switch from docopt to click, like black, with an open-end version range.
 - Change curlylint to abort if no input is provided.
 - Add `-q` / `--quiet` CLI flag.
+- Switch from Python config files to `pyproject.toml`
 
 ## [v0.6.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.6.0) 2020-03-30
 

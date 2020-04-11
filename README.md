@@ -84,31 +84,48 @@ Don’t lint, check for syntax errors and exit.
 curlylint --parse-only template-directory/
 ```
 
-### Configuration
+## Configuration with pyproject.toml
 
-Curlylint supports defining a config file with the flag `--config`. Here is an [example config](./example_config.py) file with the available options:
+_curlylint_ is able to read project-specific default values for its command line options from a [PEP 518](https://www.python.org/dev/peps/pep-0518/) `pyproject.toml` file.
 
-```python
+### Where _curlylint_ looks for the file
+
+By default _curlylint_ looks for `pyproject.toml` starting from the common base directory of all files and directories passed on the command line. If it's not there, it looks in parent directories. It stops looking when it finds the file, or a `.git` directory, or a `.hg` directory, or the root of the file system, whichever comes first.
+
+You can also explicitly specify the path to a particular file that you want with `--config`. In this situation _curlylint_ will not look for any other file.
+
+If you're running with `--verbose`, you will see a blue message if a file was found and used.
+
+### Configuration format
+
+As the file extension suggests, `pyproject.toml` is a
+[TOML](https://github.com/toml-lang/toml) file. It contains separate sections for
+different tools. _curlylint_ is using the `[tool.curlylint]` section. The option keys are the same as long names of options on the command line.
+
+<details>
+
+<summary>Example `pyproject.toml`</summary>
+
+```toml
+[tool.curlylint]
+# How many spaces
+indent-size = 4
 # Specify additional Jinja elements which can wrap HTML here. You
-# don't need to specify simple elements which can't wrap anything like
+# don't neet to specify simple elements which can't wrap anything like
 # {% extends %} or {% include %}.
-# Default: [].
-jinja_custom_elements_names = [
-    ('cache', 'endcache'),
-    ('captureas', 'endcaptureas'),
-    # ('for', 'else', 'empty', 'endfor'),
+jinja-custom-elements-names = [
+  ["cache", "endcache"],
+  ["captureas", "endcaptureas"]
 ]
-
-# How many spaces to use when checking indentation.
-# Default: 4
-indent_size = 4
 ```
 
-This config file can then be used with:
+</details>
 
-```sh
-curlylint --config example_config.py template-directory/
-```
+### Lookup hierarchy
+
+Command-line options have defaults that you can see in `--help`. A `pyproject.toml` can override those defaults. Finally, options provided by the user on the command line override both.
+
+_curlylint_ will only ever use one `pyproject.toml` file during an entire run. It doesn't look for multiple files, and doesn't compose configuration from different levels of the file hierarchy.
 
 ## Usage with [pre-commit](https://pre-commit.com) git hooks framework
 

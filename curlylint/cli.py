@@ -2,7 +2,7 @@ import click
 from functools import partial
 
 from . import __version__
-from .config import parse_config
+from .config import read_pyproject_toml
 from .lint import lint, resolve_file_paths
 
 from typing import List, Optional, Tuple
@@ -55,19 +55,6 @@ def path_empty(
     help="Don’t lint, check for syntax errors and exit.",
 )
 @click.option(
-    "-c",
-    "--config",
-    type=click.Path(
-        exists=False,
-        file_okay=True,
-        dir_okay=False,
-        readable=True,
-        allow_dash=False,
-    ),
-    is_eager=True,
-    help="Read configuration from FILE.",
-)
-@click.option(
     "-e",
     "--extension",
     multiple=True,
@@ -87,6 +74,20 @@ def path_empty(
     ),
     is_eager=True,
 )
+@click.option(
+    "-c",
+    "--config",
+    type=click.Path(
+        exists=False,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        allow_dash=False,
+    ),
+    is_eager=True,
+    help="Read configuration from FILE.",
+    callback=read_pyproject_toml,
+)
 @click.pass_context
 def main(
     ctx: click.Context,
@@ -100,13 +101,7 @@ def main(
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
 
     if config and verbose:
-        out(f"Using configuration from {config}.", bold=False, fg="blue")
-        config = parse_config(config)
-    else:
-        config = {}
-
-    config["verbose"] = verbose
-    config["parse_only"] = parse_only
+        out(f"Using configuration from: {config}", bold=False, fg="blue")
 
     extensions = ["." + e for e in extension]
 
@@ -126,8 +121,15 @@ def main(
         out("\n".join(str(p) for p in paths), bold=False, fg="blue")
         out()
 
-    issues = lint(paths, config)
-    print_issues(issues, config)
+    configuration = {}
+    if ctx.default_map:
+        configuration.update(ctx.default_map)
+
+    configuration["verbose"] = verbose
+    configuration["parse_only"] = parse_only
+
+    issues = lint(paths, configuration)
+    print_issues(issues, configuration)
 
     return_code = 1 if any(issues) else 0
     if verbose or not quiet:
