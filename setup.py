@@ -43,7 +43,7 @@ setup(
         "twig",
     ],
     python_requires=">=3.6",
-    install_requires=["parsy==1.1.0", "attrs>=17.2.0", "docopt==0.6.2"],
+    install_requires=["parsy==1.1.0", "attrs>=17.2.0", "click>=6.5"],
     extras_require={"dev": ["black==19.10b0", "isort==4.2.5", "flake8==3.7.8"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -57,5 +57,5 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    entry_points={"console_scripts": ["curlylint=curlylint.cli:main"]},
+    entry_points={"console_scripts": ["curlylint=curlylint.cli:patched_main"]},
 )

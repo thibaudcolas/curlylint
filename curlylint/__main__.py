@@ -1,3 +1,3 @@
-from curlylint.cli import main
+from curlylint.cli import patched_main
 
-main()
+patched_main()

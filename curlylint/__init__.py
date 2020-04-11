@@ -8,6 +8,6 @@ __license__ = "MIT"
 __copyright__ = "Copyright 2020-present Thibaud Colas"
 
 if __name__ == "__main__":
-    from .cli import main
+    from .cli import patched_main
 
-    main()
+    patched_main()
