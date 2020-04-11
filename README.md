@@ -68,6 +68,14 @@ Turns on verbose mode. This makes it easier to troubleshoot what configuration i
 curlylint --verbose template-directory/
 ```
 
+#### `--quiet`
+
+Don’t emit non-error messages to stderr. Errors are still emitted; silence those with `2>/dev/null`.
+
+```sh
+curlylint --quiet template-directory/
+```
+
 #### `--parse-only`
 
 Don’t lint, check for syntax errors and exit.

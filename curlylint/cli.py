@@ -41,6 +41,15 @@ def path_empty(
 @click.version_option(version=__version__)
 @click.option("-v", "--verbose", is_flag=True, help="Verbose mode.")
 @click.option(
+    "-q",
+    "--quiet",
+    is_flag=True,
+    help=(
+        "Don’t emit non-error messages to stderr. Errors are still emitted; "
+        "silence those with 2>/dev/null."
+    ),
+)
+@click.option(
     "--parse-only",
     is_flag=True,
     help="Don’t lint, check for syntax errors and exit.",
@@ -82,6 +91,7 @@ def path_empty(
 def main(
     ctx: click.Context,
     verbose: bool,
+    quiet: bool,
     parse_only: bool,
     config: Optional[str],
     extension: List[str],
@@ -101,7 +111,7 @@ def main(
 
     extensions = ["." + e for e in extension]
 
-    path_empty(src, False, verbose, ctx)
+    path_empty(src, quiet, verbose, ctx)
 
     paths = list(resolve_file_paths(src, extensions=extensions))
 

@@ -9,6 +9,7 @@
 - Add a `python_requires` to enforce support of Python 3.6+ only.
 - Switch from docopt to click, like black, with an open-end version range.
 - Change curlylint to abort if no input is provided.
+- Add `-q` / `--quiet` CLI flag.
 
 ## [v0.6.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.6.0) 2020-03-30
 
