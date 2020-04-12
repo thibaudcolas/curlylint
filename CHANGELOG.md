@@ -7,7 +7,7 @@
 ### Added
 
 - Improve command line output, matching experience provided by black.
-- Add dependency on `toml`.
+- Add dependencies on `toml`, `pathspec`, `dataclasses`.
 - Automatically look for the configuration based on provided source paths.
 
 ### Changed

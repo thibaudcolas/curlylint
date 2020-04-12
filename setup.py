@@ -48,6 +48,8 @@ setup(
         "attrs>=17.2.0",
         "click>=6.5",
         "toml>=0.9.4",
+        "pathspec>=0.6, <1",
+        "dataclasses>=0.6; python_version < '3.7'",
     ],
     extras_require={"dev": ["black==19.10b0", "isort==4.2.5", "flake8==3.7.8"]},
     classifiers=[
