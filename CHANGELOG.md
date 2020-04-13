@@ -9,6 +9,9 @@
 - Improve command line output, matching experience provided by black.
 - Add dependencies on `toml`, `pathspec`, `dataclasses`.
 - Automatically look for the configuration based on provided source paths.
+- Add support for excluding files from linting with the `--exclude` / `exclude` config.
+- Add support for including files for linting with the `--include` / `include` config.
+- Add automatic reading of `.gitignore` and exclusion of all files ignored there.
 
 ### Changed
 
@@ -17,6 +20,10 @@
 - Change curlylint to abort if no input is provided.
 - Add `-q` / `--quiet` CLI flag.
 - Switch from Python config files to `pyproject.toml`
+
+### Removed
+
+- Remove support for `--extension` flag. Use `--include` (or `include` in the config file) instead.
 
 ## [v0.6.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.6.0) 2020-03-30
 

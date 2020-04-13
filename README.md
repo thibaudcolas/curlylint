@@ -117,6 +117,19 @@ jinja-custom-elements-names = [
   ["cache", "endcache"],
   ["captureas", "endcaptureas"]
 ]
+include = '\.(html|jinja)$'
+exclude = '''
+(
+  /(
+      \.eggs           # exclude a few common directories in the root of the project
+    | \.git
+    | \.venv
+    | build
+    | dist
+  )/
+  | webpack-stats.html # also separately exclude a file named webpack-stats.html in the root of the project
+)
+'''
 ```
 
 </details>

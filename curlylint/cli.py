@@ -1,28 +1,36 @@
-import click
+import re
 from functools import partial
 
-from . import __version__
-from .config import read_pyproject_toml
-from .lint import lint, resolve_file_paths
+import click
+from pathlib import Path
 
-from typing import List, Optional, Tuple
+from . import __version__
+from .config import (
+    read_pyproject_toml,
+    find_project_root,
+    gen_template_files_in_dir,
+    get_gitignore,
+)
+from .lint import lint
+from .report import Report
+
+from typing import Optional, Pattern, Set, Tuple
 
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
 
+DEFAULT_EXCLUDES = r"/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|\.svn|_build|buck-out|build|dist)/"  # noqa: B950
+DEFAULT_INCLUDES = r"\.(html|jinja|twig)$"
 
-def print_issues(issues, config):
-    sorted_issues = sorted(
-        issues,
-        key=lambda i: (
-            i.location.file_path,
-            i.location.line,
-            i.location.column,
-        ),
-    )
 
-    for issue in sorted_issues:
-        print(str(issue))
+def re_compile_maybe_verbose(regex: str) -> Pattern[str]:
+    """Compile a regular expression string in `regex`.
+    If it contains newlines, use verbose mode.
+    """
+    if "\n" in regex:
+        regex = "(?x)" + regex
+    compiled: Pattern[str] = re.compile(regex)
+    return compiled
 
 
 def path_empty(
@@ -55,11 +63,28 @@ def path_empty(
     help="Don’t lint, check for syntax errors and exit.",
 )
 @click.option(
-    "-e",
-    "--extension",
-    multiple=True,
-    default=["html", "jinja", "twig"],
-    help="Extension of the files to analyze (used if SRC contains directories to crawl).",
+    "--include",
+    type=str,
+    default=DEFAULT_INCLUDES,
+    help=(
+        "A regular expression that matches files and directories that should be "
+        "included on recursive searches. An empty value means all files are "
+        "included regardless of the name. Use forward slashes for directories on "
+        "all platforms (Windows, too).  Exclusions are calculated first, inclusions "
+        "later."
+    ),
+    show_default=True,
+)
+@click.option(
+    "--exclude",
+    type=str,
+    default=DEFAULT_EXCLUDES,
+    help=(
+        "A regular expression that matches files and directories that should be "
+        "excluded on recursive searches. An empty value means no paths are excluded. "
+        "Use forward slashes for directories on all platforms (Windows, too).  "
+        "Exclusions are calculated first, inclusions later."
+    ),
     show_default=True,
 )
 @click.argument(
@@ -95,7 +120,8 @@ def main(
     quiet: bool,
     parse_only: bool,
     config: Optional[str],
-    extension: List[str],
+    include: str,
+    exclude: str,
     src: Tuple[str, ...],
 ) -> None:
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
@@ -103,13 +129,46 @@ def main(
     if config and verbose:
         out(f"Using configuration from: {config}", bold=False, fg="blue")
 
-    extensions = ["." + e for e in extension]
+    try:
+        include_regex = re_compile_maybe_verbose(include)
+    except re.error:
+        err(f"Invalid regular expression for include given: {include!r}")
+        ctx.exit(2)
+    try:
+        exclude_regex = re_compile_maybe_verbose(exclude)
+    except re.error:
+        err(f"Invalid regular expression for exclude given: {exclude!r}")
+        ctx.exit(2)
+
+    report = Report(quiet=quiet, verbose=verbose)
+    root = find_project_root(src)
+
+    if verbose:
+        out(f"Identified project root as: {root}", bold=False, fg="blue")
 
     path_empty(src, quiet, verbose, ctx)
 
-    paths = list(resolve_file_paths(src, extensions=extensions))
+    sources: Set[Path] = set()
+    for s in src:
+        p = Path(s)
+        if p.is_dir():
+            sources.update(
+                gen_template_files_in_dir(
+                    p,
+                    root,
+                    include_regex,
+                    exclude_regex,
+                    report,
+                    get_gitignore(root),
+                )
+            )
+        elif p.is_file() or s == "-":
+            # if a file was explicitly given, we don't care about its extension
+            sources.add(p)
+        else:
+            err(f"invalid path: {s}")
 
-    if len(paths) == 0:
+    if len(sources) == 0:
         if verbose or not quiet:
             out(
                 "No template files are present to be formatted. Nothing to do 😴"
@@ -118,8 +177,7 @@ def main(
 
     if verbose:
         out("Files being analyzed:")
-        out("\n".join(str(p) for p in paths), bold=False, fg="blue")
-        out()
+        out("\n".join(str(s) for s in sources), bold=False, fg="blue")
 
     configuration = {}
     if ctx.default_map:
@@ -128,13 +186,13 @@ def main(
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
 
-    issues = lint(paths, configuration)
-    print_issues(issues, configuration)
+    issues = lint(sources, configuration)
+    report.print_issues(issues)
 
-    return_code = 1 if any(issues) else 0
     if verbose or not quiet:
-        out("Oh no! 💥 💔 💥" if return_code == 1 else "All done! ✨ 🍰 ✨")
-    ctx.exit(return_code)
+        out("Oh no! 💥 💔 💥" if report.return_code == 1 else "All done! ✨ 🍰 ✨")
+        click.secho(str(report), err=True)
+    ctx.exit(report.return_code)
 
 
 def patch_click() -> None:
