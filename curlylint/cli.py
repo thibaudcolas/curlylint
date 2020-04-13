@@ -1,20 +1,20 @@
 import re
 from functools import partial
 
-import click
 from pathlib import Path
+from typing import Optional, Pattern, Set, Tuple
+
+import click
 
 from . import __version__
 from .config import (
-    read_pyproject_toml,
     find_project_root,
     gen_template_files_in_dir,
     get_gitignore,
+    read_pyproject_toml,
 )
 from .lint import lint
 from .report import Report
-
-from typing import Optional, Pattern, Set, Tuple
 
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)

@@ -1,9 +1,9 @@
-import click
 from functools import partial
 from pathlib import Path
-from dataclasses import dataclass
-
 from typing import List
+
+import click
+from dataclasses import dataclass
 
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)

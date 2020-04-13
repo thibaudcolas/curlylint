@@ -1,11 +1,12 @@
 from functools import lru_cache
 from pathlib import Path
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Union
 
-import toml
 import click
+import toml
 from pathspec import PathSpec
 
-from typing import Any, Dict, Iterable, Iterator, List, Pattern, Optional, Union
+from .report import Report
 
 
 @lru_cache()
