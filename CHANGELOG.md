@@ -12,6 +12,7 @@
 - Add support for excluding files from linting with the `--exclude` / `exclude` config.
 - Add support for including files for linting with the `--include` / `include` config.
 - Add automatic reading of `.gitignore` and exclusion of all files ignored there.
+- Add excludes for more common build tool folders: `venv`, `myvenv`, `coverage_html_report`, `node_modules`.
 
 ### Changed
 

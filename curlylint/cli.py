@@ -18,7 +18,7 @@ from .report import Report
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
 
-DEFAULT_EXCLUDES = r"/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|\.svn|_build|buck-out|build|dist)/"  # noqa: B950
+DEFAULT_EXCLUDES = r"/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|venv|myvenv|\.svn|_build|buck-out|build|dist|coverage_html_report|node_modules)/"
 DEFAULT_INCLUDES = r"\.(html|jinja|twig)$"
 
 
