@@ -1,9 +1,9 @@
+from dataclasses import dataclass  # NOQA
 from functools import partial
 from pathlib import Path
 from typing import List
 
 import click
-from dataclasses import dataclass  # NOQA
 
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
