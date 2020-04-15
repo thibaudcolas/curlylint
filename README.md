@@ -172,3 +172,9 @@ If you just want to set up the project on your own computer, the contribution gu
 ## Credits
 
 Image credit: [FxEmojis](https://github.com/mozilla/fxemoji).
+
+This project is a fork of [jinjalint](https://github.com/motet-a/jinjalint).
+
+Test templates extracted from third-party projects. View the full list in [`tests/README.md`](tests/README.md).
+
+View the full list of [contributors](https://github.com/thibaudcolas/curlylint/graphs/contributors). [MIT](https://github.com/thibaudcolas/curlylint/blob/master/LICENSE) licensed.
