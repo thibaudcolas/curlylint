@@ -1,5 +1,5 @@
 __name__ = "curlylint"
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 __description__ = "{{ 🎀}} Prototype linter for Jinja and Django templates, forked from jinjalint"
 __author__ = "Thibaud Colas"
 __author_email__ = "thibaudcolas@gmail.com"

@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [v0.7.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.7.0) 2020-04-16
+
+Generally reworked the CLI to match the experience of black.
+
 ### Added
 
 - Improve command line output, matching experience provided by black.
