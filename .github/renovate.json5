@@ -1,0 +1,34 @@
+{
+  extends: ["config:base"],
+  // https://renovatebot.com/docs/configuration-options/#commitbodytable
+  commitBodyTable: true,
+  // https://renovatebot.com/docs/configuration-options/#ignoredeps
+  ignoreDeps: [],
+  // https://renovatebot.com/docs/configuration-options/#labels
+  labels: ["enhancement"],
+  // https://renovatebot.com/docs/configuration-options/#prcreation
+  prCreation: "not-pending",
+  // https://renovatebot.com/docs/configuration-options/#semanticcommits
+  semanticCommits: true,
+  // Use shorter commit messages to account for long dependency names.
+  // https://docs.renovatebot.com/configuration-options/#commitmessagetopic
+  commitMessageTopic: "{{depName}}",
+  // https://renovatebot.com/docs/configuration-options/#rebasestaleprs
+  rebaseStalePrs: true,
+  // https://renovatebot.com/docs/configuration-options/#schedule
+  schedule: ["every weekend"],
+  node: {
+    major: {
+      enabled: true,
+    },
+    // https://renovatebot.com/docs/node/#configuring-support-policy
+    supportPolicy: ["current"],
+  },
+  packageRules: [
+    {
+      packageNames: ["prettier"],
+      groupName: "prettier",
+      automerge: true,
+    },
+  ],
+}

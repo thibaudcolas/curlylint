@@ -10,16 +10,16 @@ PATCH_STAGED=$(git --no-pager diff --name-only --diff-filter=ACM $STAGED)
 # Files which are fully staged.
 FULLY_STAGED=$(comm -23 <(echo "$STAGED") <(echo "$PATCH_STAGED"))
 
-JS_STAGED=$(grep -e '.js$' -e '.jsx$' <<< "$STAGED" || true)
-JS_FULLY_STAGED=$(grep -e '.js$' -e '.jsx$' <<< "$FULLY_STAGED" || true)
-PRETTIER_STAGED=$(grep -E '.(md|css|scss|js|json|yaml|yml|html)$' <<< "$STAGED" || true)
-PRETTIER_FULLY_STAGED=$(grep -E '.(md|css|scss|js|json|yaml|yml|html)$' <<< "$FULLY_STAGED" || true)
-SNAPSHOT_STAGED=$(grep .snap$ <<< "$STAGED" || true)
+JS_STAGED=$(grep -E '.(js|jsx)$' <<< "$STAGED" || true)
+CSS_STAGED=$(grep -E '.(css|scss)$' <<< "$STAGED" || true)
+SNAPSHOT_STAGED=$(grep -E '.snap$' <<< "$STAGED" || true)
+PRETTIER_STAGED=$(grep -E '.(md|css|scss|js|json|json5|yaml|yml|html)$' <<< "$STAGED" || true)
+PRETTIER_FULLY_STAGED=$(grep -E '.(md|css|scss|js|json|json5|yaml|yml|html)$' <<< "$FULLY_STAGED" || true)
 PY_STAGED=$(grep .py$ <<< "$STAGED" || true)
 PY_FULLY_STAGED=$(grep .py$ <<< "$FULLY_STAGED" || true)
 
 # Uncomment, and add more variables to the list, for debugging help.
-# tr ' ' '\n' <<< "STAGED $STAGED PATCH_STAGED $PATCH_STAGED FULLY_STAGED $FULLY_STAGED JS_STAGED $JS_STAGED JS_FULLY_STAGED $JS_FULLY_STAGED SNAPSHOT_STAGED $SNAPSHOT_STAGED"
+# tr ' ' '\n' <<< "STAGED $STAGED PATCH_STAGED $PATCH_STAGED FULLY_STAGED $FULLY_STAGED JS_STAGED $JS_STAGED
 
 # Execute each pre-commit hook.
 PROJECT_ROOT=`git rev-parse --show-toplevel`
