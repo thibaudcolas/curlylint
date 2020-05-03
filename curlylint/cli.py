@@ -18,6 +18,7 @@ from .report import Report
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
 
+DEFAULT_FORMAT = "compact"
 DEFAULT_EXCLUDES = r"/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|venv|myvenv|\.svn|_build|buck-out|build|dist|coverage_html_report|node_modules)/"
 DEFAULT_INCLUDES = r"\.(html|jinja|twig)$"
 
@@ -60,6 +61,14 @@ def path_empty(
     "--parse-only",
     is_flag=True,
     help="Don’t lint, check for syntax errors and exit.",
+)
+@click.option(
+    "-f",
+    "--format",
+    type=click.Choice(("compact", "json")),
+    default=DEFAULT_FORMAT,
+    help=("Use a specific output format"),
+    show_default=True,
 )
 @click.option(
     "--include",
@@ -119,6 +128,7 @@ def main(
     quiet: bool,
     parse_only: bool,
     config: Optional[str],
+    format: str,
     include: str,
     exclude: str,
     src: Tuple[str, ...],
@@ -139,7 +149,7 @@ def main(
         err(f"Invalid regular expression for exclude given: {exclude!r}")
         ctx.exit(2)
 
-    report = Report(quiet=quiet, verbose=verbose)
+    report = Report(quiet=quiet, verbose=verbose, format=format)
     root = find_project_root(src)
 
     if verbose:

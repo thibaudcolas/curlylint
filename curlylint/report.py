@@ -5,8 +5,13 @@ from typing import List
 
 import click
 
+from curlylint.formatters.compact import format_compact
+from curlylint.formatters.json import format_json
+
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
+
+formatters = {"compact": format_compact, "json": format_json}
 
 
 @dataclass
@@ -18,24 +23,17 @@ class Report:
     quiet: bool = False
     verbose: bool = False
     failure_count: int = 0
+    format: str = "compact"
 
     def path_ignored(self, path: Path, message: str) -> None:
         if self.verbose:
             out(f"{path} ignored: {message}", bold=False)
 
     def print_issues(self, issues: List["Issue"]):
-        sorted_issues = sorted(
-            issues,
-            key=lambda i: (
-                i.location.file_path,
-                i.location.line,
-                i.location.column,
-            ),
-        )
+        self.failure_count += len(issues)
+        formatter = formatters[self.format]
 
-        for issue in sorted_issues:
-            self.failure_count += 1
-            print(str(issue))
+        formatter(issues)
 
     @property
     def return_code(self) -> int:
@@ -57,4 +55,4 @@ class Report:
                 click.style(f"{self.failure_count} error{s} reported", fg="red")
             )
 
-        return ", ".join(report) + "."
+        return ", ".join(report)
