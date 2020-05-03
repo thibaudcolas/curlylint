@@ -27,6 +27,7 @@ Here are tools that this linter could learn from. Suggestions welcome.
 
 - [ ] https://github.com/prettier/prettier
 - [ ] https://github.com/eslint/eslint
+- [ ] https://github.com/stylelint/stylelint
 
 ### Python developer tools
 
