@@ -1,6 +1,5 @@
-from .util import flatten
-
 from curlylint.rules.indent.indent import indent
+from curlylint.util import flatten
 
 checks = [indent]
 
