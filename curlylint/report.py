@@ -7,11 +7,16 @@ import click
 
 from curlylint.formatters.compact import format_compact
 from curlylint.formatters.json import format_json
+from curlylint.formatters.stylish import format_stylish
 
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
 
-formatters = {"compact": format_compact, "json": format_json}
+formatters = {
+    "compact": format_compact,
+    "json": format_json,
+    "stylish": format_stylish,
+}
 
 
 @dataclass

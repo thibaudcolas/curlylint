@@ -18,7 +18,6 @@ from .report import Report
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
 
-DEFAULT_FORMAT = "compact"
 DEFAULT_EXCLUDES = r"/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|venv|myvenv|\.svn|_build|buck-out|build|dist|coverage_html_report|node_modules)/"
 DEFAULT_INCLUDES = r"\.(html|jinja|twig)$"
 
@@ -65,8 +64,8 @@ def path_empty(
 @click.option(
     "-f",
     "--format",
-    type=click.Choice(("compact", "json")),
-    default=DEFAULT_FORMAT,
+    type=click.Choice(("compact", "json", "stylish")),
+    default="stylish",
     help=("Use a specific output format"),
     show_default=True,
 )
