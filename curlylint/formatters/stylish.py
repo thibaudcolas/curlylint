@@ -22,5 +22,5 @@ def format_stylish(issues: List["Issue"]):
             loc = click.style(
                 f"{issue.location.line}:{issue.location.column}", dim=True
             )
-            print(f"{loc}\t{issue.message}")
+            print(f"{loc}\t{issue.message}\t{issue.code}")
         print("")

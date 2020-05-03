@@ -32,7 +32,7 @@ def parse_file(path_and_config):
         return [], file
     except parsy.ParseError as error:
         location = get_parsy_error_location(error, path)
-        issue = Issue(location, "Parse error: " + str(error))
+        issue = Issue(location, "Parse error: " + str(error), "parse-error")
         return [issue], None
 
 

@@ -28,13 +28,16 @@ class IssueLocation:
 class Issue:
     location = attr.ib()
     message = attr.ib()
+    code = attr.ib()
 
     def __str__(self):
-        return "{}: {}".format(self.location, self.message)
+        return f"{self.location}: {self.message} ({self.code})"
 
     def __attrs_post_init__(self):
         assert isinstance(self.location, IssueLocation)
 
     @staticmethod
-    def from_ast(file_path, ast_location, message):
-        return Issue(IssueLocation.from_ast(file_path, ast_location), message)
+    def from_ast(file_path, ast_location, message, code):
+        return Issue(
+            IssueLocation.from_ast(file_path, ast_location), message, code
+        )

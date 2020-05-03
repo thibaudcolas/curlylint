@@ -9,6 +9,7 @@
 - Add support for configurable formatters with `--format` CLI parameter / `format` config attribute.
 - Add support for JSON formatting with `--format json --quiet`.
 - Add new `stylish` reporter and make it the default. `compact` is still available via `--format compact`.
+- Add codes for rules – `indent` and `parse-error` for the two existing checks.
 
 ## [v0.7.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.7.0) 2020-04-16
 

@@ -6,6 +6,8 @@ from curlylint.issue import Issue, IssueLocation
 WHITESPACE_INDENT_RE = re.compile(r"^\s*")
 INDENT_RE = re.compile("^ *")
 
+INDENT = "indent"
+
 RULE = {
     "type": "layout",
     "docs": {
@@ -57,7 +59,7 @@ def check_indentation(file, config):
     issues = []
 
     def add_issue(location, msg):
-        issues.append(Issue.from_ast(file, location, msg))
+        issues.append(Issue.from_ast(file, location, msg, INDENT))
 
     def check_indent(expected_level, node, inline=False, allow_same_line=False):
         node_level = get_indent_level(file.source, node)
@@ -345,7 +347,7 @@ def check_space_only_indent(file, config):
         indent = WHITESPACE_INDENT_RE.match(line).group(0)
         if not contains_exclusively(indent, " "):
             loc = IssueLocation(file_path=file.path, line=i, column=0)
-            issue = Issue(loc, "Should be indented with spaces")
+            issue = Issue(loc, "Should be indented with spaces", INDENT)
             issues.append(issue)
     return issues
 

@@ -23,6 +23,7 @@ def format_json(issues: List["Issue"]):
                 "line": issue.location.line,
                 "column": issue.location.column,
                 "message": issue.message,
+                "code": issue.code,
             }
         )
 
