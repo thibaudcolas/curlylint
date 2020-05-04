@@ -78,8 +78,8 @@ def test_dummy_location():
     assert dummy == real
     assert real == dummy
 
-    assert not dummy != real
-    assert not real != dummy
+    assert not dummy != real  # lgtm [py/redundant-comparison]
+    assert not real != dummy  # lgtm [py/redundant-comparison]
 
 
 def test_tag_name():

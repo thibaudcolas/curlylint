@@ -3,7 +3,7 @@ from functools import partial
 from pathlib import Path
 from typing import Optional, Pattern, Set, Tuple
 
-import click
+import click  # lgtm [py/import-and-import-from]
 
 from . import __version__
 from .config import (
