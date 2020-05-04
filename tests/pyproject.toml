@@ -1,0 +1,4 @@
+# Empty configuration file; used in tests to avoid interference from curlylint’s own config.
+
+[tool.curlylint]
+[tool.curlylint.rules]
