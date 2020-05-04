@@ -1,12 +1,28 @@
-from curlylint.rules.indent.indent import indent
+from curlylint.rules.indent.indent import INDENT, indent
 from curlylint.util import flatten
 
-checks = [indent]
+checks = {INDENT: indent}
 
 
-def check_file(file, config):
-    return set(flatten(check(file, config) for check in checks))
+def check_rule(file, code: str, options):
+    check = checks.get(code, None)
+    return check(file, options)
+
+
+def check_file(file, rules):
+    return set(
+        flatten(
+            check_rule(file, code, options)
+            for code, options in rules.items()
+            if options != "off"
+        )
+    )
 
 
 def check_files(files, config):
-    return flatten(check_file(file, config) for file in files)
+    rules = config.get("rules")
+
+    if not rules:
+        return []
+
+    return flatten(check_file(file, rules) for file in files)

@@ -53,8 +53,8 @@ def truncate(s, length=16):
     return s[:length] + (s[length:] and "…")
 
 
-def check_indentation(file, config):
-    indent_size = config.get("indent_size", 4)
+def check_indentation(file, options):
+    indent_size = options
 
     issues = []
 
@@ -154,16 +154,9 @@ def check_indentation(file, config):
             inline=inline,
             allow_same_line=allow_same_line,
         )
-        element_names_to_not_indent = config.get(
-            "jinja_element_names_to_not_indent", []
-        )
-        do_not_indent = (
-            part.tag.name in element_names_to_not_indent
-            and has_jinja_element_child(part.content, part.tag.name)
-        )
         if part.begin.line != part.end.line:
             inline = False
-        shift = 0 if inline or do_not_indent else indent_size
+        shift = 0 if inline else indent_size
         content_level = expected_level + shift
         if part.content is not None:
             check_content(content_level, part.content, inline=inline)
@@ -341,7 +334,7 @@ def check_indentation(file, config):
     return issues
 
 
-def check_space_only_indent(file, config):
+def check_space_only_indent(file):
     issues = []
     for i, line in enumerate(file.lines):
         indent = WHITESPACE_INDENT_RE.match(line).group(0)
@@ -352,7 +345,19 @@ def check_space_only_indent(file, config):
     return issues
 
 
-def indent(file, config):
-    return check_space_only_indent(file, config) + check_indentation(
-        file, config
-    )
+def check_tab_only_indent(file):
+    issues = []
+    for i, line in enumerate(file.lines):
+        indent = WHITESPACE_INDENT_RE.match(line).group(0)
+        if not contains_exclusively(indent, "\t"):
+            loc = IssueLocation(file_path=file.path, line=i, column=0)
+            issue = Issue(loc, "Should be indented with tabs", INDENT)
+            issues.append(issue)
+    return issues
+
+
+def indent(file, options):
+    if options == "tab":
+        return check_tab_only_indent(file)
+
+    return check_space_only_indent(file) + check_indentation(file, options)

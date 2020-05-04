@@ -86,8 +86,6 @@ different tools. _curlylint_ is using the `[tool.curlylint]` section. The option
 
 ```toml
 [tool.curlylint]
-# How many spaces
-indent-size = 4
 # Specify additional Jinja elements which can wrap HTML here. You
 # don't neet to specify simple elements which can't wrap anything like
 # {% extends %} or {% include %}.
@@ -108,6 +106,10 @@ exclude = '''
   | webpack-stats.html # also separately exclude a file named webpack-stats.html in the root of the project
 )
 '''
+
+[tool.curlylint.rules]
+# How many spaces
+indent = 4
 ```
 
 </details>

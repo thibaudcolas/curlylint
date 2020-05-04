@@ -4,6 +4,15 @@
 
 ## Unreleased
 
+### Added
+
+- Add support for configuring and disabling individual rules via configuration file, under `[tool.curlylint.rules]`.
+- Add support for tabs as indentation, with `indent = 'tab'`
+
+### Changed
+
+- Indentation is now enforced via the rules configuratlion, e.g. `indent = 4` underneath `[tool.curlylint.rules]`
+
 ## [v0.8.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.8.0) 2020-05-04
 
 ### Added

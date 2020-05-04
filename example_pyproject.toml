@@ -1,6 +1,4 @@
 [tool.curlylint]
-# How many spaces
-indent-size = 4
 # Specify additional Jinja elements which can wrap HTML here. You
 # don't neet to specify simple elements which can't wrap anything like
 # {% extends %} or {% include %}.
@@ -8,3 +6,7 @@ jinja-custom-elements-names = [
   ["cache", "endcache"],
   ["captureas", "endcaptureas"]
 ]
+
+[tool.curlylint.rules]
+# How many spaces
+indent = 4
