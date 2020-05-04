@@ -4,41 +4,19 @@
 
 > **{{ 🎀}}** Prototype linter for [Jinja](https://jinja.palletsprojects.com/) and [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), forked from [jinjalint](https://github.com/motet-a/jinjalint).
 
-It works with [Django’s templates](https://docs.djangoproject.com/en/1.11/ref/templates/language/) too, it should
-work with [Twig](https://twig.symfony.com/) and similar template languages.
-It should work fine with any kind of HTML 4 and 5, however XHTML is not
-supported.
+curlylint is a prototype linter for your templates – whether that’s [Django’s templates](https://docs.djangoproject.com/en/1.11/ref/templates/language/), [Jinja](https://jinja.palletsprojects.com/), [Twig](https://twig.symfony.com/), or any other [“curly braces”](tests/README.md) template language.
 
-This linter parses both HTML and Jinja tags and will report mismatched
-tags and indentation errors:
+As of now, curlylint supports:
 
-```html+jinja
-<div>
-  {% if something %}
-</div>
-{% endif %}
-```
+- Linting invalid template / HTML syntax due to mismatched tags – while template errors are easy enough to spot, it’s not rare for HTML issues to make their way to live sites.
+- Indentation inconsistencies – Usage of tabs vs spaces, line breaks, indentation size.
 
-```html+jinja
-<div>
-    <span>
-    </div>
-</span>
-```
+In the future, we intend to support linting:
 
-```html+jinja
-{% if something %}
-<div>not indented properly</div>
-{% endif %}
-```
-
-```html+jinja
-{% if something %}<a href="somewhere"
-  >{% endif %}
-  <p>something</p>
-  {% if not something %}</a
->{% endif %}
-```
+- Common accessibility issues in HTML – misuse of ARIA `role`, and making sure alternative text is used where appropriate.
+- Common security issues – e.g. `rel="noopener noreferrer"`, or preventing usage of HTTP URLs.
+- General HTML code smells – duplicate attributes, invalid attributes, etc.
+- More [ideas welcome](docs/README.md)!
 
 ## Usage
 
