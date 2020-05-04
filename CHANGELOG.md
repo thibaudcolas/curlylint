@@ -11,7 +11,7 @@
 
 ### Changed
 
-- Indentation is now enforced via the rules configuratlion, e.g. `indent = 4` underneath `[tool.curlylint.rules]`
+- Indentation is now enforced via the rules configuration, e.g. `indent = 4` underneath `[tool.curlylint.rules]`
 
 ## [v0.8.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.8.0) 2020-05-04
 

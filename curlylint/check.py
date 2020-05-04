@@ -19,10 +19,5 @@ def check_file(file, rules):
     )
 
 
-def check_files(files, config):
-    rules = config.get("rules")
-
-    if not rules:
-        return []
-
+def check_files(files, rules):
     return flatten(check_file(file, rules) for file in files)

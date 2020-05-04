@@ -52,7 +52,12 @@ def lint(paths, config):
         if file is not None:
             files.append(file)
 
-    if not config.get("parse_only", False):
-        issues += check_files(files, config)
+    if config.get("parse_only", False):
+        return issues
+
+    rules = config.get("rules")
+
+    if rules:
+        issues += check_files(files, rules)
 
     return issues

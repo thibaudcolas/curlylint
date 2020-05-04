@@ -2,3 +2,4 @@
 
 [tool.curlylint]
 [tool.curlylint.rules]
+indent = 4
