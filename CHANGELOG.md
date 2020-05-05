@@ -1,6 +1,6 @@
 # Changelog
 
-> All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+> All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
@@ -12,7 +12,7 @@
 
 ### Changed
 
-- Indentation is now enforced via the rules configuration, e.g. `indent = 4` underneath `[tool.curlylint.rules]`
+- Indentation is now enforced via the rules configuration, e.g. `indent = 4` underneath `[tool.curlylint.rules]`, instead of a top-level `indent-size` configuration.
 
 ## [v0.8.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.8.0) 2020-05-04
 
