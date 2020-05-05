@@ -62,6 +62,14 @@ Don’t lint, check for syntax errors and exit.
 curlylint --parse-only template-directory/
 ```
 
+#### `--rule`
+
+Specify rules, with the syntax `--rule 'code: {"json": "value"}'`. Can be provided multiple times to configure multiple rules.
+
+```sh
+curlylint --rule 'indent: 2' template-directory/
+```
+
 ## Configuration with pyproject.toml
 
 _curlylint_ is able to read project-specific default values for its command line options from a [PEP 518](https://www.python.org/dev/peps/pep-0518/) `pyproject.toml` file.

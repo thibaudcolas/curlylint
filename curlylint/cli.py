@@ -1,9 +1,11 @@
 import re
 from functools import partial
 from pathlib import Path
-from typing import Optional, Pattern, Set, Tuple
+from typing import Any, Mapping, Optional, Pattern, Set, Tuple, Union
 
 import click  # lgtm [py/import-and-import-from]
+
+from curlylint.rule_param import RULE
 
 from . import __version__
 from .config import (
@@ -94,6 +96,15 @@ def path_empty(
     ),
     show_default=True,
 )
+@click.option(
+    "--rule",
+    type=RULE,
+    help=(
+        'Specify rules, with the syntax --rule \'code: {"json": "value"}\'. '
+        "Can be provided multiple times to configure multiple rules."
+    ),
+    multiple=True,
+)
 @click.argument(
     "src",
     nargs=-1,
@@ -130,6 +141,7 @@ def main(
     format: str,
     include: str,
     exclude: str,
+    rule: Union[Mapping[str, Any], Tuple[Mapping[str, Any], ...]],
     src: Tuple[str, ...],
 ) -> None:
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
@@ -190,6 +202,15 @@ def main(
     configuration = {}
     if ctx.default_map:
         configuration.update(ctx.default_map)
+
+    rules = configuration.get("rules", {})
+
+    if rule:
+        if isinstance(rule, tuple):
+            for r in rule:
+                rules.update(r)
+        else:
+            rules.update(rule)
 
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
