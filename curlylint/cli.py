@@ -14,7 +14,7 @@ from .config import (
     get_gitignore,
     read_pyproject_toml,
 )
-from .lint import lint
+from .lint import lint, lint_one
 from .report import Report
 
 out = partial(click.secho, bold=True, err=True)
@@ -183,7 +183,9 @@ def main(
                 )
             )
         elif p.is_file() or s == "-":
-            # if a file was explicitly given, we don't care about its extension
+            if verbose:
+                out("Analyzing file content from stdin")
+
             sources.add(p)
         else:
             err(f"invalid path: {s}")
@@ -216,7 +218,11 @@ def main(
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
 
-    issues = lint(sources, configuration)
+    if len(sources) == 1:
+        issues = lint_one(sources.pop(), configuration)
+    else:
+        issues = lint(sources, configuration)
+
     report.print_issues(issues)
 
     if verbose or not quiet:

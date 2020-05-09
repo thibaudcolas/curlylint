@@ -70,6 +70,14 @@ Specify rules, with the syntax `--rule 'code: {"json": "value"}'`. Can be provid
 curlylint --rule 'indent: 2' template-directory/
 ```
 
+#### Reading from standard input
+
+Pipe the template to curlylint and use a path of `-` so curlylint reads from stdin:
+
+```sh
+cat some-file.html | curlylint -
+```
+
 ## Configuration with pyproject.toml
 
 _curlylint_ is able to read project-specific default values for its command line options from a [PEP 518](https://www.python.org/dev/peps/pep-0518/) `pyproject.toml` file.

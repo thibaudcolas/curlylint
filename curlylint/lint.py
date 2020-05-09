@@ -1,6 +1,11 @@
+import io
+import sys
+from pathlib import Path
+from typing import Set
+
 import parsy
 
-from .check import check_files
+from .check import check_file, check_files
 from .file import File
 from .issue import Issue, IssueLocation
 from .parse import make_parser
@@ -20,6 +25,10 @@ def parse_file(path_and_config):
     with path.open("r") as f:
         source = f.read()
 
+    return parse_source(path, config, source)
+
+
+def parse_source(path: Path, config, source: str):
     parser = make_parser(config)
 
     try:
@@ -36,7 +45,7 @@ def parse_file(path_and_config):
         return [issue], None
 
 
-def lint(paths, config):
+def lint(paths: Set[Path], config):
     issues = []
     files = []
 
@@ -59,5 +68,25 @@ def lint(paths, config):
 
     if rules:
         issues += check_files(files, rules)
+
+    return issues
+
+
+def lint_one(path: Path, config):
+    if not path.is_file() and str(path) == "-":
+        source = sys.stdin.read()
+        parse_issues, file = parse_source(path, config, source)
+    else:
+        parse_issues, file = parse_file((path, config))
+
+    issues = parse_issues
+
+    if config.get("parse_only", False):
+        return issues
+
+    rules = config.get("rules")
+
+    if rules and file is not None:
+        issues += check_file(file, rules)
 
     return issues

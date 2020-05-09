@@ -9,6 +9,7 @@
 - Add support for configuring and disabling individual rules via configuration file, under `[tool.curlylint.rules]`.
 - Add support for tabs as indentation, with `indent = 'tab'`
 - Add a way to configure rules via CLI parameters, with `--rule`: `curlylint --rule 'indent: 2' template-directory/`.
+- Support piping template contents from stdin with "-" as the file path
 
 ### Changed
 
