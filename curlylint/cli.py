@@ -212,6 +212,7 @@ def main(
         else:
             rules.update(rule)
 
+    configuration["rules"] = rules
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
 
