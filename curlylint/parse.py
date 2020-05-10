@@ -212,7 +212,10 @@ def make_jinja_element_parser(name_parsers, content):
 
 
 jinja_name = (
-    P.letter + (P.letter | P.decimal_digit | P.string("_")).many().concat()
+    P.letter
+    + (P.letter | P.decimal_digit | P.string("_"))  # type: ignore
+    .many()
+    .concat()
 )
 
 

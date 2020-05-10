@@ -6,7 +6,7 @@ checks = {INDENT: indent}
 
 def check_rule(file, code: str, options):
     check = checks.get(code, None)
-    return check(file, options)
+    return check(file, options) if check else []
 
 
 def check_file(file, rules):

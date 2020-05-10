@@ -3,8 +3,10 @@ from typing import List
 
 import click
 
+from curlylint.issue import Issue
 
-def format_stylish(issues: List["Issue"]):
+
+def format_stylish(issues: List[Issue]):
     sorted_issues = sorted(
         issues,
         key=lambda i: (

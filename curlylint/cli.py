@@ -1,7 +1,7 @@
 import re
 from functools import partial
 from pathlib import Path
-from typing import Any, Mapping, Optional, Pattern, Set, Tuple, Union
+from typing import Any, Dict, Mapping, Optional, Pattern, Set, Tuple, Union
 
 import click  # lgtm [py/import-and-import-from]
 
@@ -201,7 +201,7 @@ def main(
         out("Files being analyzed:")
         out("\n".join(str(s) for s in sources), bold=False, fg="blue")
 
-    configuration = {}
+    configuration = {}  # type: Dict[str, Any]
     if ctx.default_map:
         configuration.update(ctx.default_map)
 

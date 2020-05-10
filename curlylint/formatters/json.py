@@ -1,8 +1,10 @@
 import json
 from typing import List
 
+from curlylint.issue import Issue
 
-def format_json(issues: List["Issue"]):
+
+def format_json(issues: List[Issue]):
     sorted_issues = sorted(
         issues,
         key=lambda i: (

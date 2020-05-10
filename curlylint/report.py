@@ -8,6 +8,7 @@ import click
 from curlylint.formatters.compact import format_compact
 from curlylint.formatters.json import format_json
 from curlylint.formatters.stylish import format_stylish
+from curlylint.issue import Issue
 
 out = partial(click.secho, bold=True, err=True)
 err = partial(click.secho, fg="red", err=True)
@@ -34,7 +35,7 @@ class Report:
         if self.verbose:
             out(f"{path} ignored: {message}", bold=False)
 
-    def print_issues(self, issues: List["Issue"]):
+    def print_issues(self, issues: List[Issue]):
         self.failure_count += len(issues)
         formatter = formatters[self.format]
 
