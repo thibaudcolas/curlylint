@@ -25,8 +25,8 @@ Here are tools that this linter could learn from. Suggestions welcome.
 
 ## Developer tools
 
-- [ ] https://github.com/prettier/prettier
-- [ ] https://github.com/eslint/eslint
+- [x] https://github.com/prettier/prettier, last reviewed 2020-05-06
+- [x] https://github.com/eslint/eslint, last reviewed 2020-05-06
 - [ ] https://github.com/stylelint/stylelint
 
 ### Python developer tools
@@ -36,9 +36,22 @@ Most of curlylint’s CLI is already based on that of black: include/excludes, c
 - [ ] https://pypi.org/project/flake8/
 - [ ] https://github.com/tommilligan/flake8-fixme
 - [ ] https://github.com/PyCQA/flake8-bugbear
-- [ ] https://github.com/psf/black
+- [x] https://github.com/psf/black, last reviewed 2020-05-06
 
-## Linting rules ideas
+## CLI ideas
+
+- Support configuration from `setup.cfg`.
+- Support configuration from `.editorconfig`.
+- Support using a file with ignore paths.
+- Disable colored output.
+- Cache results / only check changed files.
+- Print config for the given file.
+
+## Linting ideas
+
+- Support disabling rules via code comments.
+
+## Rules ideas
 
 ### Wishlist
 
