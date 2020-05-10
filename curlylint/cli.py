@@ -72,6 +72,17 @@ def path_empty(
     show_default=True,
 )
 @click.option(
+    "--stdin-filepath",
+    type=click.Path(
+        exists=False,
+        file_okay=True,
+        dir_okay=False,
+        readable=False,
+        allow_dash=False,
+    ),
+    help=("Path to the file to pretend that stdin comes from."),
+)
+@click.option(
     "--include",
     type=str,
     default=DEFAULT_INCLUDES,
@@ -139,6 +150,7 @@ def main(
     parse_only: bool,
     config: Optional[str],
     format: str,
+    stdin_filepath: str,
     include: str,
     exclude: str,
     rule: Union[Mapping[str, Any], Tuple[Mapping[str, Any], ...]],
@@ -217,6 +229,9 @@ def main(
     configuration["rules"] = rules
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
+
+    if stdin_filepath:
+        configuration["stdin_filepath"] = Path(stdin_filepath)
 
     if len(sources) == 1:
         issues = lint_one(sources.pop(), configuration)

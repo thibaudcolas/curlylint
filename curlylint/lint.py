@@ -74,7 +74,9 @@ def lint(paths: Set[Path], config):
 def lint_one(path: Path, config):
     if not path.is_file() and str(path) == "-":
         source = sys.stdin.read()
-        parse_issues, file = parse_source(path, config, source)
+        parse_issues, file = parse_source(
+            config.get("stdin_filepath", path), config, source
+        )
     else:
         parse_issues, file = parse_file((path, config))
 

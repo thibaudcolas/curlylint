@@ -78,6 +78,12 @@ Pipe the template to curlylint and use a path of `-` so curlylint reads from std
 cat some-file.html | curlylint -
 ```
 
+The `--stdin-filepath` flag can be used to provide a fake path corresponding to the piped template for linting and reporting:
+
+```sh
+cat some-file.html | curlylint - --stdin-filepath some-file.html
+```
+
 ## Configuration with pyproject.toml
 
 _curlylint_ is able to read project-specific default values for its command line options from a [PEP 518](https://www.python.org/dev/peps/pep-0518/) `pyproject.toml` file.

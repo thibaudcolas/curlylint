@@ -11,6 +11,7 @@
 - Add a way to configure rules via CLI parameters, with `--rule`: `curlylint --rule 'indent: 2' template-directory/`.
 - Support piping template contents from stdin with "-" as the file path.
 - Publish curlylint as typed with a `py.typed` file and `Typing :: Typed` classifier.
+- Add `--stdin-filepath` CLI flag to provide a pretend path when linting standard input.
 
 ### Changed
 
