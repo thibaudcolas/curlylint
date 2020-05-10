@@ -2,7 +2,7 @@
 
 import io
 
-from setuptools import find_packages, setup
+from setuptools import find_packages, setup  # type: ignore
 
 from curlylint import (
     __author__,
@@ -31,6 +31,7 @@ setup(
     copyright=__copyright__,
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
+    package_data={"curlylint": ["py.typed"]},
     keywords=[
         "curlylint",
         "jinjalint",
@@ -58,6 +59,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development :: Quality Assurance",
+        "Typing :: Typed",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.6",
