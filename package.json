@@ -1,8 +1,7 @@
 {
   "name": "curlylint",
-  "private": true,
   "version": "0.1.0",
-  "description": "",
+  "description": "{{ 🎀}} Prototype linter for Jinja and Django templates, forked from jinjalint",
   "author": "Thibaud Colas",
   "license": "MIT",
   "homepage": "https://github.com/thibaudcolas/curlylint",
@@ -13,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/thibaudcolas/curlylint/issues"
   },
+  "files": [],
   "devDependencies": {
     "prettier": "2.0.5"
   },
