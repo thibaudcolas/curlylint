@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [v0.9.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.9.0) 2020-05-14
+
 ### Added
 
 - Add support for configuring and disabling individual rules via configuration file, under `[tool.curlylint.rules]`.
