@@ -52,7 +52,14 @@ setup(
         "pathspec>=0.6, <1",
         "dataclasses>=0.6; python_version < '3.7'",
     ],
-    extras_require={"dev": ["black==19.10b0", "isort==4.2.5", "flake8==3.7.8"]},
+    extras_require={
+        "dev": [
+            "black==19.10b0",
+            "isort==4.2.5",
+            "flake8==3.7.8",
+            "mypy==0.770",
+        ]
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
