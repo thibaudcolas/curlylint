@@ -27,17 +27,105 @@ from .util import flatten
 
 sys.setrecursionlimit(10000)
 
+# https://html.spec.whatwg.org/multipage/syntax.html#elements-2
+# https://github.com/html5lib/html5lib-python/blob/0cae52b2073e3f2220db93a7650901f2200f2a13/html5lib/constants.py#L560
+VOID_ELEMENTS = (
+    "area",
+    "base",
+    "br",
+    "col",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+)
 
-# Also called “void elements”
-SELF_CLOSING_ELEMENTS = """
-area base br col command embed hr img input keygen link meta param source
-track wbr
-""".split()
-
-DEPRECATED_ELEMENTS = """
-acronym applet basefont big center dir font frame frameset noframes isindex
-strike tt
-""".split()
+# https://www.w3.org/TR/SVG2/eltindex.html
+# https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+# Technically it’s valid for any SVG element to be written as a self-closing tag,
+# for the parser this is equivalent to the element not having any content.
+# In practice there are a lot of elements which wouldn’t be of much use if they didn’t
+# have any content. This list omits those elements.
+# This list also omits elements that have (next to) no browser implementation.
+# Elements are only commented out so it’s easy to understand what isn’t there, and why.
+SVG_SELF_CLOSING_ELEMENTS = (
+    # "a",
+    "animate",
+    "animateMotion",
+    "animateTransform",
+    # "audio",
+    # "canvas",
+    "circle",
+    # "clipPath",
+    # "defs",
+    # "desc",
+    # "discard",
+    "ellipse",
+    "feBlend",
+    "feColorMatrix",
+    # "feComponentTransfer",
+    "feComposite",
+    "feConvolveMatrix",
+    # "feDiffuseLighting",
+    "feDisplacementMap",
+    "feDistantLight",
+    "feDropShadow",
+    "feFlood",
+    "feFuncA",
+    "feFuncB",
+    "feFuncG",
+    "feFuncR",
+    "feGaussianBlur",
+    "feImage",
+    # "feMerge",
+    "feMergeNode",
+    "feMorphology",
+    "feOffset",
+    "fePointLight",
+    # "feSpecularLighting",
+    "feSpotLight",
+    "feTile",
+    "feTurbulence",
+    # "filter",
+    # "foreignObject",
+    # "g",
+    # "hatchpath",
+    # "iframe",
+    "image",
+    "line",
+    # "linearGradient",
+    # "marker",
+    # "mask",
+    # "metadata",
+    "mpath",
+    "path",
+    # "pattern",
+    "polygon",
+    "polyline",
+    # "radialGradient",
+    "rect",
+    # "script",
+    "set",
+    "stop",
+    # "style",
+    # "svg",
+    # "switch",
+    # "symbol",
+    # "text",
+    # "textPath",
+    # "title",
+    # "tspan",
+    # "unknown",
+    "use",
+    # "video",
+    # "view",
+)
 
 DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
     ("autoescape", "endautoescape"),
@@ -232,6 +320,7 @@ tag_name = tag_name_start_char + tag_name_char.many().concat()
 
 dtd = P.regex(r"<![^>]*>")
 
+# TODO This is overly restrictive on what can be inside attributes, it’s unclear why. Fails on e.g. `data-test=">"`.
 string_attribute_char = P.char_from("-_./+,?=:;#") | P.regex(r"[0-9a-zA-Z]")
 
 
@@ -366,7 +455,7 @@ def _combine_slash(locations, _):
 
 
 def make_opening_tag_parser(
-    config, jinja, tag_name_parser=None, allow_slash=False
+    config, jinja, tag_name_parser=None, allow_slash=False, mandate_slash=False
 ):
     attributes = make_attributes_parser(config, jinja)
 
@@ -379,6 +468,8 @@ def make_opening_tag_parser(
             .combine(_combine_slash)
             .optional()
         )
+    elif mandate_slash:
+        slash = locate(P.string("/").skip(whitespace)).combine(_combine_slash)
     else:
         slash = P.success(None)
 
@@ -566,16 +657,31 @@ def make_element_parser(config, content, jinja):
         config, content=content, jinja=jinja
     )
 
-    self_closing_element_opening_tag = make_opening_tag_parser(
+    void_element_opening_tag = make_opening_tag_parser(
         config,
-        tag_name_parser=P.string_from(*SELF_CLOSING_ELEMENTS),
+        tag_name_parser=P.string_from(*VOID_ELEMENTS),
         allow_slash=True,
         jinja=jinja,
     )
 
-    self_closing_element = locate(
+    void_element = locate(
         P.seq(
-            self_closing_element_opening_tag.skip(whitespace),
+            void_element_opening_tag.skip(whitespace),
+            P.success(None),  # No content
+            P.success(None),  # No closing tag
+        )
+    ).combine(_combine_element)
+
+    svg_self_closing_tag = make_opening_tag_parser(
+        config,
+        tag_name_parser=P.string_from(*SVG_SELF_CLOSING_ELEMENTS),
+        mandate_slash=True,
+        jinja=jinja,
+    )
+
+    svg_self_closing_element = locate(
+        P.seq(
+            svg_self_closing_tag.skip(whitespace),
             P.success(None),  # No content
             P.success(None),  # No closing tag
         )
@@ -584,7 +690,13 @@ def make_element_parser(config, content, jinja):
     style = make_raw_text_element_parser(config, "style", jinja=jinja)
     script = make_raw_text_element_parser(config, "script", jinja=jinja)
 
-    return style | script | self_closing_element | container_element
+    return (
+        style
+        | script
+        | void_element
+        | svg_self_closing_element
+        | container_element
+    )
 
 
 def make_parser(config=None):

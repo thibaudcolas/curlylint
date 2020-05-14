@@ -8,6 +8,10 @@
 
 - Add `--print-config` CLI flag to print the configuration for the given file.
 
+### Fixed
+
+- Fix parsing failing for self-closing SVG elements, e.g. `<path />`.
+
 ## [v0.9.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.9.0) 2020-05-14
 
 ### Added
