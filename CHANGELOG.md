@@ -8,6 +8,10 @@
 
 - Add `--print-config` CLI flag to print the configuration for the given file.
 
+### Changed
+
+- Show a warning when attempting to use a rule that does not exist.
+
 ### Fixed
 
 - Fix parsing failing for self-closing SVG elements, e.g. `<path />`.

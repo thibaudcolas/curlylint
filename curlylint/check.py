@@ -1,12 +1,23 @@
+from functools import partial
+
+import click
+
 from curlylint.rules.indent.indent import INDENT, indent
 from curlylint.util import flatten
+
+err = partial(click.secho, fg="red", err=True)
 
 checks = {INDENT: indent}
 
 
 def check_rule(file, code: str, options):
     check = checks.get(code, None)
-    return check(file, options) if check else []
+
+    if not check:
+        err("Warning: rule `{}` does not exist.".format(code))
+        return []
+
+    return check(file, options)
 
 
 def check_file(file, rules):
