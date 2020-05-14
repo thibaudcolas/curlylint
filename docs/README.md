@@ -45,7 +45,6 @@ Most of curlylint’s CLI is already based on that of black: include/excludes, c
 - Support using a file with ignore paths.
 - Disable colored output.
 - Cache results / only check changed files.
-- Print config for the given file.
 
 ## Linting ideas
 

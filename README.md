@@ -62,6 +62,14 @@ Don’t lint, check for syntax errors and exit.
 curlylint --parse-only template-directory/
 ```
 
+#### `--print-config`
+
+Print the configuration for the given file, and exit.
+
+```sh
+curlylint --print-config some-file.html
+```
+
 #### `--rule`
 
 Specify rules, with the syntax `--rule 'code: {"json": "value"}'`. Can be provided multiple times to configure multiple rules.

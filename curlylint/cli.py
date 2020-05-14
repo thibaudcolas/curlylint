@@ -64,6 +64,12 @@ def path_empty(
     help="Don’t lint, check for syntax errors and exit.",
 )
 @click.option(
+    "--print-config",
+    is_flag=True,
+    help="Print the configuration for the given file.",
+    is_eager=True,
+)
+@click.option(
     "-f",
     "--format",
     type=click.Choice(("compact", "json", "stylish")),
@@ -148,6 +154,7 @@ def main(
     verbose: bool,
     quiet: bool,
     parse_only: bool,
+    print_config: bool,
     config: Optional[str],
     format: str,
     stdin_filepath: str,

@@ -80,6 +80,10 @@ def read_pyproject_toml(
     if not config:
         return None
 
+    if ctx.params.get("print_config", False):
+        print(toml.dumps({"tool": {"curlylint": config}}))
+        ctx.exit(0)
+
     if ctx.default_map is None:
         ctx.default_map = {}
     ctx.default_map.update(config)  # type: ignore  # bad types in .pyi
