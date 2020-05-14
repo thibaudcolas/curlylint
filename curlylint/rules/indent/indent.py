@@ -138,13 +138,6 @@ def check_indentation(file, options):
                 return c
         return None
 
-    def has_jinja_element_child(parent, tag_name):
-        child = get_first_child_node(parent)
-        return (
-            isinstance(child, ast.JinjaElement)
-            and child.parts[0].tag.name == tag_name
-        )
-
     def check_jinja_element_part(
         expected_level, part, inline=False, allow_same_line=False
     ):
