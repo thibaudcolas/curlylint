@@ -9,3 +9,4 @@ webpack-stats.html
 *.liquid
 .pytest_cache
 coverage_html_report
+.mypy_cache
