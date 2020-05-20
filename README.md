@@ -75,7 +75,7 @@ curlylint --print-config some-file.html
 Specify rules, with the syntax `--rule 'code: {"json": "value"}'`. Can be provided multiple times to configure multiple rules.
 
 ```sh
-curlylint --rule 'indent: 2' template-directory/
+curlylint --rule 'indent: 2' --rule 'html_has_lang: true' template-directory/
 ```
 
 #### Reading from standard input
@@ -114,7 +114,7 @@ different tools. _curlylint_ is using the `[tool.curlylint]` section. The option
 
 <summary>Example `pyproject.toml`</summary>
 
-```toml
+```ini
 [tool.curlylint]
 # Specify additional Jinja elements which can wrap HTML here. You
 # don't neet to specify simple elements which can't wrap anything like
@@ -149,6 +149,32 @@ indent = 4
 Command-line options have defaults that you can see in `--help`. A `pyproject.toml` can override those defaults. Finally, options provided by the user on the command line override both.
 
 _curlylint_ will only ever use one `pyproject.toml` file during an entire run. It doesn't look for multiple files, and doesn't compose configuration from different levels of the file hierarchy.
+
+## Rules
+
+### `indent`
+
+Enforces consistent indentation. Options:
+
+```ini
+# Use the given number of spaces.
+indent = 4
+# Use tabs.
+indent = "tab"
+```
+
+### `html_has_lang`
+
+Checks all `html` elements have a `lang` attributes. Options:
+
+```ini
+# The `lang` attribute must be present.
+html_has_lang = true
+# The `lang` attribute must be a specific value.
+html_has_lang = "en-US"
+# The `lang` attribute must be one of the possible values.
+html_has_lang = ["en", "en-GB", "en-US"]
+```
 
 ## Usage with [pre-commit](https://pre-commit.com) git hooks framework
 

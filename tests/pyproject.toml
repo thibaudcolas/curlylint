@@ -2,4 +2,4 @@
 
 [tool.curlylint]
 [tool.curlylint.rules]
-indent = 4
+html_has_lang = 'en'

@@ -2,12 +2,16 @@ from functools import partial
 
 import click
 
+from curlylint.rules.html_has_lang.html_has_lang import (
+    HTML_HAS_LANG,
+    html_has_lang,
+)
 from curlylint.rules.indent.indent import INDENT, indent
 from curlylint.util import flatten
 
 err = partial(click.secho, fg="red", err=True)
 
-checks = {INDENT: indent}
+checks = {HTML_HAS_LANG: html_has_lang, INDENT: indent}
 
 
 def check_rule(file, code: str, options):
