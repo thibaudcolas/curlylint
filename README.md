@@ -176,6 +176,17 @@ html_has_lang = "en-US"
 html_has_lang = ["en", "en-GB", "en-US"]
 ```
 
+### `aria_role`
+
+Checks all `role` attributes use valid values. Options:
+
+```ini
+# The role attribute must be a valid ARIA role.
+aria_role = true
+# The role attribute must be one of the whitelisted options.
+aria_role = ["region", "search", "alert", "dialog"]
+```
+
 ## Usage with [pre-commit](https://pre-commit.com) git hooks framework
 
 Add to your `.pre-commit-config.yaml`:
