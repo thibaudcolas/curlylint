@@ -153,7 +153,7 @@ def find_role_errors(node, file, target_roles):
                         line=node.value.begin.line + 1,
                         column=node.value.begin.column + 1,
                     ),
-                    "error",
+                    "The `role` attribute needs to have a valid value",
                     "aria_role",
                 )
             ]

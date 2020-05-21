@@ -1,10 +1,9 @@
 import unittest
 
-from curlylint.lint import parse_source
 from curlylint.issue import Issue, IssueLocation
+from curlylint.lint import parse_source
 
 from .aria_role import aria_role
-
 
 cases = {
     "double quotes": ('role="search"', True, []),
@@ -19,7 +18,7 @@ cases = {
                 location=IssueLocation(
                     file_path="test.html", column=21, line=7
                 ),
-                message="error",
+                message="The `role` attribute needs to have a valid value",
                 code="aria_role",
             )
         ],
