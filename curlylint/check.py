@@ -2,20 +2,18 @@ from functools import partial
 
 import click
 
-from curlylint.rules.html_has_lang.html_has_lang import (
-    HTML_HAS_LANG,
-    html_has_lang,
-)
-from curlylint.rules.aria_role.aria_role import (
-    ARIA_ROLE,
-    aria_role,
-)
+from curlylint.rules.aria_role.aria_role import aria_role
+from curlylint.rules.html_has_lang.html_has_lang import html_has_lang
 from curlylint.rules.indent.indent import INDENT, indent
 from curlylint.util import flatten
 
 err = partial(click.secho, fg="red", err=True)
 
-checks = {HTML_HAS_LANG: html_has_lang, ARIA_ROLE: aria_role, INDENT: indent}
+checks = {
+    "html_has_lang": html_has_lang,
+    "aria_role": aria_role,
+    INDENT: indent,
+}
 
 
 def check_rule(file, code: str, options):
