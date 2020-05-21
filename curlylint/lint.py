@@ -40,7 +40,7 @@ def parse_source(path: Path, config, source: str):
         return [], file
     except parsy.ParseError as error:
         location = get_parsy_error_location(error, path)
-        issue = Issue(location, "Parse error: " + str(error), "parse-error")
+        issue = Issue(location, "Parse error: " + str(error), "parse_error")
         return [issue], None
 
 
