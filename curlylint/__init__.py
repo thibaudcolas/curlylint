@@ -1,6 +1,6 @@
 __name__ = "curlylint"
 __version__ = "0.9.0"
-__description__ = "{{ 🎀}} Prototype linter for Jinja and Django templates, forked from jinjalint"
+__description__ = "{{ 🎀}} Experimental linter for Jinja, Nunjucks, Django templates, Twig, Liquid"
 __author__ = "Thibaud Colas"
 __author_email__ = "thibaudcolas@gmail.com"
 __url__ = "https://github.com/thibaudcolas/curlylint"

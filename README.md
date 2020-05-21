@@ -2,16 +2,20 @@
 
 [![PyPI](https://img.shields.io/pypi/v/curlylint.svg)](https://pypi.org/project/curlylint/) [![PyPI downloads](https://img.shields.io/pypi/dm/curlylint.svg)](https://pypi.org/project/curlylint/) [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
 
-> **{{ 🎀}}** Prototype linter for [Jinja](https://jinja.palletsprojects.com/) and [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), forked from [jinjalint](https://github.com/motet-a/jinjalint).
+> **{{ 🎀}}** Experimental linter for [Jinja](https://jinja.palletsprojects.com/), [Nunjucks](https://mozilla.github.io/nunjucks/), [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), [Twig](https://twig.symfony.com/), [Liquid](https://shopify.github.io/liquid/).
+> Forked from [jinjalint](https://github.com/motet-a/jinjalint).
 
-curlylint is a prototype linter for your templates – whether that’s [Django’s templates](https://docs.djangoproject.com/en/1.11/ref/templates/language/), [Jinja](https://jinja.palletsprojects.com/), [Twig](https://twig.symfony.com/), or any other [“curly braces”](tests/README.md) template language.
+## Features
 
-As of now, curlylint supports:
+curlylint is an experimental linter for [“curly braces”](tests/README.md) templates, and their HTML. It supports:
 
 - Linting invalid template / HTML syntax due to mismatched tags – while template errors are easy enough to spot, it’s not rare for HTML issues to make their way to live sites.
 - Indentation inconsistencies – Usage of tabs vs spaces, line breaks, indentation size.
+- [Rules](#rules) to check for common accessibility issues.
 
-In the future, we intend to support linting:
+![Screenshot of the curlylint CLI, with an example invocation raising a parsing issue and a rule error](.github/curlylint-screenshot.png)
+
+In the future, we’d like to lint for:
 
 - Common accessibility issues in HTML – misuse of ARIA `role`, and making sure alternative text is used where appropriate.
 - Common security issues – e.g. `rel="noopener noreferrer"`, or preventing usage of HTTP URLs.
@@ -20,21 +24,30 @@ In the future, we intend to support linting:
 
 ## Usage
 
-You need Python 3. Curlylint doesn’t work with Python 2. Install it with
-`pip install curlylint` (or `pip3 install curlylint` depending on how `pip` is
-called on your system), then run it with:
+curlylint is available on [PyPI](<(https://pypi.org/project/curlylint/)>). To install it,
+
+```sh
+pip install curlylint
+```
+
+We support the following Python versions: 3.6, 3.7, 3.8.
+
+Make sure curlylint is correctly installed by running:
+
+```sh
+curlylint --version
+curlylint --help
+```
+
+You can start linting!
 
 ```sh
 curlylint template-directory/
-```
-
-…or:
-
-```sh
+# Or,
 curlylint some-file.html some-other-file.html
 ```
 
-This is a work in progress. Feel free to contribute :upside_down_face:
+Have a look at the [CLI flags](#cli-flags), [Configuration](#configuration), and [Rules](#rules) below to make the most of it.
 
 ### CLI flags
 
@@ -92,7 +105,7 @@ The `--stdin-filepath` flag can be used to provide a fake path corresponding to 
 cat some-file.html | curlylint - --stdin-filepath some-file.html
 ```
 
-## Configuration with pyproject.toml
+## Configuration
 
 _curlylint_ is able to read project-specific default values for its command line options from a [PEP 518](https://www.python.org/dev/peps/pep-0518/) `pyproject.toml` file.
 
@@ -140,6 +153,7 @@ exclude = '''
 [tool.curlylint.rules]
 # How many spaces
 indent = 4
+html_has_lang = 'en-GB'
 ```
 
 </details>

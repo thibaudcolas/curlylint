@@ -7,10 +7,13 @@
 ### Added
 
 - Add `--print-config` CLI flag to print the configuration for the given file.
+- Add experimental `html_has_lang` rule.
+- Add experimental `aria_role` rule.
 
 ### Changed
 
 - Show a warning when attempting to use a rule that does not exist.
+- Rename `parse-error` errors to `parse_error`.
 
 ### Fixed
 

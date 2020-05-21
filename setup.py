@@ -34,14 +34,16 @@ setup(
     package_data={"curlylint": ["py.typed"]},
     keywords=[
         "curlylint",
-        "jinjalint",
         "linter",
+        "linting",
         "jinja",
         "jinja2",
         "django templates",
+        "twig",
+        "nunjucks",
+        "liquid",
         "templates",
         "html",
-        "twig",
     ],
     python_requires=">=3.6",
     install_requires=[
