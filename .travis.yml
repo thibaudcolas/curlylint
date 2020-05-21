@@ -10,6 +10,9 @@ jobs:
     - python: 3.6
     - python: 3.7
     - python: 3.8
+      script:
+        - make lint
+        - make test-coverage
     - language: node_js
       install:
         - npm install --no-optional --no-audit --progress=false
@@ -18,7 +21,6 @@ jobs:
 install:
   - pip install -e '.[dev]'
 script:
-  - make lint
   - make test-coverage
 branches:
   except:
