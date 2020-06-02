@@ -6,6 +6,7 @@ import click
 import toml
 from pathspec import PathSpec
 
+from . import __version__
 from .report import Report
 
 out = partial(click.secho, bold=True, err=True)
@@ -58,9 +59,13 @@ def parse_pyproject_toml(path_config: str) -> Dict[str, Any]:
 
 
 def dump_toml_config(ctx: click.Context, config: Dict[str, Any] = None):
-    """Prints the provided config object, if required."""
+    """Prints the provided config object as TOML, if present."""
     if not config:
-        config = {}
+        out(
+            "Oops! Something went wrong! :( curlylint couldn’t find a configuration file.\n"
+            f"curlylint: v{__version__}.\n\n"
+        )
+        ctx.exit(2)
 
     print(toml.dumps({"tool": {"curlylint": config}}))
     ctx.exit(0)

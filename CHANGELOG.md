@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### Added
+
+- Add helpful error message when curlylint can’t find any configuration with `--print-config`.
+
 ### Changed
 
 - Fix `--print-config` flag running linting when no config is found for the given file.
