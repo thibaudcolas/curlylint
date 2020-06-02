@@ -1,5 +1,3 @@
-import operator
-
 from curlylint import ast
 from curlylint.check_node import CheckNode, build_tree
 from curlylint.issue import Issue, IssueLocation
