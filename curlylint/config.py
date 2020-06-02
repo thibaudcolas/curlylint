@@ -1,4 +1,4 @@
-from functools import lru_cache
+from functools import lru_cache, partial
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Union
 
@@ -7,6 +7,8 @@ import toml
 from pathspec import PathSpec
 
 from .report import Report
+
+out = partial(click.secho, bold=True, err=True)
 
 
 @lru_cache()
@@ -55,6 +57,15 @@ def parse_pyproject_toml(path_config: str) -> Dict[str, Any]:
     return {k.replace("--", "").replace("-", "_"): v for k, v in config.items()}
 
 
+def dump_toml_config(ctx: click.Context, config: Dict[str, Any] = None):
+    """Prints the provided config object, if required."""
+    if not config:
+        config = {}
+
+    print(toml.dumps({"tool": {"curlylint": config}}))
+    ctx.exit(0)
+
+
 def read_pyproject_toml(
     ctx: click.Context,
     param: click.Parameter,
@@ -65,9 +76,13 @@ def read_pyproject_toml(
     otherwise.
     """
     assert not isinstance(value, (int, bool)), "Invalid parameter type passed"
+    print_config = ctx.params.get("print_config", False)
+
     if not value:
         value = find_pyproject_toml(ctx.params.get("src", ()))
         if value is None:
+            if print_config:
+                dump_toml_config(ctx)
             return None
 
     try:
@@ -78,11 +93,12 @@ def read_pyproject_toml(
         )
 
     if not config:
+        if print_config:
+            dump_toml_config(ctx)
         return None
 
-    if ctx.params.get("print_config", False):
-        print(toml.dumps({"tool": {"curlylint": config}}))
-        ctx.exit(0)
+    if print_config:
+        dump_toml_config(ctx, config)
 
     if ctx.default_map is None:
         ctx.default_map = {}

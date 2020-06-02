@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Fix `--print-config` flag running linting when no config is found for the given file.
+
 ## [v0.10.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.10.0) 2020-05-21
 
 ### Added
