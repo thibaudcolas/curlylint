@@ -21,7 +21,9 @@ class RuleParamType(click.ParamType):
                 ctx,
             )
         except ValueError:
-            self.fail(f"{value!r} is not a valid rule", param, ctx)
+            self.fail(
+                f"{value!r} is not a valid rule configuration", param, ctx
+            )
 
 
 RULE = RuleParamType()

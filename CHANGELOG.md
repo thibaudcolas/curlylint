@@ -11,6 +11,7 @@
 ### Changed
 
 - Fix `--print-config` flag running linting when no config is found for the given file.
+- Clarify error message for invalid `--rule` declarations.
 
 ## [v0.10.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.10.0) 2020-05-21
 
