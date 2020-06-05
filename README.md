@@ -201,6 +201,15 @@ aria_role = true
 aria_role = ["region", "search", "alert", "dialog"]
 ```
 
+### `table_has_caption`
+
+Checks all `table` elements contain a `caption`. Options:
+
+```ini
+# The `caption` must be present.
+table_has_caption = true
+```
+
 ## Usage with [pre-commit](https://pre-commit.com) git hooks framework
 
 Add to your `.pre-commit-config.yaml`:

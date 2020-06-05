@@ -1,10 +1,9 @@
 import unittest
 
-from curlylint.lint import parse_source
 from curlylint.issue import Issue, IssueLocation
+from curlylint.lint import parse_source
 
 from .html_has_lang import html_has_lang
-
 
 cases = {
     "double quotes": ('<html lang="en">', True, []),
@@ -20,6 +19,19 @@ cases = {
                     file_path="test.html", column=17, line=2
                 ),
                 message="The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page",
+                code="html_has_lang",
+            )
+        ],
+    ),
+    "missing with attribute": (
+        '<html class="no-js">',
+        True,
+        [
+            Issue(
+                location=IssueLocation(
+                    file_path="test.html", column=17, line=2
+                ),
+                message="The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en",
                 code="html_has_lang",
             )
         ],

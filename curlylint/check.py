@@ -1,10 +1,9 @@
 from functools import partial
 
 import click
-
 from curlylint.rules.aria_role.aria_role import aria_role
 from curlylint.rules.html_has_lang.html_has_lang import html_has_lang
-from curlylint.rules.indent.indent import INDENT, indent
+from curlylint.rules.indent.indent import indent
 from curlylint.util import flatten
 
 err = partial(click.secho, fg="red", err=True)
@@ -12,7 +11,7 @@ err = partial(click.secho, fg="red", err=True)
 checks = {
     "html_has_lang": html_has_lang,
     "aria_role": aria_role,
-    INDENT: indent,
+    "indent": indent,
 }
 
 
