@@ -12,6 +12,7 @@
 
 - Fix `--print-config` flag running linting when no config is found for the given file.
 - Clarify error message for invalid `--rule` declarations.
+- Publish package with Python wheels as well as egg.
 
 ### Fixed
 

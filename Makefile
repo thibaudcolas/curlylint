@@ -34,7 +34,7 @@ clean-pyc: ## Remove Python file artifacts.
 	find . -name '*~' -exec rm -f {} +
 
 sdist: ## Builds package version
-	rm dist/* ; python setup.py sdist
+	rm dist/* ; python setup.py sdist bdist_wheel
 
 publish: sdist ## Publishes a new version to pypi.
 	twine upload dist/* && echo 'Success! Go to https://pypi.org/project/curlylint/ and check that all is well.'
