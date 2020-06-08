@@ -10,9 +10,8 @@
   prCreation: "not-pending",
   // https://renovatebot.com/docs/configuration-options/#semanticcommits
   semanticCommits: true,
-  // Use shorter commit messages to account for long dependency names.
-  // https://docs.renovatebot.com/configuration-options/#commitmessagetopic
-  commitMessageTopic: "{{depName}}",
+  // https://renovatebot.com/docs/configuration-options/#prbodycolumns
+  prBodyColumns: ["Package", "Update", "Type", "Change"],
   // https://renovatebot.com/docs/configuration-options/#rebasestaleprs
   rebaseStalePrs: true,
   // https://renovatebot.com/docs/configuration-options/#schedule
@@ -25,10 +24,12 @@
     supportPolicy: ["current"],
   },
   packageRules: [
-    {
-      packageNames: ["prettier"],
-      groupName: "prettier",
-      automerge: true,
-    },
+    { packageNames: ["prettier"], groupName: "prettier", automerge: true },
+    { packageNames: ["black"], groupName: "black", automerge: true },
+    { packageNames: ["isort"], groupName: "isort", automerge: true },
+    { packageNames: ["flake8"], groupName: "flake8", automerge: true },
+    { packageNames: ["mypy"], groupName: "mypy", automerge: true },
+    { packageNames: ["pytest"], groupName: "pytest", automerge: true },
+    { packageNames: ["coverage"], groupName: "coverage", automerge: true },
   ],
 }
