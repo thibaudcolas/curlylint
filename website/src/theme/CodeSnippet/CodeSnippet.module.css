@@ -50,6 +50,10 @@
     monospace;
 }
 
+[data-theme="dark"] .annotation::after {
+  background-color: var(--ifm-background-color);
+}
+
 .annotation:hover::before,
 .annotation:hover::after {
   opacity: 1;
