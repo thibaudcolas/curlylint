@@ -16,7 +16,7 @@ module.exports = {
     },
     prism: {
       theme: require("prism-react-renderer/themes/github"),
-      darkTheme: require("./src/plugins/prism_themes/monokai"),
+      darkTheme: require("prism-react-renderer/themes/dracula"),
     },
     navbar: {
       title: "curlylint",
