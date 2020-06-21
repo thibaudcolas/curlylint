@@ -9,14 +9,14 @@ INDENT_RE = re.compile("^ *")
 INDENT = "indent"
 
 RULE = {
+    "id": "indent",
     "type": "layout",
     "docs": {
-        "description": "enforce consistent indentation",
-        "category": "Stylistic Issues",
+        "description": "Enforce consistent indentation",
         "recommended": False,
         "url": "",
+        "examples": {"Use the given number of spaces": 4, "Use tabs": "tab"},
     },
-    "fixable": "whitespace",
     "schema": [
         {"oneOf": [{"enum": ["tab"]}, {"type": "integer", "minimum": 0}]}
     ],

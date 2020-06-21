@@ -16,8 +16,10 @@ jobs:
     - language: node_js
       install:
         - npm install --no-optional --no-audit --progress=false
+        - npm --prefix website install
       script:
         - npm run lint
+        - npm --prefix website run build
 install:
   - pip install -e '.[dev]'
 script:

@@ -10,3 +10,5 @@ webpack-stats.html
 .pytest_cache
 coverage_html_report
 .mypy_cache
+.docusaurus
+build

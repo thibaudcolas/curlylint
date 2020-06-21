@@ -1,6 +1,6 @@
 # [curlylint](https://pypi.org/project/curlylint/) [<img src="https://raw.githubusercontent.com/thibaudcolas/curlylint/master/.github/curlylint-logo.svg?sanitize=true" width="250" height="100" align="right" alt="">](https://pypi.org/project/curlylint/)
 
-[![PyPI](https://img.shields.io/pypi/v/curlylint.svg)](https://pypi.org/project/curlylint/) [![PyPI downloads](https://img.shields.io/pypi/dm/curlylint.svg)](https://pypi.org/project/curlylint/) [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python)
+[![PyPI](https://img.shields.io/pypi/v/curlylint.svg)](https://pypi.org/project/curlylint/) [![PyPI downloads](https://img.shields.io/pypi/dm/curlylint.svg)](https://pypi.org/project/curlylint/) [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=master)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python) [![Netlify Status](https://api.netlify.com/api/v1/badges/6830546d-b21d-4067-9ca2-7288b4aedbaa/deploy-status)](https://app.netlify.com/sites/elegant-engelbart-bc2c51/deploys)
 
 > **{{ 🎀}}** Experimental linter for [Jinja](https://jinja.palletsprojects.com/), [Nunjucks](https://mozilla.github.io/nunjucks/), [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), [Twig](https://twig.symfony.com/), [Liquid](https://shopify.github.io/liquid/).
 > Forked from [jinjalint](https://github.com/motet-a/jinjalint).
@@ -232,10 +232,10 @@ If you just want to set up the project on your own computer, the contribution gu
 
 ## Credits
 
-Image credit: [FxEmojis](https://github.com/mozilla/fxemoji).
-
 This project is a fork of [jinjalint](https://github.com/motet-a/jinjalint).
+
+Image credit: [FxEmojis](https://github.com/mozilla/fxemoji).
 
 Test templates extracted from third-party projects. View the full list in [`tests/README.md`](tests/README.md).
 
-View the full list of [contributors](https://github.com/thibaudcolas/curlylint/graphs/contributors). [MIT](https://github.com/thibaudcolas/curlylint/blob/master/LICENSE) licensed.
+View the full list of [contributors](https://github.com/thibaudcolas/curlylint/graphs/contributors). [MIT](https://github.com/thibaudcolas/curlylint/blob/master/LICENSE) licensed. Website content available as [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/).

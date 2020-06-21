@@ -91,3 +91,9 @@ lib64
 # -------------------------------------------------
 # Your own project's ignores
 # -------------------------------------------------
+
+# Generated files
+.docusaurus
+.cache-loader
+
+*.local

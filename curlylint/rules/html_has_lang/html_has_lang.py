@@ -5,8 +5,10 @@ from curlylint.issue import Issue, IssueLocation
 HTML_HAS_LANG = "html_has_lang"
 
 RULE = {
+    "id": "html_has_lang",
+    "type": "accessibility",
     "docs": {
-        "description": "<html> elements must have a `lang` attribute",
+        "description": "`<html>` elements must have a `lang` attribute",
         "url": "",
     },
     "schema": [],

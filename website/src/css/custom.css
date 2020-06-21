@@ -1,0 +1,110 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  /* https://v2.docusaurus.io/docs/styling-layout#styling-your-site-with-infima */
+  --ifm-color-primary: #fd47d0;
+  --ifm-color-primary-dark: #fd27c8;
+  --ifm-color-primary-darker: #fc17c4;
+  --ifm-color-primary-darkest: #e002a9;
+  --ifm-color-primary-light: #fd67d8;
+  --ifm-color-primary-lighter: #fe77dc;
+  --ifm-color-primary-lightest: #fea7e9;
+
+  --ifm-h4-font-size: 1.25rem;
+  --ifm-h5-font-size: 1.25rem;
+  --ifm-h6-font-size: 1.25rem;
+}
+
+html[data-theme="dark"] {
+  --ifm-background-color: #242526;
+}
+
+.hero--primary {
+  --ifm-hero-background-color: var(--ifm-hero-background-color);
+  --ifm-hero-text-color: var(--ifm-font-color-base);
+}
+
+.hero--primary h1 {
+  color: var(--ifm-color-primary);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+body {
+  font-size: 1.25rem;
+}
+
+a {
+  font-weight: bold;
+}
+
+.navbar--fixed-top {
+  position: static;
+}
+
+[data-draftail-balloon] {
+  position: relative;
+  cursor: pointer;
+  background: url(http://i.imgur.com/HlfA2is.gif) bottom repeat-x;
+}
+
+[data-draftail-balloon]::before {
+  content: "";
+  position: absolute;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  background: no-repeat
+    url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%22#{$width * 2}%22%20height%3D%22#{$height * 2}%22%3E%3Cpath%20fill%3D%22#{$color}%22%20transform%3D%22rotate(#{$degrees})%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E");
+  background-size: 100% auto;
+  width: 18px;
+  height: 6px;
+
+  left: 50%;
+  margin-top: 1px;
+  top: 100%;
+  transform: translate(-50%, -10px);
+}
+
+[data-draftail-balloon]::after {
+  position: absolute;
+  content: attr(title);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  background: black;
+  border-radius: 3px;
+  color: white;
+  padding: 0.5em 1em;
+  white-space: pre;
+  left: 50%;
+  margin-top: calc(1px + 6px);
+  top: 100%;
+  transform: translate(-50%, -10px);
+  z-index: 1;
+  background-color: white;
+  color: #d5382f;
+  border: 3px solid currentColor;
+  padding: 0.5rem 1rem;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+[data-draftail-balloon]:hover::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+[data-draftail-balloon]:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

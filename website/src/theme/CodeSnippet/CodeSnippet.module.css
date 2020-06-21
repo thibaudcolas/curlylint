@@ -1,0 +1,56 @@
+/**
+ * Adapted from https://github.com/springload/draftail/blob/master/lib/components/ToolbarTooltip.scss
+ * Itself adapted from https://github.com/kazzkiq/balloon.css.
+ * Styles inspired by https://flow.org/en/docs/types/.
+ */
+
+.annotation {
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+  border-bottom: 3px dotted #d5382f;
+}
+
+.annotation::before {
+  content: "";
+  position: absolute;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  background-color: #d5382f;
+  background-size: 100% auto;
+  width: 30px;
+  height: 0px;
+  left: 0;
+  margin-top: 1px;
+  top: 100%;
+  transform: translate(-50%, 0);
+}
+
+.annotation::after {
+  position: absolute;
+  content: attr(title);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  background: black;
+  border-radius: 3px;
+  color: white;
+  padding: 0.5em 1em;
+  white-space: pre;
+  left: 0;
+  top: 100%;
+  transform: translate(0%, 0);
+  z-index: 1;
+  background-color: white;
+  color: #d5382f;
+  border: 3px solid currentColor;
+  padding: 0.5rem 1rem;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+.annotation:hover::before,
+.annotation:hover::after {
+  opacity: 1;
+}
