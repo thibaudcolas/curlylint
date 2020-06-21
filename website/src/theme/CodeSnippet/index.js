@@ -5,8 +5,7 @@ import useThemeContext from "@theme/hooks/useThemeContext";
 
 import Highlight, { defaultProps } from "prism-react-renderer";
 import Prism from "prism-react-renderer/prism";
-
-import monokai from "@site/src/plugins/prism_themes/monokai";
+import monokai from "prism-react-renderer/themes/dracula";
 
 import styles from "./CodeSnippet.module.css";
 
