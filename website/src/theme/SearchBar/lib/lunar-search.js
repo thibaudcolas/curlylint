@@ -8,7 +8,7 @@ class LunrSearchAdapter {
   }
 
   getLunrResult(input) {
-    return this.lunrIndex.query(function(query) {
+    return this.lunrIndex.query(function (query) {
       const tokens = lunr.tokenizer(input);
       query.term(tokens, {
         boost: 10,

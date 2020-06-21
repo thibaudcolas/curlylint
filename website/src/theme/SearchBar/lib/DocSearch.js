@@ -98,16 +98,13 @@ class DocSearch {
 
   static injectSearchBox(input) {
     input.before(templates.searchBox);
-    const newInput = input
-      .prev()
-      .prev()
-      .find("input");
+    const newInput = input.prev().prev().find("input");
     input.remove();
     return newInput;
   }
 
   static bindSearchBoxEvent() {
-    $('.searchbox [type="reset"]').on("click", function() {
+    $('.searchbox [type="reset"]').on("click", function () {
       $("input#docsearch").focus();
       $(this).addClass("hide");
       autocomplete.autocomplete.setVal("");
