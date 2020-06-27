@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [v0.11.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.11.0) 2020-05-21
+
 ### Added
 
 - Add helpful error message when curlylint can’t find any configuration with `--print-config`.
