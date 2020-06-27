@@ -31,5 +31,17 @@
     { packageNames: ["mypy"], groupName: "mypy", automerge: true },
     { packageNames: ["pytest"], groupName: "pytest", automerge: true },
     { packageNames: ["coverage"], groupName: "coverage", automerge: true },
+    {
+      packageNames: [
+        "@docusaurus/core",
+        "@docusaurus/preset-classic",
+        "docusaurus-lunr-search",
+        "prismjs",
+        "react",
+        "react-dom",
+      ],
+      groupName: "docusaurus",
+      automerge: true,
+    },
   ],
 }
