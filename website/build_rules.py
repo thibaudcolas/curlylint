@@ -22,7 +22,7 @@ if __name__ == "__main__":
 # Timestamp: {datetime.datetime.now()}
 id: {rule['id']}
 title: {rule['id']}
-custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/master/curlylint/rules/{rule['id']}/{rule['id']}.py
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/{rule['id']}/{rule['id']}.py
 ---
 
 > {rule['docs']['description']}
@@ -49,7 +49,7 @@ custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/master/curlylint
 # Timestamp: {datetime.datetime.now()}
 id: all
 title: All rules
-custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/master/website/build_rules.py
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/website/build_rules.py
 ---
 
 {rules_list}

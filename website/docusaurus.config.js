@@ -82,7 +82,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Thibaud Colas. Emojis by <a href="https://github.com/mozilla/fxemoji">FxEmojis</a>. Powered by <a href="https://www.netlify.com/">Netlify</a>. <a href="https://github.com/thibaudcolas/curlylint/tree/master/website">Edit on GitHub</a>.`,
+      copyright: `© ${new Date().getFullYear()} Thibaud Colas. Emojis by <a href="https://github.com/mozilla/fxemoji">FxEmojis</a>. Powered by <a href="https://www.netlify.com/">Netlify</a>. <a href="https://github.com/thibaudcolas/curlylint/tree/main/website">Edit on GitHub</a>.`,
     },
   },
   presets: [
@@ -95,13 +95,13 @@ module.exports = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           editUrl:
-            "https://github.com/thibaudcolas/curlylint/edit/master/website/",
+            "https://github.com/thibaudcolas/curlylint/edit/main/website/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            "https://github.com/thibaudcolas/curlylint/edit/master/website/",
+            "https://github.com/thibaudcolas/curlylint/edit/main/website/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
