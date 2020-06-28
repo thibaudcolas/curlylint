@@ -29,6 +29,11 @@ Here are tools that this linter could learn from. Suggestions welcome.
 - [x] https://github.com/eslint/eslint, last reviewed 2020-05-06
 - [ ] https://github.com/stylelint/stylelint
 
+## Research
+
+- [ ] https://www.w3.org/WAI/RD/2011/metrics/paper3/
+- [ ] https://dl.acm.org/doi/10.1145/2461121.2461124
+
 ### Python developer tools
 
 Most of curlylint’s CLI is already based on that of black: include/excludes, config file, error, success, verbose output. It would be nice to learn from flake8’s plugin system, eventually.
