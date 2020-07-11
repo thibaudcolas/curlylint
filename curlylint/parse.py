@@ -314,13 +314,13 @@ def interpolated(parser):
     return locate(parser).combine(combine_interpolated)
 
 
-tag_name_start_char = P.regex(r"[:a-z]")
+tag_name_start_char = P.regex(r"[:a-zA-Z]")
 tag_name_char = tag_name_start_char | P.regex(r"[0-9-_.]")
 tag_name = tag_name_start_char + tag_name_char.many().concat()
 
 dtd = P.regex(r"<![^>]*>")
 
-# TODO This is overly restrictive on what can be inside attributes, it’s unclear why. Fails on e.g. `data-test=">"`.
+# TODO This is overly restrictive on what can be inside attributes, it’s unclear why.
 string_attribute_char = P.char_from("-_./+,?=:;#") | P.regex(r"[0-9a-zA-Z]")
 
 

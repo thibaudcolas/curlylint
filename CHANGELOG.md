@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Support parsing HTML elements with UPPERCASE or camelCase tag names, for example `clipPath`.
+
 ## [v0.11.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.11.0) 2020-05-21
 
 ### Added

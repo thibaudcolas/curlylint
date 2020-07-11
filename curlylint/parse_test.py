@@ -85,6 +85,8 @@ def test_dummy_location():
 def test_tag_name():
     assert tag_name_char.parse("a") == "a"
     assert tag_name.parse("bcd-ef9") == "bcd-ef9"
+    assert tag_name.parse("clipPath") == "clipPath"
+    assert tag_name.parse("HTML") == "HTML"
 
 
 def test_attribute_value():
