@@ -334,22 +334,3 @@ def test_optional_container():
 def test_whole_document():
     src = '<html lang="fr"><body>Hello<br></body></html>'
     assert src == str(element.parse(src))
-
-
-def test():
-    test_dummy_location()
-    test_tag_name()
-    test_attribute_value()
-    test_attribute()
-    test_comment()
-    test_jinja_comment()
-    test_opening_tag()
-    test_closing_tag()
-    test_raw_text_elements()
-    test_element()
-    test_self_closing_elements()
-    test_jinja_blocks()
-    test_jinja_whitespace_controls()
-    test_doctype()
-    test_attrs()
-    test_optional_container()
