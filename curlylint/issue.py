@@ -13,15 +13,11 @@ class IssueLocation:
         return "{}:{}:{}".format(self.file_path, self.line + 1, self.column)
 
     @staticmethod
-    def from_ast(file_path, ast_location):
+    def from_ast(file_path, line, column):
         if isinstance(file_path, File):
             file_path = file_path.path
 
-        return IssueLocation(
-            file_path=file_path,
-            column=ast_location.column,
-            line=ast_location.line,
-        )
+        return IssueLocation(file_path=file_path, line=line, column=column,)
 
 
 @attr.s(frozen=True)
@@ -37,7 +33,7 @@ class Issue:
         assert isinstance(self.location, IssueLocation)
 
     @staticmethod
-    def from_ast(file_path, ast_location, message, code):
+    def from_ast(file_path, line, column, message, code):
         return Issue(
-            IssueLocation.from_ast(file_path, ast_location), message, code
+            IssueLocation.from_ast(file_path, line, column), message, code
         )

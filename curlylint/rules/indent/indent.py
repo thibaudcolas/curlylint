@@ -59,7 +59,9 @@ def check_indentation(file, options):
     issues = []
 
     def add_issue(location, msg):
-        issues.append(Issue.from_ast(file, location, msg, INDENT))
+        issues.append(
+            Issue.from_ast(file, location.line, location.column, msg, INDENT)
+        )
 
     def check_indent(expected_level, node, inline=False, allow_same_line=False):
         node_level = get_indent_level(file.source, node)
