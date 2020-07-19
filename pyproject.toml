@@ -22,3 +22,6 @@ exclude = '''
                      # the root of the project
 )
 '''
+
+[tool.pytest.ini_options]
+testpaths = ["curlylint"]
