@@ -1,37 +1,37 @@
 [
   {
     "label": "double quotes",
-    "template": "<html lang=\"en\">",
+    "template": "<html lang=\"en\"></html>",
     "config": true,
     "output": []
   },
   {
     "label": "single quotes",
-    "template": "<html lang='en'>",
+    "template": "<html lang='en'></html>",
     "config": true,
     "output": []
   },
   {
     "label": "no quotes",
-    "template": "<html lang=en>",
+    "template": "<html lang=en></html>",
     "config": true,
     "output": []
   },
   {
     "label": "multiple attributes",
-    "template": "<html class=\"no-js\" lang=\"en\">",
+    "template": "<html class=\"no-js\" lang=\"en\"></html>",
     "config": true,
     "output": []
   },
   {
     "label": "missing",
-    "template": "<html>",
+    "template": "<html></html>",
     "config": true,
     "output": [
       {
         "file": "test.html",
-        "column": 17,
-        "line": 2,
+        "column": 1,
+        "line": 1,
         "code": "html_has_lang",
         "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page"
       }
@@ -40,13 +40,13 @@
 
   {
     "label": "multiple attributes, missing",
-    "template": "<html class=\"no-js\">",
+    "template": "<html class=\"no-js\"></html>",
     "config": true,
     "output": [
       {
         "file": "test.html",
-        "column": 17,
-        "line": 2,
+        "column": 1,
+        "line": 1,
         "code": "html_has_lang",
         "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page"
       }
@@ -54,25 +54,25 @@
   },
   {
     "label": "correct language",
-    "template": "<html lang=\"en\">",
+    "template": "<html lang=\"en\"></html>",
     "config": "en",
     "output": []
   },
   {
     "label": "correct language, multiple options",
-    "template": "<html lang=\"en\">",
+    "template": "<html lang=\"en\"></html>",
     "config": ["en", "en-GB"],
     "output": []
   },
   {
     "label": "wrong language",
-    "template": "<html lang=\"fr\">",
+    "template": "<html lang=\"fr\"></html>",
     "config": "en",
     "output": [
       {
         "file": "test.html",
-        "column": 17,
-        "line": 2,
+        "column": 1,
+        "line": 1,
         "code": "html_has_lang",
         "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en"
       }
@@ -80,13 +80,13 @@
   },
   {
     "label": "wrong language, multiple options",
-    "template": "<html lang=\"fr\">",
+    "template": "<html lang=\"fr\"></html>",
     "config": ["en", "en-GB"],
     "output": [
       {
         "file": "test.html",
-        "column": 17,
-        "line": 2,
+        "column": 1,
+        "line": 1,
         "code": "html_has_lang",
         "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en, en-GB"
       }
