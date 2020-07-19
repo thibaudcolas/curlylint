@@ -18,7 +18,7 @@
   },
   "scripts": {
     "prepare": "./.githooks/deploy.sh",
-    "lint": "prettier --check '**/?(.)*.{md,css,scss,js,json,json5,yaml,yml}'",
-    "format": "prettier --write '**/?(.)*.{md,css,scss,js,json,json5,yaml,yml}'"
+    "lint": "prettier --check '**/?(.)*.{md,mdx,css,scss,js,json,json5,yaml,yml}'",
+    "format": "prettier --write '**/?(.)*.{md,mdx,css,scss,js,json,json5,yaml,yml}'"
   }
 }
