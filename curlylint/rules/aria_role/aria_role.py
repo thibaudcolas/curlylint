@@ -7,7 +7,7 @@ RULE = {
     "id": "aria_role",
     "type": "accessibility",
     "docs": {"description": "role attributes must be valid", "url": ""},
-    "schema": [],
+    "schema": {},
 }
 
 VALID_ROLES = (

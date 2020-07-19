@@ -11,7 +11,14 @@ RULE = {
         "description": "`<html>` elements must have a `lang` attribute",
         "url": "",
     },
-    "schema": [],
+    "schema": {
+        "$schema": "http://json-schema.org/draft/2019-09/schema#",
+        "oneOf": [
+            {"const": True},
+            {"type": "string"},
+            {"type": "array", "items": {"type": "string"}},
+        ],
+    },
 }
 
 

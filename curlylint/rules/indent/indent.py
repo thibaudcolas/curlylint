@@ -17,9 +17,7 @@ RULE = {
         "url": "",
         "examples": {"Use the given number of spaces": 4, "Use tabs": "tab"},
     },
-    "schema": [
-        {"oneOf": [{"enum": ["tab"]}, {"type": "integer", "minimum": 0}]}
-    ],
+    "schema": {"oneOf": [{"const": "tab"}, {"type": "integer", "minimum": 0}]},
 }
 
 
