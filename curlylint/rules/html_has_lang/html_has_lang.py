@@ -8,15 +8,37 @@ RULE = {
     "id": "html_has_lang",
     "type": "accessibility",
     "docs": {
-        "description": "`<html>` elements must have a `lang` attribute",
-        "url": "",
+        "description": "`<html>` elements must have a `lang` attribute, using a [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt) language tag.",
+        "url": "https://www.curlylint.org/docs/rules/html_has_lang",
+        "impact": "Serious",
+        "tags": ["cat.language", "wcag2a", "wcag311"],
+        "resources": [
+            "[WCAG2.1 SC 3.1.1: Language of Page (Level A)](https://www.w3.org/WAI/WCAG21/Understanding/language-of-page)",
+            "[axe-core, html-has-lang](https://dequeuniversity.com/rules/axe/3.5/html-has-lang)",
+            "[axe-core, html-lang-valid](https://dequeuniversity.com/rules/axe/3.5/html-lang-valid)",
+            "[eslint-plugin-jsx-a11y, html-has-lang](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/html-has-lang.md)",
+        ],
     },
     "schema": {
         "$schema": "http://json-schema.org/draft/2019-09/schema#",
         "oneOf": [
-            {"const": True},
-            {"type": "string"},
-            {"type": "array", "items": {"type": "string"}},
+            {
+                "const": True,
+                "title": "The `lang` attribute must be present.",
+                "examples": [True],
+            },
+            {
+                "type": "string",
+                "title": "The `lang` attribute must match the configured language tag.",
+                "examples": ["en-US"],
+            },
+            {
+                "type": "array",
+                "items": {"type": "string"},
+                "uniqueItems": True,
+                "title": "The `lang` attribute must match one of the configured language tags.",
+                "examples": [["en", "en-US"]],
+            },
         ],
     },
 }

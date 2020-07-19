@@ -1,30 +1,30 @@
 [
   {
-    "label": "double quotes",
+    "label": "Double quotes",
     "template": "<html lang=\"en\"></html>",
     "config": true,
     "output": []
   },
   {
-    "label": "single quotes",
+    "label": "Single quotes",
     "template": "<html lang='en'></html>",
     "config": true,
     "output": []
   },
   {
-    "label": "no quotes",
+    "label": "No quotes",
     "template": "<html lang=en></html>",
     "config": true,
     "output": []
   },
   {
-    "label": "multiple attributes",
+    "label": "Multiple attributes",
     "template": "<html class=\"no-js\" lang=\"en\"></html>",
     "config": true,
     "output": []
   },
   {
-    "label": "missing",
+    "label": "Missing",
     "template": "<html></html>",
     "config": true,
     "output": [
@@ -39,7 +39,7 @@
   },
 
   {
-    "label": "multiple attributes, missing",
+    "label": "Multiple attributes, missing",
     "template": "<html class=\"no-js\"></html>",
     "config": true,
     "output": [
@@ -53,19 +53,19 @@
     ]
   },
   {
-    "label": "correct language",
+    "label": "Correct language",
     "template": "<html lang=\"en\"></html>",
     "config": "en",
     "output": []
   },
   {
-    "label": "correct language, multiple options",
+    "label": "Correct language, multiple options",
     "template": "<html lang=\"en\"></html>",
     "config": ["en", "en-GB"],
     "output": []
   },
   {
-    "label": "wrong language",
+    "label": "Wrong language",
     "template": "<html lang=\"fr\"></html>",
     "config": "en",
     "output": [
@@ -79,7 +79,7 @@
     ]
   },
   {
-    "label": "wrong language, multiple options",
+    "label": "Wrong language, multiple options",
     "template": "<html lang=\"fr\"></html>",
     "config": ["en", "en-GB"],
     "output": [

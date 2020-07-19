@@ -13,11 +13,23 @@ RULE = {
     "type": "layout",
     "docs": {
         "description": "Enforce consistent indentation",
-        "recommended": False,
-        "url": "",
-        "examples": {"Use the given number of spaces": 4, "Use tabs": "tab"},
+        "url": "https://www.curlylint.org/docs/rules/indent",
+        "impact": "Developers only",
+        "tags": [],
+        "resources": [],
     },
-    "schema": {"oneOf": [{"const": "tab"}, {"type": "integer", "minimum": 0}]},
+    "schema": {
+        "$schema": "http://json-schema.org/draft/2019-09/schema#",
+        "oneOf": [
+            {"const": "tab", "title": "Use tabs", "examples": ["tab"]},
+            {
+                "type": "integer",
+                "minimum": 0,
+                "title": "Use the given number of spaces",
+                "examples": [4],
+            },
+        ],
+    },
 }
 
 

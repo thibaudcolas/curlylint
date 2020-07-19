@@ -1,6 +1,6 @@
 ---
 # This file is auto-generated, please do not update manually.
-# Timestamp: 2020-06-20 00:19:00.743260
+# Timestamp: 2020-07-19 23:10:37.980174
 id: all
 title: All rules
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/website/build_rules.py

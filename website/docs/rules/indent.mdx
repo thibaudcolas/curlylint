@@ -1,0 +1,41 @@
+---
+# This file is auto-generated, please do not update manually.
+# Timestamp: 2020-07-19 23:10:37.979749
+id: indent
+title: indent
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/indent/indent.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> Enforce consistent indentation
+>
+> User impact: **Developers only**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Command line", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# Use tabs\nindent = "tab"\n# Use the given number of spaces\nindent = 4`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# Use tabs\ncurlylint --rule 'indent: "tab"' template.html\n# Use the given number of spaces\ncurlylint --rule 'indent: 4' template.html`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
