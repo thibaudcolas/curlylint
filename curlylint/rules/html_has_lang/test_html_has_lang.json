@@ -1,0 +1,95 @@
+[
+  {
+    "label": "double quotes",
+    "template": "<html lang=\"en\">",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "single quotes",
+    "template": "<html lang='en'>",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "no quotes",
+    "template": "<html lang=en>",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "multiple attributes",
+    "template": "<html class=\"no-js\" lang=\"en\">",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "missing",
+    "template": "<html>",
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 17,
+        "line": 2,
+        "code": "html_has_lang",
+        "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page"
+      }
+    ]
+  },
+
+  {
+    "label": "multiple attributes, missing",
+    "template": "<html class=\"no-js\">",
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 17,
+        "line": 2,
+        "code": "html_has_lang",
+        "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page"
+      }
+    ]
+  },
+  {
+    "label": "correct language",
+    "template": "<html lang=\"en\">",
+    "config": "en",
+    "output": []
+  },
+  {
+    "label": "correct language, multiple options",
+    "template": "<html lang=\"en\">",
+    "config": ["en", "en-GB"],
+    "output": []
+  },
+  {
+    "label": "wrong language",
+    "template": "<html lang=\"fr\">",
+    "config": "en",
+    "output": [
+      {
+        "file": "test.html",
+        "column": 17,
+        "line": 2,
+        "code": "html_has_lang",
+        "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en"
+      }
+    ]
+  },
+  {
+    "label": "wrong language, multiple options",
+    "template": "<html lang=\"fr\">",
+    "config": ["en", "en-GB"],
+    "output": [
+      {
+        "file": "test.html",
+        "column": 17,
+        "line": 2,
+        "code": "html_has_lang",
+        "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en, en-GB"
+      }
+    ]
+  }
+]

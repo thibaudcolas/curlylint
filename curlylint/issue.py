@@ -5,6 +5,8 @@ from .file import File
 
 @attr.s(frozen=True)
 class IssueLocation:
+    """Location inside a file: file path, and line/col offsets."""
+
     file_path = attr.ib()  # Path
     column = attr.ib()
     line = attr.ib()
@@ -22,6 +24,8 @@ class IssueLocation:
 
 @attr.s(frozen=True)
 class Issue:
+    """A problem to report on a given location of a file."""
+
     location = attr.ib()
     message = attr.ib()
     code = attr.ib()
@@ -33,7 +37,9 @@ class Issue:
         assert isinstance(self.location, IssueLocation)
 
     @staticmethod
-    def from_ast(file_path, line, column, message, code):
-        return Issue(
-            IssueLocation.from_ast(file_path, line, column), message, code
-        )
+    def from_ast(file, line, column, message, code):
+        return Issue(IssueLocation.from_ast(file, line, column), message, code)
+
+    @staticmethod
+    def from_dict(issue):
+        return Issue.from_ast(**issue)
