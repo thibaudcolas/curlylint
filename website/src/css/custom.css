@@ -22,6 +22,8 @@
 
 html[data-theme="dark"] {
   --ifm-background-color: #242526;
+
+  --ifm-blockquote-color: #fff;
 }
 
 .hero--primary {
