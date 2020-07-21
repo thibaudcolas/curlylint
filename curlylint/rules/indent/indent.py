@@ -16,7 +16,9 @@ RULE = {
         "url": "https://www.curlylint.org/docs/rules/indent",
         "impact": "Developers only",
         "tags": [],
-        "resources": [],
+        "resources": [
+            "Known issue: [Allow indentation inside template tags](https://github.com/thibaudcolas/curlylint/issues/6)",
+        ],
     },
     "schema": {
         "$schema": "http://json-schema.org/draft/2019-09/schema#",

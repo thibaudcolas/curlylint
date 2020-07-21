@@ -1,0 +1,78 @@
+[
+  {
+    "label": "Valid role provided",
+    "template": "<form role=\"search\"></form>",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Single quotes",
+    "template": "<form role='search'></form>",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "No quotes",
+    "template": "<form role=search></form>",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Role matches provided options",
+    "template": "<form role=\"search\"></form>",
+    "example": true,
+    "config": ["table", "search", "presentation"],
+    "output": []
+  },
+  {
+    "label": "Template interpolation",
+    "template": "<form role=\"{{ role }}\"></form>",
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "aria_role",
+        "message": "The `role` attribute needs to have a valid value"
+      }
+    ]
+  },
+  {
+    "label": "Multiple attributes",
+    "template": "<form class=\"no-js\" role=\"search\"></form>",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Invalid role",
+    "template": "<form role=\"potato\"></form>",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "aria_role",
+        "message": "The `role` attribute needs to have a valid value"
+      }
+    ]
+  },
+  {
+    "label": "Role does not match provided options",
+    "template": "<form role=\"search\"></form>",
+    "example": true,
+    "config": ["table", "alert", "presentation"],
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "aria_role",
+        "message": "The `role` attribute needs to have a valid value"
+      }
+    ]
+  }
+]

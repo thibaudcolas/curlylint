@@ -1,6 +1,6 @@
 ---
 # This file is auto-generated, please do not update manually.
-# Timestamp: 2020-07-19 23:10:37.978633
+# Timestamp: 2020-07-21 01:27:58.847362
 id: html_has_lang
 title: html_has_lang
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/html_has_lang/html_has_lang.py
@@ -21,7 +21,7 @@ This rule supports the following configuration:
   defaultValue="toml"
   values={[
     { label: "TOML", value: "toml" },
-    { label: "Command line", value: "shell" },
+    { label: "Shell", value: "shell" },
   ]}
 >
   <TabItem value="toml">
@@ -33,9 +33,61 @@ This rule supports the following configuration:
   </TabItem>
   <TabItem value="shell">
     <CodeSnippet
-      snippet={`# The \`lang\` attribute must be present.\ncurlylint --rule 'html_has_lang: true' template.html\n# The \`lang\` attribute must match the configured language tag.\ncurlylint --rule 'html_has_lang: "en-US"' template.html\n# The \`lang\` attribute must match one of the configured language tags.\ncurlylint --rule 'html_has_lang: ["en", "en-US"]' template.html`}
+      snippet={`# The \`lang\` attribute must be present.\ncurlylint --rule 'html_has_lang: true' .\n# The \`lang\` attribute must match the configured language tag.\ncurlylint --rule 'html_has_lang: "en-US"' .\n# The \`lang\` attribute must match one of the configured language tags.\ncurlylint --rule 'html_has_lang: ["en", "en-US"]' .`}
       annotations={[]}
       lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: Check lang is present -->\n<!-- html_has_lang = true -->\n<html lang="en"></html>\n<!-- Good: Correct language -->\n<!-- html_has_lang = "en" -->\n<html lang="en"></html>\n<!-- Good: Correct language, multiple options -->\n<!-- html_has_lang = [ "en", "en-GB",] -->\n<html lang="en"></html>`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: Check lang is present -->\n<!-- curlylint --rule 'html_has_lang: true' . -->\n<html lang="en"></html>\n<!-- Good: Correct language -->\n<!-- curlylint --rule 'html_has_lang: "en"' . -->\n<html lang="en"></html>\n<!-- Good: Correct language, multiple options -->\n<!-- curlylint --rule 'html_has_lang: ["en", "en-GB"]' . -->\n<html lang="en"></html>`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: Missing -->\n<!-- html_has_lang = true -->\n<html></html>\n<!-- Bad: Wrong language -->\n<!-- html_has_lang = "en" -->\n<html lang="fr"></html>\n<!-- Bad: Wrong language, multiple options -->\n<!-- html_has_lang = [ "en", "en-GB",] -->\n<html lang="en-US"></html>\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "html_has_lang", "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page"}, {"file": "test.html", "column": 1, "line": 6, "code": "html_has_lang", "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en"}, {"file": "test.html", "column": 1, "line": 9, "code": "html_has_lang", "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en, en-GB"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: Missing -->\n<!-- curlylint --rule 'html_has_lang: true' . -->\n<html></html>\n<!-- Bad: Wrong language -->\n<!-- curlylint --rule 'html_has_lang: "en"' . -->\n<html lang="fr"></html>\n<!-- Bad: Wrong language, multiple options -->\n<!-- curlylint --rule 'html_has_lang: ["en", "en-GB"]' . -->\n<html lang="en-US"></html>\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "html_has_lang", "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page"}, {"file": "test.html", "column": 1, "line": 6, "code": "html_has_lang", "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en"}, {"file": "test.html", "column": 1, "line": 9, "code": "html_has_lang", "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en, en-GB"}]}
+      lang="html"
     />
   </TabItem>
 </Tabs>

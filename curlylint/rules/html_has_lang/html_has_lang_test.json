@@ -1,7 +1,8 @@
 [
   {
-    "label": "Double quotes",
+    "label": "Check lang is present",
     "template": "<html lang=\"en\"></html>",
+    "example": true,
     "config": true,
     "output": []
   },
@@ -18,6 +19,12 @@
     "output": []
   },
   {
+    "label": "Template interpolation",
+    "template": "<html lang=\"{{ lang }}\"></html>",
+    "config": true,
+    "output": []
+  },
+  {
     "label": "Multiple attributes",
     "template": "<html class=\"no-js\" lang=\"en\"></html>",
     "config": true,
@@ -26,6 +33,7 @@
   {
     "label": "Missing",
     "template": "<html></html>",
+    "example": true,
     "config": true,
     "output": [
       {
@@ -55,18 +63,21 @@
   {
     "label": "Correct language",
     "template": "<html lang=\"en\"></html>",
+    "example": true,
     "config": "en",
     "output": []
   },
   {
     "label": "Correct language, multiple options",
     "template": "<html lang=\"en\"></html>",
+    "example": true,
     "config": ["en", "en-GB"],
     "output": []
   },
   {
     "label": "Wrong language",
     "template": "<html lang=\"fr\"></html>",
+    "example": true,
     "config": "en",
     "output": [
       {
@@ -80,7 +91,8 @@
   },
   {
     "label": "Wrong language, multiple options",
-    "template": "<html lang=\"fr\"></html>",
+    "template": "<html lang=\"en-US\"></html>",
+    "example": true,
     "config": ["en", "en-GB"],
     "output": [
       {
@@ -89,6 +101,20 @@
         "line": 1,
         "code": "html_has_lang",
         "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en, en-GB"
+      }
+    ]
+  },
+  {
+    "label": "Template interpolation with a defined language",
+    "template": "<html lang=\"{{ lang }}\"></html>",
+    "config": "en",
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "html_has_lang",
+        "message": "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: en"
       }
     ]
   }

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+# type: ignore
 
 import codecs
 import datetime
 import json
+import os
 
 import toml
 
@@ -18,12 +20,23 @@ rules = [
 
 if __name__ == "__main__":
     for rule in rules:
-        description = rule["docs"]["description"]  # type: ignore
-        impact = rule["docs"]["impact"]  # type: ignore
+        test_cases_path = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "curlylint",
+            "rules",
+            rule["id"],
+            f"{rule['id']}_test.json",
+        )
+        test_cases = json.loads(open(test_cases_path, "r").read())
+
+        description = rule["docs"]["description"]
+        impact = rule["docs"]["impact"]
 
         config_toml = []
         config_cli = []
-        one_off_schema = rule["schema"].get("oneOf", [])  # type: ignore
+        one_off_schema = rule["schema"].get("oneOf", [])
+
         for item in one_off_schema:
             title = f"# {item['title']}"
             example = item["examples"][0]
@@ -31,10 +44,10 @@ if __name__ == "__main__":
             config_toml.append(title)
             config_cli.append(title)
             config_toml.append(
-                toml.dumps({rule["id"]: example}).replace("\n", "")  # type: ignore
+                toml.dumps({rule["id"]: example}).replace("\n", "")
             )
             config_cli.append(
-                f"curlylint --rule '{rule['id']}: {json.dumps(example)}' template.html"
+                f"curlylint --rule '{rule['id']}: {json.dumps(example)}' ."
             )
 
         config_toml_str = "\\n".join(config_toml).replace("`", "\\`")
@@ -49,7 +62,7 @@ if __name__ == "__main__":
   defaultValue="toml"
   values={{[
     {{ label: "TOML", value: "toml" }},
-    {{ label: "Command line", value: "shell" }},
+    {{ label: "Shell", value: "shell" }},
   ]}}
 >
   <TabItem value="toml">
@@ -68,10 +81,123 @@ if __name__ == "__main__":
   </TabItem>
 </Tabs>"""
 
+        success_section = ""
+        fail_section = ""
+
+        if test_cases:
+            success_cases = filter(
+                lambda c: c.get("example") and len(c["output"]) == 0, test_cases
+            )
+            success_toml = []
+            success_cli = []
+            for c in success_cases:
+                toml_config = toml.dumps({rule["id"]: c["config"]}).replace(
+                    "\n", ""
+                )
+                success_toml.append(f"<!-- Good: {c['label']} -->")
+                success_toml.append(f"<!-- {toml_config} -->")
+                success_toml.append(c["template"])
+                success_cli.append(f"<!-- Good: {c['label']} -->")
+                success_cli.append(
+                    f"<!-- curlylint --rule '{rule['id']}: {json.dumps(c['config'])}' . -->"
+                )
+                success_cli.append(c["template"])
+
+            success_toml_str = "\\n".join(success_toml).replace("`", "\\`")
+            success_cli_str = "\\n".join(success_cli).replace("`", "\\`")
+
+            if success_cases:
+                success_section = f"""## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={{[
+    {{ label: "TOML", value: "toml" }},
+    {{ label: "Shell", value: "shell" }},
+  ]}}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={{`{success_toml_str}`}}
+      annotations={{[]}}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={{`{success_cli_str}`}}
+      annotations={{[]}}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+"""
+            fail_cases = filter(
+                lambda c: c.get("example") and len(c["output"]) > 0, test_cases
+            )
+            fail_annotations = []
+            fail_toml = []
+            fail_cli = []
+            for c in fail_cases:
+                toml_config = toml.dumps({rule["id"]: c["config"]}).replace(
+                    "\n", ""
+                )
+                fail_toml.append(f"<!-- Bad: {c['label']} -->")
+                fail_toml.append(f"<!-- {toml_config} -->")
+                fail_toml.append(c["template"])
+                fail_cli.append(f"<!-- Bad: {c['label']} -->")
+                fail_cli.append(
+                    f"<!-- curlylint --rule '{rule['id']}: {json.dumps(c['config'])}' . -->"
+                )
+                fail_cli.append(c["template"])
+
+                fail_annotations = fail_annotations + [
+                    {
+                        "file": o["file"],
+                        "column": o["column"],
+                        "line": o["line"] + 2 + (len(fail_annotations)) * 3,
+                        "code": o["code"],
+                        "message": o["message"],
+                    }
+                    for o in c["output"]
+                ]
+
+            fail_toml_str = "\\n".join(fail_toml).replace("`", "\\`")
+            fail_cli_str = "\\n".join(fail_cli).replace("`", "\\`")
+
+            if fail_cases:
+                fail_section = f"""## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={{[
+    {{ label: "TOML", value: "toml" }},
+    {{ label: "Shell", value: "shell" }},
+  ]}}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={{`{fail_toml_str}\\n\\n`}}
+      annotations={{{json.dumps(fail_annotations)}}}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={{`{fail_cli_str}\\n\\n`}}
+      annotations={{{json.dumps(fail_annotations)}}}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+"""
+
         resources_section = ""
 
-        if rule["docs"]["resources"]:  # type: ignore
-            resources = "\n".join([f"- {r}" for r in rule["docs"]["resources"]])  # type: ignore
+        if rule["docs"]["resources"]:
+            resources = "\n".join([f"- {r}" for r in rule["docs"]["resources"]])
 
             resources_section = f"""## Resources\n\n{resources}"""
 
@@ -95,11 +221,15 @@ import CodeSnippet from "@theme/CodeSnippet";
 
 {config_section}
 
+{success_section}
+
+{fail_section}
+
 {resources_section}"""
             )
 
     rules_list = "\n".join(
-        [f"- [{rule['id']}]({rule['id']}.mdx)" for rule in rules]
+        [f"- [{rule['id']}]({rule['id']})" for rule in rules]
     )
     rules_id = ",\n  ".join([f"\"rules/{rule['id']}\"" for rule in rules])
 

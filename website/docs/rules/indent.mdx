@@ -1,6 +1,6 @@
 ---
 # This file is auto-generated, please do not update manually.
-# Timestamp: 2020-07-19 23:10:37.979749
+# Timestamp: 2020-07-21 01:27:58.848706
 id: indent
 title: indent
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/indent/indent.py
@@ -21,7 +21,7 @@ This rule supports the following configuration:
   defaultValue="toml"
   values={[
     { label: "TOML", value: "toml" },
-    { label: "Command line", value: "shell" },
+    { label: "Shell", value: "shell" },
   ]}
 >
   <TabItem value="toml">
@@ -33,9 +33,13 @@ This rule supports the following configuration:
   </TabItem>
   <TabItem value="shell">
     <CodeSnippet
-      snippet={`# Use tabs\ncurlylint --rule 'indent: "tab"' template.html\n# Use the given number of spaces\ncurlylint --rule 'indent: 4' template.html`}
+      snippet={`# Use tabs\ncurlylint --rule 'indent: "tab"' .\n# Use the given number of spaces\ncurlylint --rule 'indent: 4' .`}
       annotations={[]}
       lang="shell"
     />
   </TabItem>
 </Tabs>
+
+## Resources
+
+- Known issue: [Allow indentation inside template tags](https://github.com/thibaudcolas/curlylint/issues/6)

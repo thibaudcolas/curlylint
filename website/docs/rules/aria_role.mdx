@@ -1,6 +1,6 @@
 ---
 # This file is auto-generated, please do not update manually.
-# Timestamp: 2020-07-19 23:10:37.979241
+# Timestamp: 2020-07-21 01:27:58.848204
 id: aria_role
 title: aria_role
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/aria_role/aria_role.py
@@ -10,7 +10,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeSnippet from "@theme/CodeSnippet";
 
-> role attributes must be valid
+> Elements with ARIA roles must use a valid, non-abstract ARIA role
 >
 > User impact: **Serious**
 
@@ -21,28 +21,79 @@ This rule supports the following configuration:
   defaultValue="toml"
   values={[
     { label: "TOML", value: "toml" },
-    { label: "Command line", value: "shell" },
+    { label: "Shell", value: "shell" },
   ]}
 >
   <TabItem value="toml">
     <CodeSnippet
-      snippet={`# All role attributes must be valid\naria_role = true\n# Role attributes must match the ones provided in this list\naria_role = [ "search", "presentation", "alert",]`}
+      snippet={`# All role attributes must be valid\naria_role = true\n# All role attributes must match the ones provided\naria_role = [ "search", "presentation", "alert",]`}
       annotations={[]}
       lang="toml"
     />
   </TabItem>
   <TabItem value="shell">
     <CodeSnippet
-      snippet={`# All role attributes must be valid\ncurlylint --rule 'aria_role: true' template.html\n# Role attributes must match the ones provided in this list\ncurlylint --rule 'aria_role: ["search", "presentation", "alert"]' template.html`}
+      snippet={`# All role attributes must be valid\ncurlylint --rule 'aria_role: true' .\n# All role attributes must match the ones provided\ncurlylint --rule 'aria_role: ["search", "presentation", "alert"]' .`}
       annotations={[]}
       lang="shell"
     />
   </TabItem>
 </Tabs>
 
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: Valid role provided -->\n<!-- aria_role = true -->\n<form role="search"></form>\n<!-- Good: Role matches provided options -->\n<!-- aria_role = [ "table", "search", "presentation",] -->\n<form role="search"></form>`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: Valid role provided -->\n<!-- curlylint --rule 'aria_role: true' . -->\n<form role="search"></form>\n<!-- Good: Role matches provided options -->\n<!-- curlylint --rule 'aria_role: ["table", "search", "presentation"]' . -->\n<form role="search"></form>`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: Invalid role -->\n<!-- aria_role = true -->\n<form role="potato"></form>\n<!-- Bad: Role does not match provided options -->\n<!-- aria_role = [ "table", "alert", "presentation",] -->\n<form role="search"></form>\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "aria_role", "message": "The `role` attribute needs to have a valid value"}, {"file": "test.html", "column": 1, "line": 6, "code": "aria_role", "message": "The `role` attribute needs to have a valid value"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: Invalid role -->\n<!-- curlylint --rule 'aria_role: true' . -->\n<form role="potato"></form>\n<!-- Bad: Role does not match provided options -->\n<!-- curlylint --rule 'aria_role: ["table", "alert", "presentation"]' . -->\n<form role="search"></form>\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "aria_role", "message": "The `role` attribute needs to have a valid value"}, {"file": "test.html", "column": 1, "line": 6, "code": "aria_role", "message": "The `role` attribute needs to have a valid value"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
 ## Resources
 
-- [WCAG2.1 SC 3.1.1: Language of Page (Level A)](https://www.w3.org/WAI/WCAG21/Understanding/language-of-page)
-- [axe-core, html-has-lang](https://dequeuniversity.com/rules/axe/3.5/html-has-lang)
-- [axe-core, html-lang-valid](https://dequeuniversity.com/rules/axe/3.5/html-lang-valid)
-- [eslint-plugin-jsx-a11y, html-has-lang](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/html-has-lang.md)
+- [WAI-ARIA Role Definitions](https://www.w3.org/TR/wai-aria/#role_definitions)
+- [WCAG2.1 SC 4.2.1: Name, Role, Value (Level A)](https://www.w3.org/WAI/WCAG21/Understanding/name-role-value)
+- [eslint-plugin-jsx-a11y, aria-role](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/aria-role.md)
