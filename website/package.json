@@ -22,6 +22,8 @@
   "scripts": {
     "start": "docusaurus start",
     "build": "docusaurus build",
+    "build:rules": "python build_rules.py",
+    "build:rules:watch": "nodemon -q -e py,json -w ../curlylint -w build_rules.py  -x 'clear && python build_rules.py || true'",
     "swizzle": "docusaurus swizzle"
   }
 }

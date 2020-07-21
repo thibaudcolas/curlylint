@@ -20,6 +20,7 @@ jobs:
       script:
         - npm run lint
         - npm --prefix website run build
+        - npm --prefix website run build:rules
 install:
   - pip install -e '.[dev]'
 script:
