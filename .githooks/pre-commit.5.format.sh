@@ -14,7 +14,6 @@ fi
 
 if [ -n "$PY_FULLY_STAGED" ];
 then
-  isort --recursive $PY_FULLY_STAGED
   black $PY_FULLY_STAGED
   git add $PY_FULLY_STAGED
 fi
