@@ -1,0 +1,24 @@
+[
+  {
+    "label": "No autofocus attribute",
+    "template": "<input type=\"text\" name=\"username\" />",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "autofocus present",
+    "template": "<input type=\"text\" name=\"username\" autofocus />",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "no_autofocus",
+        "message": "Do not use the `autofocus` attribute, which causes issues for screen reader users"
+      }
+    ]
+  }
+]

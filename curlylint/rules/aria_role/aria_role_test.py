@@ -10,6 +10,6 @@ class TestRule(unittest.TestCase, metaclass=RulesTestMeta):
     fixtures = __file__.replace(".py", ".json")
     rule = aria_role
 
-    def test_skips_no_role(self):
+    def test_skips(self):
         errors, file = parse_source("test.html", {}, "<p>Test</p>")
         self.assertEqual(aria_role(file, True), [])

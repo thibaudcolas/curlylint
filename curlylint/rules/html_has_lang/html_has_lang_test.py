@@ -10,6 +10,6 @@ class TestRule(unittest.TestCase, metaclass=RulesTestMeta):
     fixtures = __file__.replace(".py", ".json")
     rule = html_has_lang
 
-    def test_skips_no_html(self):
+    def test_skips(self):
         errors, file = parse_source("test.html", {}, "<p>Test</p>")
         self.assertEqual(html_has_lang(file, True), [])

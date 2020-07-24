@@ -13,6 +13,7 @@ from curlylint.rules.django_forms_rendering import django_forms_rendering
 from curlylint.rules.html_has_lang import html_has_lang
 from curlylint.rules.image_alt import image_alt
 from curlylint.rules.indent import indent
+from curlylint.rules.no_autofocus import no_autofocus
 
 rules = [
     aria_role.RULE,
@@ -20,6 +21,7 @@ rules = [
     html_has_lang.RULE,
     image_alt.RULE,
     indent.RULE,
+    no_autofocus.RULE,
 ]
 
 if __name__ == "__main__":

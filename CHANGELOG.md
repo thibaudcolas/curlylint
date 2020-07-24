@@ -8,6 +8,7 @@
 
 - Add experimental `django_forms_rendering` rule.
 - Add experimental `image_alt` rule.
+- Add experimental `no_atufocus` rule.
 
 ### Changed
 
