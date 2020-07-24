@@ -3,15 +3,21 @@ from functools import partial
 import click
 
 from curlylint.rules.aria_role.aria_role import aria_role
+from curlylint.rules.django_forms_rendering.django_forms_rendering import (
+    django_forms_rendering,
+)
 from curlylint.rules.html_has_lang.html_has_lang import html_has_lang
+from curlylint.rules.image_alt.image_alt import image_alt
 from curlylint.rules.indent.indent import INDENT, indent
 from curlylint.util import flatten
 
 err = partial(click.secho, fg="red", err=True)
 
 checks = {
-    "html_has_lang": html_has_lang,
     "aria_role": aria_role,
+    "django_forms_rendering": django_forms_rendering,
+    "html_has_lang": html_has_lang,
+    "image_alt": image_alt,
     INDENT: indent,
 }
 

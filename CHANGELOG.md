@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+### Added
+
+- Add experimental `django_forms_rendering` rule.
+- Add experimental `image_alt` rule.
+
 ### Changed
 
 - Support parsing HTML elements with UPPERCASE or camelCase tag names, for example `clipPath`.

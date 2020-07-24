@@ -1,6 +1,6 @@
 from curlylint import ast
 from curlylint.check_node import CheckNode, build_tree
-from curlylint.issue import Issue, IssueLocation
+from curlylint.issue import Issue
 
 HTML_HAS_LANG = "html_has_lang"
 
@@ -44,15 +44,6 @@ RULE = {
 }
 
 
-def create_issue(node, file, message):
-    location = IssueLocation(
-        file_path=file.path,
-        line=node.value.begin.line + 1,
-        column=node.value.begin.column + 1,
-    )
-    return [Issue(location, message, "html_has_lang")]
-
-
 def find_valid(node, file, target_lang):
     name = getattr(node.value, "name", None)
     is_html = (
@@ -67,20 +58,26 @@ def find_valid(node, file, target_lang):
                 attributes[str(n.name)] = str(n.value).strip("\"'")
 
         if len(attributes) == 0 or "lang" not in attributes:
-            return create_issue(
-                node,
-                file,
-                "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page",
-            )
+            return [
+                Issue.from_node(
+                    file,
+                    node,
+                    "The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page",
+                    "html_has_lang",
+                )
+            ]
 
         if target_lang[0] is True or attributes["lang"] in target_lang:
             return []
         else:
-            return create_issue(
-                node,
-                file,
-                f"The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: {', '.join(target_lang)}",
-            )
+            return [
+                Issue.from_node(
+                    file,
+                    node,
+                    f"The `<html>` tag should have a `lang` attribute with a valid value, describing the main language of the page. Allowed values: {', '.join(target_lang)}",
+                    "html_has_lang",
+                )
+            ]
 
     if not node.children:
         return []

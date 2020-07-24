@@ -9,12 +9,16 @@ import os
 import toml
 
 from curlylint.rules.aria_role import aria_role
+from curlylint.rules.django_forms_rendering import django_forms_rendering
 from curlylint.rules.html_has_lang import html_has_lang
+from curlylint.rules.image_alt import image_alt
 from curlylint.rules.indent import indent
 
 rules = [
-    html_has_lang.RULE,
     aria_role.RULE,
+    django_forms_rendering.RULE,
+    html_has_lang.RULE,
+    image_alt.RULE,
     indent.RULE,
 ]
 

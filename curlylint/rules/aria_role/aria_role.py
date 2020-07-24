@@ -1,5 +1,5 @@
 from curlylint.check_node import CheckNode, build_tree
-from curlylint.issue import Issue, IssueLocation
+from curlylint.issue import Issue
 
 ARIA_ROLE = "aria_role"
 
@@ -175,12 +175,9 @@ def find_role_errors(node, file, target_roles):
             []
             if attributes["role"] in target
             else [
-                Issue(
-                    IssueLocation(
-                        file_path=file.path,
-                        line=node.value.begin.line + 1,
-                        column=node.value.begin.column + 1,
-                    ),
+                Issue.from_node(
+                    file,
+                    node,
                     "The `role` attribute needs to have a valid value",
                     "aria_role",
                 )

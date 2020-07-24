@@ -1,0 +1,31 @@
+[
+  {
+    "label": "Check alt is present",
+    "template": "<img src=\"foo\" alt=\"Foo eating a sandwich.\" />",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Empty alt is fine too",
+    "template": "<img src=\"foo\" alt=\"\" />",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Missing",
+    "template": "<img src=\"foo\" />",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "image_alt",
+        "message": "The `<img>` tag must have a `alt` attribute, either with meaningful text, or an empty string for decorative images"
+      }
+    ]
+  }
+]

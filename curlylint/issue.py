@@ -41,5 +41,15 @@ class Issue:
         return Issue(IssueLocation.from_ast(file, line, column), message, code)
 
     @staticmethod
+    def from_node(file, node, message, code):
+        return Issue.from_ast(
+            file.path,
+            node.value.begin.line + 1,
+            node.value.begin.column + 1,
+            message,
+            code,
+        )
+
+    @staticmethod
     def from_dict(issue):
         return Issue.from_ast(**issue)

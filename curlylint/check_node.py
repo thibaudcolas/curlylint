@@ -9,7 +9,10 @@ class CheckNode:
         attributes = []
         if getattr(self.value, "opening_tag", None):
             attributes = [
-                (str(n.name), str(n.value).strip("\"'"))
+                (
+                    str(getattr(n, "name", "")),
+                    str(getattr(n, "value", "")).strip("\"'"),
+                )
                 for n in self.value.opening_tag.attributes.nodes
             ]
 

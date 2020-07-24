@@ -1,0 +1,61 @@
+[
+  {
+    "label": "Render a single field manually",
+    "template": "{{ form.username }}",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "as_p can be allowed",
+    "template": "{{ form.as_p }}",
+    "example": true,
+    "config": "as_p",
+    "output": []
+  },
+  {
+    "label": "Disallows as_table",
+    "template": "{{ form.as_table }}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_forms_rendering",
+        "message": "Avoid using `as_table` to render Django forms"
+      }
+    ]
+  },
+  {
+    "label": "Disallows as_ul too",
+    "template": "{{ form.as_ul }}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_forms_rendering",
+        "message": "Avoid using `as_ul` to render Django forms"
+      }
+    ]
+  },
+  {
+    "label": "Disallows as_p too",
+    "template": "{{ form.as_p }}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_forms_rendering",
+        "message": "Avoid using `as_p` to render Django forms"
+      }
+    ]
+  }
+]
