@@ -10,7 +10,7 @@ RULE = {
     "docs": {
         "description": "The `viewport` meta tag should not use `user-scalable=no`, and `maximum-scale` should be 2 or above, so end users can zoom",
         "url": "https://www.curlylint.org/docs/rules/meta_viewport",
-        "impact": "Serious",
+        "impact": "Critical",
         "tags": ["cat.language", "wcag2aa", "wcag144"],
         "resources": [
             "[Understanding WCAG SC 1.4.4 Resize Text](http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)",

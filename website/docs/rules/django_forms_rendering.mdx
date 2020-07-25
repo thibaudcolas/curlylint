@@ -1,0 +1,97 @@
+---
+# This file is auto-generated, please do not update manually.
+# Timestamp: 2020-07-26 00:04:10.303574
+id: django_forms_rendering
+title: django_forms_rendering
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/django_forms_rendering/django_forms_rendering.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> Disallows using Django’s convenience form rendering helpers, for which the markup isn’t screen-reader-friendly
+>
+> User impact: **Serious**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# Forms cannot be rendered with as_table, as_ul, or as_p\ndjango_forms_rendering = true\n# Allows as_p\ndjango_forms_rendering = "as_p"`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# Forms cannot be rendered with as_table, as_ul, or as_p\ncurlylint --rule 'django_forms_rendering: true' .\n# Allows as_p\ncurlylint --rule 'django_forms_rendering: "as_p"' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: Render a single field manually -->\n<!-- django_forms_rendering = true -->\n{{ form.username }}\n<!-- Good: as_p can be allowed -->\n<!-- django_forms_rendering = "as_p" -->\n{{ form.as_p }}`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: Render a single field manually -->\n<!-- curlylint --rule 'django_forms_rendering: true' . -->\n{{ form.username }}\n<!-- Good: as_p can be allowed -->\n<!-- curlylint --rule 'django_forms_rendering: "as_p"' . -->\n{{ form.as_p }}`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: Disallows as_table -->\n<!-- django_forms_rendering = true -->\n{{ form.as_table }}\n<!-- Bad: Disallows as_ul too -->\n<!-- django_forms_rendering = true -->\n{{ form.as_ul }}\n<!-- Bad: Disallows as_p too -->\n<!-- django_forms_rendering = true -->\n{{ form.as_p }}\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "django_forms_rendering", "message": "Avoid using `as_table` to render Django forms"}, {"file": "test.html", "column": 1, "line": 6, "code": "django_forms_rendering", "message": "Avoid using `as_ul` to render Django forms"}, {"file": "test.html", "column": 1, "line": 9, "code": "django_forms_rendering", "message": "Avoid using `as_p` to render Django forms"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: Disallows as_table -->\n<!-- curlylint --rule 'django_forms_rendering: true' . -->\n{{ form.as_table }}\n<!-- Bad: Disallows as_ul too -->\n<!-- curlylint --rule 'django_forms_rendering: true' . -->\n{{ form.as_ul }}\n<!-- Bad: Disallows as_p too -->\n<!-- curlylint --rule 'django_forms_rendering: true' . -->\n{{ form.as_p }}\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "django_forms_rendering", "message": "Avoid using `as_table` to render Django forms"}, {"file": "test.html", "column": 1, "line": 6, "code": "django_forms_rendering", "message": "Avoid using `as_ul` to render Django forms"}, {"file": "test.html", "column": 1, "line": 9, "code": "django_forms_rendering", "message": "Avoid using `as_p` to render Django forms"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Resources
+
+- [WCAG2.1 SC 1.3.1: Info and Relationships (Level A)](https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html)

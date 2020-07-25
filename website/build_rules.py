@@ -13,6 +13,7 @@ from curlylint.rules.django_forms_rendering import django_forms_rendering
 from curlylint.rules.html_has_lang import html_has_lang
 from curlylint.rules.image_alt import image_alt
 from curlylint.rules.indent import indent
+from curlylint.rules.meta_viewport import meta_viewport
 from curlylint.rules.no_autofocus import no_autofocus
 from curlylint.rules.tabindex_no_positive import tabindex_no_positive
 
@@ -22,6 +23,7 @@ rules = [
     html_has_lang.RULE,
     image_alt.RULE,
     indent.RULE,
+    meta_viewport.RULE,
     no_autofocus.RULE,
     tabindex_no_positive.RULE,
 ]
@@ -237,7 +239,10 @@ import CodeSnippet from "@theme/CodeSnippet";
             )
 
     rules_list = "\n".join(
-        [f"- [{rule['id']}]({rule['id']})" for rule in rules]
+        [
+            f"- [{rule['id']}]({rule['id']}): {rule['docs']['description']}"
+            for rule in rules
+        ]
     )
     rules_id = ",\n  ".join([f"\"rules/{rule['id']}\"" for rule in rules])
 
@@ -249,7 +254,7 @@ import CodeSnippet from "@theme/CodeSnippet";
         """
         )
 
-    with codecs.open(f"docs/rules/all.md", "w", "utf-8") as file:
+    with codecs.open(f"docs/rules/all.mdx", "w", "utf-8") as file:
         file.write(
             f"""---
 # This file is auto-generated, please do not update manually.

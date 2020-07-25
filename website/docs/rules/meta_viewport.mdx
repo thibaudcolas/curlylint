@@ -1,0 +1,98 @@
+---
+# This file is auto-generated, please do not update manually.
+# Timestamp: 2020-07-26 00:04:10.308334
+id: meta_viewport
+title: meta_viewport
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/meta_viewport/meta_viewport.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> The `viewport` meta tag should not use `user-scalable=no`, and `maximum-scale` should be 2 or above, so end users can zoom
+>
+> User impact: **Critical**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# \`user-scalable=no\` must not be used, and \`maximum-scale\` should be 2 or above\nmeta_viewport = true`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# \`user-scalable=no\` must not be used, and \`maximum-scale\` should be 2 or above\ncurlylint --rule 'meta_viewport: true' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: Does not use user-scalable=no -->\n<!-- meta_viewport = true -->\n<meta name="viewport" content="width=device-width">\n<!-- Good: maximum-scale less than 2 on unrelated meta -->\n<!-- meta_viewport = true -->\n<meta name="potato" content="width=device-width, maximum-scale=1">`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: Does not use user-scalable=no -->\n<!-- curlylint --rule 'meta_viewport: true' . -->\n<meta name="viewport" content="width=device-width">\n<!-- Good: maximum-scale less than 2 on unrelated meta -->\n<!-- curlylint --rule 'meta_viewport: true' . -->\n<meta name="potato" content="width=device-width, maximum-scale=1">`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: user-calable=no is not allowed -->\n<!-- meta_viewport = true -->\n<meta name="viewport" content="width=device-width, user-scalable=no">\n<!-- Bad: maximum-scale less than 2 is not allowed -->\n<!-- meta_viewport = true -->\n<meta name="viewport" content="width=device-width, maximum-scale=1">\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "meta_viewport", "message": "Remove `user-scalable=no` from the viewport meta so users can zoom"}, {"file": "test.html", "column": 1, "line": 6, "code": "meta_viewport", "message": "`maximum-scale` should not be less than 2"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: user-calable=no is not allowed -->\n<!-- curlylint --rule 'meta_viewport: true' . -->\n<meta name="viewport" content="width=device-width, user-scalable=no">\n<!-- Bad: maximum-scale less than 2 is not allowed -->\n<!-- curlylint --rule 'meta_viewport: true' . -->\n<meta name="viewport" content="width=device-width, maximum-scale=1">\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "meta_viewport", "message": "Remove `user-scalable=no` from the viewport meta so users can zoom"}, {"file": "test.html", "column": 1, "line": 6, "code": "meta_viewport", "message": "`maximum-scale` should not be less than 2"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Resources
+
+- [Understanding WCAG SC 1.4.4 Resize Text](http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
+- [axe-core, meta-viewport](https://dequeuniversity.com/rules/axe/3.5/meta-viewport)

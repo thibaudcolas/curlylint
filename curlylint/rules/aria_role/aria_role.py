@@ -29,7 +29,7 @@ RULE = {
                 "type": "array",
                 "items": {"type": "string"},
                 "uniqueItems": True,
-                "title": "All role attributes must match the ones provided",
+                "title": "All role attributes must match the provided list",
                 "examples": [["search", "presentation", "alert"]],
             },
         ],

@@ -1,0 +1,99 @@
+---
+# This file is auto-generated, please do not update manually.
+# Timestamp: 2020-07-26 00:04:10.305812
+id: image_alt
+title: image_alt
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/image_alt/image_alt.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> `<img>` elements must have a `alt` attribute, either with meaningful text, or an empty string for decorative images
+>
+> User impact: **Serious**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# The \`alt\` attribute must be present.\nimage_alt = true`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# The \`alt\` attribute must be present.\ncurlylint --rule 'image_alt: true' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: Check alt is present -->\n<!-- image_alt = true -->\n<img src="foo" alt="Foo eating a sandwich." />\n<!-- Good: Empty alt is fine too -->\n<!-- image_alt = true -->\n<img src="foo" alt="" />`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: Check alt is present -->\n<!-- curlylint --rule 'image_alt: true' . -->\n<img src="foo" alt="Foo eating a sandwich." />\n<!-- Good: Empty alt is fine too -->\n<!-- curlylint --rule 'image_alt: true' . -->\n<img src="foo" alt="" />`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: Missing -->\n<!-- image_alt = true -->\n<img src="foo" />\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "image_alt", "message": "The `<img>` tag must have a `alt` attribute, either with meaningful text, or an empty string for decorative images"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: Missing -->\n<!-- curlylint --rule 'image_alt: true' . -->\n<img src="foo" />\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "image_alt", "message": "The `<img>` tag must have a `alt` attribute, either with meaningful text, or an empty string for decorative images"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Resources
+
+- [WCAG2.1 SC 1.1.1: Non-text Content (Level A)](https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html)
+- [axe-core, image-alt](https://dequeuniversity.com/rules/axe/3.5/image-alt)
+- [eslint-plugin-jsx-a11y, alt-text](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/alt-text.md)

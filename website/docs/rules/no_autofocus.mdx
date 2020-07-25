@@ -1,0 +1,98 @@
+---
+# This file is auto-generated, please do not update manually.
+# Timestamp: 2020-07-26 00:04:10.309295
+id: no_autofocus
+title: no_autofocus
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/no_autofocus/no_autofocus.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> Enforce autofocus is not used on inputs. Autofocusing elements can cause usability issues for sighted and non-sighted users.
+>
+> User impact: **Serious**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# The \`autofocus\` attribute must not be used.\nno_autofocus = true`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# The \`autofocus\` attribute must not be used.\ncurlylint --rule 'no_autofocus: true' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: No autofocus attribute -->\n<!-- no_autofocus = true -->\n<input type="text" name="username" />`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: No autofocus attribute -->\n<!-- curlylint --rule 'no_autofocus: true' . -->\n<input type="text" name="username" />`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: autofocus present -->\n<!-- no_autofocus = true -->\n<input type="text" name="username" autofocus />\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "no_autofocus", "message": "Do not use the `autofocus` attribute, which causes issues for screen reader users"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: autofocus present -->\n<!-- curlylint --rule 'no_autofocus: true' . -->\n<input type="text" name="username" autofocus />\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "no_autofocus", "message": "Do not use the `autofocus` attribute, which causes issues for screen reader users"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Resources
+
+- [WHATWG HTML Standard, The autofocus attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-fe-autofocus)
+- [The accessibility of HTML 5 autofocus](https://www.brucelawson.co.uk/2009/the-accessibility-of-html-5-autofocus/)[MDN: input `autofocus` attribute usage considerations](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus)

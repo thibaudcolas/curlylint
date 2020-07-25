@@ -1,0 +1,98 @@
+---
+# This file is auto-generated, please do not update manually.
+# Timestamp: 2020-07-26 00:04:10.310900
+id: tabindex_no_positive
+title: tabindex_no_positive
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/tabindex_no_positive/tabindex_no_positive.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> Enforce autofocus is not used on inputs. Autofocusing elements can cause usability issues for sighted and non-sighted users.
+>
+> User impact: **Serious**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# Avoid positive \`tabindex\` values, change the order of elements on the page instead\ntabindex_no_positive = true`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# Avoid positive \`tabindex\` values, change the order of elements on the page instead\ncurlylint --rule 'tabindex_no_positive: true' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: No tabindex attribute – rely on the order of elements -->\n<!-- tabindex_no_positive = true -->\n<input type="text" name="username" />\n<!-- Good: Not recommended but valid -->\n<!-- tabindex_no_positive = true -->\n<div role="button" tabindex="0">ARIA button</div>\n<!-- Good: Use -1 where appropriate, so elements can programmatically receive focus -->\n<!-- tabindex_no_positive = true -->\n<div tabindex="-1">I can receive focus via JS</div>`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: No tabindex attribute – rely on the order of elements -->\n<!-- curlylint --rule 'tabindex_no_positive: true' . -->\n<input type="text" name="username" />\n<!-- Good: Not recommended but valid -->\n<!-- curlylint --rule 'tabindex_no_positive: true' . -->\n<div role="button" tabindex="0">ARIA button</div>\n<!-- Good: Use -1 where appropriate, so elements can programmatically receive focus -->\n<!-- curlylint --rule 'tabindex_no_positive: true' . -->\n<div tabindex="-1">I can receive focus via JS</div>`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: Positive values are problematic -->\n<!-- tabindex_no_positive = true -->\n<button type="submit" tabindex="3">Sign in</button>\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "tabindex_no_positive", "message": "Avoid positive `tabindex` values, change the order of elements on the page instead"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: Positive values are problematic -->\n<!-- curlylint --rule 'tabindex_no_positive: true' . -->\n<button type="submit" tabindex="3">Sign in</button>\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "tabindex_no_positive", "message": "Avoid positive `tabindex` values, change the order of elements on the page instead"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Resources
+
+- [WHATWG HTML Standard, The autofocus attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-fe-autofocus)
+- [The accessibility of HTML 5 autofocus](https://www.brucelawson.co.uk/2009/the-accessibility-of-html-5-autofocus/)[MDN: input `autofocus` attribute usage considerations](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus)
