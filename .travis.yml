@@ -13,6 +13,7 @@ jobs:
       script:
         - make lint
         - make test-coverage
+        - cd website; python build_rules.py
     - language: node_js
       install:
         - npm install --no-optional --no-audit --progress=false
@@ -20,7 +21,6 @@ jobs:
       script:
         - npm run lint
         - npm --prefix website run build
-        - npm --prefix website run build:rules
 install:
   - pip install -e '.[dev]'
 script:
