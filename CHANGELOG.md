@@ -10,6 +10,7 @@
 - Add experimental `image_alt` rule.
 - Add experimental `no_autofocus` rule.
 - Add experimental `tabindex_no_positive` rule.
+- Add experimental `meta_viewport` rule.
 
 ### Changed
 

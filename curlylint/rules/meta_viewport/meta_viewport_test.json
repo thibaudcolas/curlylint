@@ -1,0 +1,64 @@
+[
+  {
+    "label": "Does not use user-scalable=no",
+    "template": "<meta name=\"viewport\" content=\"width=device-width\">",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "user-calable=no is not allowed",
+    "template": "<meta name=\"viewport\" content=\"width=device-width, user-scalable=no\">",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "meta_viewport",
+        "message": "Remove `user-scalable=no` from the viewport meta so users can zoom"
+      }
+    ]
+  },
+  {
+    "label": "user-calable=no on unrelated meta",
+    "template": "<meta name=\"potato\" content=\"width=device-width, user-scalable=no\">",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "maximum-scale less than 2 is not allowed",
+    "template": "<meta name=\"viewport\" content=\"width=device-width, maximum-scale=1\">",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "meta_viewport",
+        "message": "`maximum-scale` should not be less than 2"
+      }
+    ]
+  },
+  {
+    "label": "maximum-scale at 2 is allowed",
+    "template": "<meta name=\"viewport\" content=\"width=device-width, maximum-scale=2\">",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "maximum-scale above 2 is allowed",
+    "template": "<meta name=\"viewport\" content=\"width=device-width, maximum-scale=3\">",
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "maximum-scale less than 2 on unrelated meta",
+    "template": "<meta name=\"potato\" content=\"width=device-width, maximum-scale=1\">",
+    "example": true,
+    "config": true,
+    "output": []
+  }
+]
