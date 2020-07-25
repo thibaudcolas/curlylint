@@ -14,5 +14,11 @@ module.exports = {
       collapsed: false,
       items: ["rules/all", ...rules],
     },
+    {
+      type: "category",
+      label: "Reference",
+      collapsed: false,
+      items: ["ideas"],
+    },
   ],
 };

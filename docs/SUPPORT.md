@@ -7,10 +7,7 @@ Hi! 👋 To help us help you, please read through the following guidelines.
 
 ## Documentation
 
-Documentation for this project is all within the GitHub repository. Please make sure to have a look at:
-
-- [`README.md`](../README.md), where most documentation lives
-- [`docs/`](../docs), for things that are too long for the README
+Documentation for this project is all on [curlylint.org](https://www.curlylint.org/), please make sure to look at it before asking for help.
 
 ## Questions
 

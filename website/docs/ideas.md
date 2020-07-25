@@ -1,4 +1,7 @@
-# Documentation
+---
+id: ideas
+title: Ideas
+---
 
 ## Inspiration
 
