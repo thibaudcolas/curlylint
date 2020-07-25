@@ -1,0 +1,38 @@
+[
+  {
+    "label": "No tabindex attribute – rely on the order of elements",
+    "template": "<input type=\"text\" name=\"username\" />",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Not recommended but valid",
+    "template": "<div role=\"button\" tabindex=\"0\">ARIA button</div>",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Use -1 where appropriate, so elements can programmatically receive focus",
+    "template": "<div tabindex=\"-1\">I can receive focus via JS</div>",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Positive values are problematic",
+    "template": "<button type=\"submit\" tabindex=\"3\">Sign in</button>",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "tabindex_no_positive",
+        "message": "Avoid positive `tabindex` values, change the order of elements on the page instead"
+      }
+    ]
+  }
+]
