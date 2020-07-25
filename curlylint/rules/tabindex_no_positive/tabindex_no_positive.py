@@ -23,7 +23,7 @@ RULE = {
         "oneOf": [
             {
                 "const": True,
-                "title": "Avoid positive `tabindex` values, change the order of elements on the page instead",
+                "title": "Avoid positive `tabindex` values, change the order of elements on the page instead.",
                 "examples": [True],
             }
         ],

@@ -254,6 +254,25 @@ import CodeSnippet from "@theme/CodeSnippet";
         """
         )
 
+    all_config_toml = []
+    all_config_cli = []
+
+    for rule in rules:
+        one_off_schema = rule["schema"].get("oneOf", [])
+        first_config = one_off_schema[0]
+        title = f"# {first_config['title']}"
+        example = first_config["examples"][0]
+
+        all_config_toml.append(title)
+        all_config_toml.append(f"# See {rule['docs']['url']}.")
+        all_config_toml.append(
+            toml.dumps({rule["id"]: example}).replace("\n", "")
+        )
+        all_config_cli.append(f"--rule '{rule['id']}: {json.dumps(example)}'")
+
+    all_config_toml_str = "\\n".join(all_config_toml).replace("`", "\\`")
+    all_config_cli_str = " ".join(all_config_cli)
+
     with codecs.open(f"docs/rules/all.mdx", "w", "utf-8") as file:
         file.write(
             f"""---
@@ -264,6 +283,38 @@ title: All rules
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/website/build_rules.py
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
 {rules_list}
+
+## Try them all
+
+Here is a sample configuration with all of Curlylint’s rules enabled. Note **this isn’t a recommended configuration**, just a convenient way to try it all at once:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={{[
+    {{ label: "TOML", value: "toml" }},
+    {{ label: "Shell", value: "shell" }},
+  ]}}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={{`[tool.curlylint.rules]\\n{all_config_toml_str}`}}
+      annotations={{[]}}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={{`curlylint {all_config_cli_str} .`}}
+      annotations={{[]}}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
 """
         )

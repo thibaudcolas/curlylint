@@ -1,10 +1,14 @@
 ---
 # This file is auto-generated, please do not update manually.
-# Timestamp: 2020-07-26 00:04:10.311576
+# Timestamp: 2020-07-26 00:30:17.810762
 id: all
 title: All rules
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/website/build_rules.py
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
 
 - [aria_role](aria_role): Elements with ARIA roles must use a valid, non-abstract ARIA role
 - [django_forms_rendering](django_forms_rendering): Disallows using Django’s convenience form rendering helpers, for which the markup isn’t screen-reader-friendly
@@ -14,3 +18,31 @@ custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/website/bui
 - [meta_viewport](meta_viewport): The `viewport` meta tag should not use `user-scalable=no`, and `maximum-scale` should be 2 or above, so end users can zoom
 - [no_autofocus](no_autofocus): Enforce autofocus is not used on inputs. Autofocusing elements can cause usability issues for sighted and non-sighted users.
 - [tabindex_no_positive](tabindex_no_positive): Enforce autofocus is not used on inputs. Autofocusing elements can cause usability issues for sighted and non-sighted users.
+
+## Try them all
+
+Here is a sample configuration with all of Curlylint’s rules enabled. Note **this isn’t a recommended configuration**, just a convenient way to try it all at once:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`[tool.curlylint.rules]\n# All role attributes must be valid.\n# See https://www.curlylint.org/docs/rules/aria_role.\naria_role = true\n# Forms cannot be rendered with as_table, as_ul, or as_p\n# See https://www.curlylint.org/docs/rules/django_forms_rendering.\ndjango_forms_rendering = true\n# The \`lang\` attribute must be present.\n# See https://www.curlylint.org/docs/rules/html_has_lang.\nhtml_has_lang = true\n# The \`alt\` attribute must be present.\n# See https://www.curlylint.org/docs/rules/image_alt.\nimage_alt = true\n# Use tabs.\n# See https://www.curlylint.org/docs/rules/indent.\nindent = "tab"\n# \`user-scalable=no\` must not be used, and \`maximum-scale\` should be 2 or above.\n# See https://www.curlylint.org/docs/rules/meta_viewport.\nmeta_viewport = true\n# The \`autofocus\` attribute must not be used.\n# See https://www.curlylint.org/docs/rules/no_autofocus.\nno_autofocus = true\n# Avoid positive \`tabindex\` values, change the order of elements on the page instead.\n# See https://www.curlylint.org/docs/rules/tabindex_no_positive.\ntabindex_no_positive = true`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`curlylint --rule 'aria_role: true' --rule 'django_forms_rendering: true' --rule 'html_has_lang: true' --rule 'image_alt: true' --rule 'indent: "tab"' --rule 'meta_viewport: true' --rule 'no_autofocus: true' --rule 'tabindex_no_positive: true' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>

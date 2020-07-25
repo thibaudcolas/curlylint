@@ -22,7 +22,7 @@ RULE = {
         "oneOf": [
             {
                 "const": True,
-                "title": "All role attributes must be valid",
+                "title": "All role attributes must be valid.",
                 "examples": [True],
             },
             {

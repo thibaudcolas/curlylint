@@ -23,11 +23,11 @@ RULE = {
     "schema": {
         "$schema": "http://json-schema.org/draft/2019-09/schema#",
         "oneOf": [
-            {"const": "tab", "title": "Use tabs", "examples": ["tab"]},
+            {"const": "tab", "title": "Use tabs.", "examples": ["tab"]},
             {
                 "type": "integer",
                 "minimum": 0,
-                "title": "Use the given number of spaces",
+                "title": "Use a given number of spaces.",
                 "examples": [4],
             },
         ],

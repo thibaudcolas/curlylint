@@ -22,7 +22,7 @@ RULE = {
         "oneOf": [
             {
                 "const": True,
-                "title": "`user-scalable=no` must not be used, and `maximum-scale` should be 2 or above",
+                "title": "`user-scalable=no` must not be used, and `maximum-scale` should be 2 or above.",
                 "examples": [True],
             },
         ],

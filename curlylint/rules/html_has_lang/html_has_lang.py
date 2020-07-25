@@ -55,8 +55,9 @@ def find_valid(node, file, target_lang):
         if getattr(node.value, "opening_tag", None):
             attributes = {}
             for n in node.value.opening_tag.attributes.nodes:
-                attributes[str(n.name)] = str(n.value).strip("\"'")
-
+                attributes[str(getattr(n, "name", ""))] = str(
+                    getattr(n, "value", "")
+                ).strip("\"'")
         if len(attributes) == 0 or "lang" not in attributes:
             return [
                 Issue.from_node(
