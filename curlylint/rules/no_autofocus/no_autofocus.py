@@ -33,18 +33,17 @@ RULE = {
 
 def find_valid(node, file, target_alt):
     name = getattr(node.value, "name", None)
-    is_html = (
+    is_input = (
         isinstance(node.value, ast.Element) and name and name.lower() == "input"
     )
 
-    if is_html:
+    if is_input:
         attributes = []
         if getattr(node.value, "opening_tag", None):
             attributes = {}
             for n in node.value.opening_tag.attributes.nodes:
                 attributes[str(n.name)] = str(n.value).strip("\"'")
 
-        print(attributes)
         if "autofocus" in attributes:
             return [
                 Issue.from_node(

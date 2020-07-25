@@ -33,11 +33,11 @@ RULE = {
 
 def find_valid(node, file, target_alt):
     name = getattr(node.value, "name", None)
-    is_html = (
+    is_img = (
         isinstance(node.value, ast.Element) and name and name.lower() == "img"
     )
 
-    if is_html:
+    if is_img:
         attributes = []
         if getattr(node.value, "opening_tag", None):
             attributes = {}
