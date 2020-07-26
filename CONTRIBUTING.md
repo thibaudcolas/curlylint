@@ -1,5 +1,7 @@
 # Contribution Guidelines
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6830546d-b21d-4067-9ca2-7288b4aedbaa/deploy-status)](https://app.netlify.com/sites/curlylint/deploys)
+
 Thank you for considering to help this project.
 
 We welcome all support, whether on bug reports, code, design, reviews, tests, documentation, and more.
