@@ -4,7 +4,7 @@ This website is built with [Docusaurus 2](https://v2.docusaurus.io/).
 
 ## Contributing
 
-```sh
+```bash
 cd website
 # Install website dependencies.
 npm install

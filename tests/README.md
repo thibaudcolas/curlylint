@@ -13,7 +13,7 @@
 
 Clone the source repository, then:
 
-```sh
+```bash
 find . ! -name '*.html' -type f -delete
 find . -type d -empty -delete
 tree .

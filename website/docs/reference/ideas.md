@@ -3,6 +3,8 @@ id: ideas
 title: Ideas
 ---
 
+> 🚧 Do you want to request a feature? Please review the list below and [open an issue](https://github.com/thibaudcolas/curlylint/issues/new/choose).
+
 ## Inspiration
 
 Here are tools that this linter could learn from. Suggestions welcome.

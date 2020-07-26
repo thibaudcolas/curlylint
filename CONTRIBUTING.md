@@ -12,7 +12,7 @@ Please note that this project is released with a [Contributor Code of Conduct](d
 
 > Requirements: `virtualenv`, `pyenv`
 
-```sh
+```bash
 git clone git@github.com:thibaudcolas/curlylint.git
 cd curlylint/
 # Install required Python versions
@@ -27,7 +27,7 @@ make init
 
 ### Commands
 
-```sh
+```bash
 make help           # See what commands are available.
 make init           # Install dependencies and initialise for development.
 make lint           # Lint the project.

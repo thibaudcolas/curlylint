@@ -6,7 +6,12 @@ module.exports = {
       type: "category",
       label: "Introduction",
       collapsed: false,
-      items: ["getting-started"],
+      items: [
+        "getting-started",
+        "command-line-usage",
+        "configuration",
+        "template-languages",
+      ],
     },
     {
       type: "category",
@@ -18,7 +23,7 @@ module.exports = {
       type: "category",
       label: "Reference",
       collapsed: false,
-      items: ["reference/ideas"],
+      items: ["reference/ideas", "reference/integrations"],
     },
   ],
 };
