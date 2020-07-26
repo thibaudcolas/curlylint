@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [v0.12.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.12.0) 2020-07-26
+
+Release notes from the blog: [Accessibility linting rules](https://www.curlylint.org/blog/accessibility-linting-rules)
+
 ### Added
 
 - Add experimental `django_forms_rendering` rule.
