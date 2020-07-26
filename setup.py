@@ -58,7 +58,7 @@ setup(
         "dev": [
             "black==19.10b0",
             "flake8==3.7.8",
-            "mypy==0.770",
+            "mypy==0.782",
             "pytest==6.0.0rc1",
             "coverage==5.2.1",
         ]
