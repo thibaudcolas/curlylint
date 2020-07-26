@@ -2,12 +2,12 @@
 
 [![PyPI](https://img.shields.io/pypi/v/curlylint.svg)](https://pypi.org/project/curlylint/) [![PyPI downloads](https://img.shields.io/pypi/dm/curlylint.svg)](https://pypi.org/project/curlylint/) [![Travis](https://travis-ci.com/thibaudcolas/curlylint.svg?branch=main)](https://travis-ci.com/thibaudcolas/curlylint) [![Total alerts](https://img.shields.io/lgtm/alerts/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/thibaudcolas/curlylint.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/thibaudcolas/curlylint/context:python) [![Netlify Status](https://api.netlify.com/api/v1/badges/6830546d-b21d-4067-9ca2-7288b4aedbaa/deploy-status)](https://app.netlify.com/sites/curlylint/deploys)
 
-> **{{ 🎀}}** Experimental linter for [Jinja](https://jinja.palletsprojects.com/), [Nunjucks](https://mozilla.github.io/nunjucks/), [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), [Twig](https://twig.symfony.com/), [Liquid](https://shopify.github.io/liquid/).
+> **{{ 🎀}}** Experimental HTML templates linting for [Jinja](https://jinja.palletsprojects.com/), [Nunjucks](https://mozilla.github.io/nunjucks/), [Django templates](https://docs.djangoproject.com/en/dev/topics/templates/), [Twig](https://twig.symfony.com/), [Liquid](https://shopify.github.io/liquid/).
 > Forked from [jinjalint](https://github.com/motet-a/jinjalint).
 
 ## Features
 
-curlylint is an experimental linter for [“curly braces”](tests/README.md) templates, and their HTML. It supports:
+Curlylint is an experimental linter for [“curly braces”](tests/README.md) templates, and their HTML. It supports:
 
 - Linting invalid template / HTML syntax due to mismatched tags – while template errors are easy enough to spot, it’s not rare for HTML issues to make their way to live sites.
 - Indentation inconsistencies – Usage of tabs vs spaces, line breaks, indentation size.
@@ -24,7 +24,7 @@ In the future, we’d like to lint for:
 
 ## Usage
 
-curlylint is available on [PyPI](<(https://pypi.org/project/curlylint/)>). To install it,
+Curlylint is available on [PyPI](<(https://pypi.org/project/curlylint/)>). To install it,
 
 ```sh
 pip install curlylint

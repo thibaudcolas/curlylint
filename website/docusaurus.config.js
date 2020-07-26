@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
   title: "curlylint",
   tagline:
-    "Experimental linter for Jinja, Nunjucks, Django templates, Twig, Liquid",
+    "Experimental HTML templates linting for Jinja, Nunjucks, Django templates, Twig, Liquid",
   url: "https://www.curlylint.org",
   baseUrl: "/",
   favicon: "img/favicon.ico",
@@ -54,6 +54,10 @@ module.exports = {
             {
               label: "Rules",
               to: "docs/rules/",
+            },
+            {
+              label: "Ideas",
+              to: "docs/reference/ideas",
             },
           ],
         },

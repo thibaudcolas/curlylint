@@ -18,7 +18,7 @@ module.exports = {
       type: "category",
       label: "Reference",
       collapsed: false,
-      items: ["ideas"],
+      items: ["reference/ideas"],
     },
   ],
 };

@@ -95,9 +95,8 @@ const features = [
     title: <>Accessible by default</>,
     description: (
       <>
-        Curlylint’s main purpose is to catch accessibility issues – use it as a
-        good baseline, and spend valuable testing time on checks that cannot be
-        automated.
+        Curlylint’s main purpose is to catch accessibility issues – automate the
+        basic checks, so you can focus on tests that cannot be automated.
       </>
     ),
   },
@@ -149,8 +148,7 @@ function Home() {
             <div className="col col--5">
               <h2>Install and run</h2>
               <p>
-                Grab curlylint from PyPI, and start HTML directly in your
-                templates.
+                Grab Curlylint from PyPI, and start linting your HTML templates:
               </p>
               <CodeSnippet snippet={install} lang="bash"></CodeSnippet>
             </div>

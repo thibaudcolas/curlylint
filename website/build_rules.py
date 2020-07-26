@@ -2,7 +2,6 @@
 # type: ignore
 
 import codecs
-import datetime
 import json
 import os
 
@@ -215,7 +214,6 @@ if __name__ == "__main__":
             file.write(
                 f"""---
 # This file is auto-generated, please do not update manually.
-# Timestamp: {datetime.datetime.now()}
 id: {rule['id']}
 title: {rule['id']}
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/{rule['id']}/{rule['id']}.py
@@ -277,7 +275,6 @@ import CodeSnippet from "@theme/CodeSnippet";
         file.write(
             f"""---
 # This file is auto-generated, please do not update manually.
-# Timestamp: {datetime.datetime.now()}
 id: all
 title: All rules
 custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/website/build_rules.py
