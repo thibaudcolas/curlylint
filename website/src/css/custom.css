@@ -110,3 +110,7 @@ a {
   opacity: 1;
   transform: translate(-50%, 0);
 }
+
+.footer__link-item {
+  text-decoration: underline;
+}
