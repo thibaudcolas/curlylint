@@ -244,7 +244,7 @@ import CodeSnippet from "@theme/CodeSnippet";
     )
     rules_id = ",\n  ".join([f"\"rules/{rule['id']}\"" for rule in rules])
 
-    with codecs.open(f"rules-sidebar.js", "w", "utf-8") as file:
+    with codecs.open("rules-sidebar.js", "w", "utf-8") as file:
         file.write(
             f"""module.exports = [
     {rules_id}
@@ -271,7 +271,7 @@ import CodeSnippet from "@theme/CodeSnippet";
     all_config_toml_str = "\\n".join(all_config_toml).replace("`", "\\`")
     all_config_cli_str = " ".join(all_config_cli)
 
-    with codecs.open(f"docs/rules/all.mdx", "w", "utf-8") as file:
+    with codecs.open("docs/rules/all.mdx", "w", "utf-8") as file:
         file.write(
             f"""---
 # This file is auto-generated, please do not update manually.

@@ -1,11 +1,11 @@
 import collections
 
 
-def flatten(l):
+def flatten(_list):
     """
     Deeply flattens an iterable.
     """
-    for el in l:
+    for el in _list:
         if isinstance(el, collections.Iterable) and not isinstance(
             el, (str, bytes)
         ):
