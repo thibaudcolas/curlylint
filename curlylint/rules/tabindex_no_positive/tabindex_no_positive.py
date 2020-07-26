@@ -14,7 +14,7 @@ RULE = {
         "tags": ["cat.language", "wcag2a"],
         "resources": [
             "[WHATWG HTML Standard, The autofocus attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-fe-autofocus)",
-            "[The accessibility of HTML 5 autofocus](https://www.brucelawson.co.uk/2009/the-accessibility-of-html-5-autofocus/)"
+            "[The accessibility of HTML 5 autofocus](https://www.brucelawson.co.uk/2009/the-accessibility-of-html-5-autofocus/)",
             "[MDN: input `autofocus` attribute usage considerations](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus)",
         ],
     },
