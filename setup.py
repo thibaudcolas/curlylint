@@ -59,7 +59,7 @@ setup(
             "black==19.10b0",
             "flake8==3.8.3",
             "mypy==0.782",
-            "pytest==6.0.0rc1",
+            "pytest==6.0.1",
             "coverage==5.2.1",
         ]
     },
