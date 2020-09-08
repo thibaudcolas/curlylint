@@ -53,7 +53,7 @@ module.exports = {
             },
             {
               label: "Rules",
-              to: "docs/rules/",
+              to: "docs/rules/all",
             },
             {
               label: "Ideas",
