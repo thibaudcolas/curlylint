@@ -4,4 +4,4 @@
   language: python
   language_version: python3
   entry: curlylint
-  types: [jinja]
+  files: '\.(html|jinja|twig)$'
