@@ -21,7 +21,7 @@ Add to your `.pre-commit-config.yaml`:
 Make sure to fill in the `rev` with a valid revision.
 
 _Note_: by default this configuration will match `.html`, `.jinja`, and `.twig` files.
-If you want to override this, you will need to use the `files` setting.  For example:
+If you want to override this, you will need to use the `files` setting. For example:
 
 ```yaml
 - id: curlylint
