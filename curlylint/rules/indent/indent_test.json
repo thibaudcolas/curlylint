@@ -1,1 +1,60 @@
-[]
+[
+  {
+    "label": "No nesting, 0 indentation",
+    "template": "<div>Test</div>",
+    "example": false,
+    "config": "tab",
+    "output": []
+  },
+  {
+    "label": "Nesting one level, tabs",
+    "template": "<div>\n\t<div>Test</div>\n</div>",
+    "example": false,
+    "config": "tab",
+    "output": []
+  },
+  {
+    "label": "Nesting one level, config tabs, using spaces",
+    "template": "<div>\n    <div>Test</div>\n</div>",
+    "example": true,
+    "config": "tab",
+    "output": [
+      {
+        "file": "test.html",
+        "column": 0,
+        "line": 1,
+        "code": "indent",
+        "message": "Should be indented with tabs"
+      }
+    ]
+  },
+  {
+    "label": "Nesting one level, spaces",
+    "template": "<div>\n    <div>Test</div>\n</div>",
+    "example": false,
+    "config": 4,
+    "output": []
+  },
+  {
+    "label": "Nesting one level, config spaces, using tabs",
+    "template": "<div>\n\t<div>Test</div>\n</div>",
+    "example": false,
+    "config": 4,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 0,
+        "line": 1,
+        "code": "indent",
+        "message": "Should be indented with spaces"
+      },
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "indent",
+        "message": "Bad indentation, expected 4, got 1"
+      }
+    ]
+  }
+]
