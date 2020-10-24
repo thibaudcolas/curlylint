@@ -6,13 +6,19 @@ import parsy
 
 from .check import check_file, check_files
 from .file import File
-from .issue import Issue, IssueLocation
+from .issue import Issue
 from .parse import make_parser
 
 
-def get_parsy_error_location(error, file_path):
+def get_parsy_error_issue(error, file_path):
     line, column = parsy.line_info_at(error.stream, error.index)
-    return IssueLocation(line=line, column=column, file_path=file_path)
+    return Issue.from_ast(
+        file=file_path,
+        line=line,
+        column=column,
+        message="Parse error: " + str(error),
+        code="parse_error",
+    )
 
 
 def parse_file(path_and_config):
@@ -39,8 +45,7 @@ def parse_source(path: Path, config, source: str):
         )
         return [], file
     except parsy.ParseError as error:
-        location = get_parsy_error_location(error, path)
-        issue = Issue(location, "Parse error: " + str(error), "parse_error")
+        issue = get_parsy_error_issue(error, path)
         return [issue], None
 
 

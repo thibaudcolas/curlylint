@@ -1,7 +1,7 @@
 import re
 
 from curlylint import ast
-from curlylint.issue import Issue, IssueLocation
+from curlylint.issue import Issue
 
 WHITESPACE_INDENT_RE = re.compile(r"^\s*")
 INDENT_RE = re.compile("^ *")
@@ -346,9 +346,15 @@ def check_space_only_indent(file):
     for i, line in enumerate(file.lines):
         indent = WHITESPACE_INDENT_RE.match(line).group(0)
         if not contains_exclusively(indent, " "):
-            loc = IssueLocation(file_path=file.path, line=i, column=0)
-            issue = Issue(loc, "Should be indented with spaces", INDENT)
-            issues.append(issue)
+            issues.append(
+                Issue.from_ast(
+                    file=file.path,
+                    line=i,
+                    column=0,
+                    message="Should be indented with spaces",
+                    code=INDENT,
+                )
+            )
     return issues
 
 
@@ -357,9 +363,15 @@ def check_tab_only_indent(file):
     for i, line in enumerate(file.lines):
         indent = WHITESPACE_INDENT_RE.match(line).group(0)
         if not contains_exclusively(indent, "\t"):
-            loc = IssueLocation(file_path=file.path, line=i, column=0)
-            issue = Issue(loc, "Should be indented with tabs", INDENT)
-            issues.append(issue)
+            issues.append(
+                Issue.from_ast(
+                    file=file.path,
+                    line=i,
+                    column=0,
+                    message="Should be indented with tabs",
+                    code=INDENT,
+                )
+            )
     return issues
 
 
