@@ -12,7 +12,7 @@ class IssueLocation:
     line = attr.ib()
 
     def __str__(self):
-        return "{}:{}:{}".format(self.file_path, self.line + 1, self.column)
+        return "{}:{}:{}".format(self.file_path, self.line, self.column)
 
     @staticmethod
     def from_ast(file_path, line, column):
