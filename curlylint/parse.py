@@ -522,16 +522,7 @@ quick_text = P.regex(r"[^{<]+", flags=re.DOTALL)
 
 
 def _combine_optional_container(locations, nodes):
-    return JinjaOptionalContainer(
-        first_opening_if=nodes[0],
-        opening_tag=nodes[1],
-        first_closing_if=nodes[2],
-        content=nodes[3],
-        second_opening_if=nodes[4],
-        closing_tag=nodes[5],
-        second_closing_if=nodes[6],
-        **locations,
-    )
+    return JinjaOptionalContainer(nodes=nodes, **locations)
 
 
 # Awkward hack to handle optional HTML containers, for example:
