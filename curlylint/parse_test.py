@@ -325,6 +325,18 @@ def test_optional_container():
     src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
     assert src == str(content.parse(src))
 
+    src = "{% if a %}<div>{% else %}<div id='c'>{% endif %}</div>"
+    assert src == str(content.parse(src))
+
+    src = "{% if a %}<div id='a'>{% else %}<div id='b'>{% endif %}</div>"
+    assert src == str(content.parse(src))
+
+    src = "{% if a %}<div>{% else %}<div>{% endif %}</div>{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}"
+    assert src == str(content.parse(src))
+
+    src = "{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}{% if a %}<div>{% else %}<div>{% endif %}</div>"
+    assert src == str(content.parse(src))
+
     src = """
     {% if a %} <a href="b"> {% endif %}
         c <b> d </b>
