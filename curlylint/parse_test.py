@@ -331,10 +331,28 @@ def test_optional_container():
     src = "{% if a %}<div id='a'>{% else %}<div id='b'>{% endif %}</div>"
     assert src == str(content.parse(src))
 
-    src = "{% if a %}<div>{% else %}<div>{% endif %}</div>{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}"
+    src = (
+        "{% if a %}<div>{% else %}<div>{% endif %}</div>{% if a %}<div>"
+        "{% endif %}foobar{% if a %}</div>{% endif %}"
+    )
     assert src == str(content.parse(src))
 
-    src = "{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}{% if a %}<div>{% else %}<div>{% endif %}</div>"
+    src = (
+        "{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}{% if a %}"
+        "<div>{% else %}<div>{% endif %}</div>"
+    )
+    assert src == str(content.parse(src))
+
+    src = (
+        "{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}{% if a %}"
+        "<div>{% else %}<div>{% endif %}foobar<div></div><a></a></div>"
+    )
+    assert src == str(content.parse(src))
+
+    src = (
+        "{% if a %}<div>{% endif %}foobar{% if a %}</div>{% endif %}{% if a %}"
+        "<div>{% else %}<div>{% endif %}foobar<div><a></a></div></div>"
+    )
     assert src == str(content.parse(src))
 
     src = """

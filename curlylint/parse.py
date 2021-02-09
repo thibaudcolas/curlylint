@@ -542,6 +542,7 @@ def _combine_optional_container(locations, nodes):
 #   {% else %}
 #     <div>
 #   {% endif %}
+#   foo
 #   </div>
 #
 # Currently, this only works with `if` statements. The two conditions
@@ -601,6 +602,7 @@ def make_jinja_optional_container_parser(config, content, jinja):
         else:
             assert isinstance(html_tag_name, Jinja)
             closing_tag = make_closing_tag_parser(jinja)
+        content_nodes = yield content
         c_tag_node = yield closing_tag
         return [
             o_if_node,
@@ -608,6 +610,7 @@ def make_jinja_optional_container_parser(config, content, jinja):
             o_else_node,
             o_last_tag_node,
             o_endif_node,
+            content_nodes,
             c_tag_node,
         ]
 
