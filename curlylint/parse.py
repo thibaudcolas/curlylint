@@ -377,7 +377,7 @@ def make_attribute_value_parser(jinja):
     ).desc("attribute value")
 
 
-attr_name_start_char = P.regex(r"[:a-zA-Z]")
+attr_name_start_char = P.regex(r"[@:a-zA-Z]")
 attr_name_char = attr_name_start_char | P.regex(r"[0-9A-Z-_.]")
 attr_name = attr_name_start_char + attr_name_char.many().concat()
 
