@@ -34,10 +34,10 @@ assignees: ""
 ### Environment
 
 <!--
-  To help identify if a problem is specific to a platform, browser, or module version, information about your environment is required.
+  To help identify if a problem is specific to a platform, or module version, information about your environment is required.
   This enables the maintainers to quickly reproduce the issue and give feedback.
 
-  Which versions of the library or of Draft.js, and which browser / OS are affected by this issue? Did this work in previous versions of the library / Draft.js?
+  Which versions of curlylint, and which OS are affected by this issue? Did this work in previous versions of curlylint?
 -->
 
 (Write your answer here if relevant.)
