@@ -1,5 +1,5 @@
 __name__ = "curlylint"
-__version__ = "0.12.0"
+__version__ = "0.12.1"
 __description__ = "{{ 🎀}} Experimental HTML templates linting for Jinja, Nunjucks, Django templates, Twig, Liquid"
 __author__ = "Thibaud Colas"
 __author_email__ = "thibaudcolas@gmail.com"

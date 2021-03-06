@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## [v0.12.1](https://github.com/thibaudcolas/curlylint/releases/tag/v0.12.1) 2021-03-06
+
+### Fixed
+
+- The project’s sdist now includes all needed files to run the test suite ([#49](https://github.com/thibaudcolas/curlylint/issues/49), [#50](https://github.com/thibaudcolas/curlylint/pull/50)). Thanks to [@jayvdb](https://github.com/jayvdb).
+
 ## [v0.12.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.12.0) 2020-07-26
 
 Release notes from the blog: [Accessibility linting rules](https://www.curlylint.org/blog/accessibility-linting-rules)
