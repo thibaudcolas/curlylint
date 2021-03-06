@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## [v0.12.2](https://github.com/thibaudcolas/curlylint/releases/tag/v0.12.2) 2021-03-06
+
+### Fixed
+
+- The `image_alt` rule no longer crashes when encountering template conditionals in img attributes ([#57](https://github.com/thibaudcolas/curlylint/pull/57)). Thanks to [@adrien-delhorme](https://github.com/adrien-delhorme).
+
 ## [v0.12.1](https://github.com/thibaudcolas/curlylint/releases/tag/v0.12.1) 2021-03-06
 
 ### Fixed
