@@ -7,13 +7,4 @@ recursive-exclude * *.py[co]
 recursive-include curlylint *.json
 recursive-include curlylint *.typed
 
-recursive-include docs *.md
-
 recursive-include stubs *.pyi
-
-recursive-include tests *.html
-recursive-include tests *.liquid
-recursive-include tests *.md
-recursive-include tests *.njk
-recursive-include tests *.toml
-recursive-include tests *.twig
