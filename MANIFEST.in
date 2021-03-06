@@ -3,3 +3,8 @@ include README.md
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
+
+recursive-include curlylint *.json
+recursive-include curlylint *.typed
+
+recursive-include stubs *.pyi
