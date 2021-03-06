@@ -14,6 +14,13 @@
     "output": []
   },
   {
+    "label": "Supports template syntax around other attributes (#57)",
+    "template": "<img src=\"foo\" {% if condition %}srcset=\"bar\"{% endif %} alt=\"\" />",
+    "example": false,
+    "config": true,
+    "output": []
+  },
+  {
     "label": "Missing",
     "template": "<img src=\"foo\" />",
     "example": true,
