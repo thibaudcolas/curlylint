@@ -1,4 +1,5 @@
 from curlylint import ast
+from curlylint.ast import JinjaElement
 from curlylint.check_node import CheckNode, build_tree
 from curlylint.issue import Issue
 
@@ -42,7 +43,8 @@ def find_valid(node, file, target_alt):
         if getattr(node.value, "opening_tag", None):
             attributes = {}
             for n in node.value.opening_tag.attributes.nodes:
-                attributes[str(n.name)] = str(n.value).strip("\"'")
+                if not isinstance(n, JinjaElement):
+                    attributes[str(n.name)] = str(n.value).strip("\"'")
 
         if len(attributes) == 0 or "alt" not in attributes:
             return [
