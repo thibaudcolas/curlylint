@@ -35,7 +35,7 @@ sdist: ## Builds package version
 	rm dist/* ; python setup.py sdist bdist_wheel
 
 publish: sdist ## Publishes a new version to pypi.
-	twine upload dist/* && echo 'Success! Go to https://pypi.org/project/curlylint/ and check that all is well.'
+	twine upload dist/*
 
 publish-test: sdist ## Publishes a new version to test pypi.
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/* && echo 'Success! Go to https://test.pypi.org/project/curlylint/ and check that all is well.'
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
