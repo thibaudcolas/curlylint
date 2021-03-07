@@ -1,5 +1,5 @@
 ---
-id: template-languages
+slug: template-languages
 title: Template Languages
 ---
 

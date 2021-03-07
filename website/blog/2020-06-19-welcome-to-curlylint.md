@@ -1,5 +1,5 @@
 ---
-id: welcome-to-curlylint
+slug: welcome-to-curlylint
 title: Welcome to curlylint.org!
 author: Thibaud Colas
 author_url: https://github.com/thibaudcolas

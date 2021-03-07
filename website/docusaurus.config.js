@@ -1,5 +1,3 @@
-const path = require("path");
-
 module.exports = {
   title: "curlylint",
   tagline:
@@ -15,7 +13,80 @@ module.exports = {
       anonymizeIP: true,
     },
     prism: {
-      theme: require("prism-react-renderer/themes/github"),
+      theme: {
+        plain: {
+          color: "#393A34",
+          backgroundColor: "#f6f8fa",
+        },
+        styles: [
+          {
+            types: ["comment", "prolog", "doctype", "cdata"],
+            style: {
+              color: "#999988",
+              fontStyle: "italic",
+            },
+          },
+          {
+            types: ["namespace"],
+            style: {
+              opacity: 0.7,
+            },
+          },
+          {
+            types: ["string", "attr-value"],
+            style: {
+              color: "#e3116c",
+            },
+          },
+          {
+            types: ["punctuation", "operator"],
+            style: {
+              color: "#393A34",
+            },
+          },
+          {
+            types: [
+              "entity",
+              "url",
+              "symbol",
+              "number",
+              "boolean",
+              "variable",
+              "constant",
+              "property",
+              "regex",
+              "inserted",
+            ],
+            style: {
+              color: "#36acaa",
+            },
+          },
+          {
+            types: ["atrule", "keyword", "attr-name", "selector"],
+            style: {
+              color: "#00a4db",
+            },
+          },
+          {
+            types: ["function", "deleted", "tag"],
+            style: {
+              color: "#d73a49",
+            },
+          },
+          {
+            types: ["function-variable"],
+            style: {
+              color: "#6f42c1",
+            },
+          },
+          {
+            types: ["tag", "selector", "keyword"],
+            style: {
+              color: "#00009f",
+            },
+          },
+        ],
+      },
       darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["toml"],
     },
@@ -26,7 +97,7 @@ module.exports = {
         alt: "",
         src: "img/curlylint-logo.svg",
       },
-      links: [
+      items: [
         {
           to: "docs/",
           activeBasePath: "docs",
@@ -96,7 +167,6 @@ module.exports = {
       {
         docs: {
           // It is recommended to set document id as docs home page (`docs/` path).
-          homePageId: "getting-started",
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           editUrl:
@@ -114,5 +184,5 @@ module.exports = {
       },
     ],
   ],
-  plugins: [path.resolve(__dirname, "./node_modules/docusaurus-lunr-search/")],
+  plugins: [require.resolve("docusaurus-lunr-search")],
 };
