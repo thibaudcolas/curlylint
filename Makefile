@@ -18,13 +18,13 @@ format: ## Format project files.
 	npm run format
 
 test: ## Test the project.
-	pytest
+	pytest --strict-config
 
 test-watch: ## Restarts the tests whenever a file changes.
-	nodemon -q -e py,json -w curlylint  -x "clear && pytest --new-first -q || true"
+	nodemon -q -e py,json -w curlylint  -x "clear && pytest --strict-config --exitfirst --new-first -q || true"
 
 test-coverage: ## Run the tests while generating test coverage data.
-	coverage run -m pytest && coverage report && coverage html
+	coverage run -m pytest --strict-config && coverage report && coverage html
 
 clean-pyc: ## Remove Python file artifacts.
 	find . -name '*.pyc' -exec rm -f {} +
