@@ -1,5 +1,5 @@
 ---
-id: brand-new-rules-documentation
+slug: brand-new-rules-documentation
 title: Brand new rules documentation
 author: Thibaud Colas
 author_url: https://github.com/thibaudcolas

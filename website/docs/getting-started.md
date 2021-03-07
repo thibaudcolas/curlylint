@@ -1,6 +1,6 @@
 ---
-id: getting-started
 title: Getting Started
+slug: /
 ---
 
 Start by installing curlylint with pip:

@@ -1,5 +1,5 @@
 ---
-id: integrations
+slug: integrations
 title: Integrations
 ---
 

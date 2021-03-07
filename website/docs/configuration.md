@@ -1,5 +1,5 @@
 ---
-id: configuration
+slug: configuration
 title: Configuration
 ---
 

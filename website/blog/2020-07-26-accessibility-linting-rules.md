@@ -1,5 +1,5 @@
 ---
-id: accessibility-linting-rules
+slug: accessibility-linting-rules
 title: Accessibility linting rules
 author: Thibaud Colas
 author_url: https://github.com/thibaudcolas

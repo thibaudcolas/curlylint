@@ -1,5 +1,5 @@
 ---
-id: ideas
+slug: ideas
 title: Ideas
 ---
 

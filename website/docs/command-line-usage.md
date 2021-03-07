@@ -1,5 +1,5 @@
 ---
-id: command-line-usage
+slug: command-line-usage
 title: Command Line Usage
 ---
 
