@@ -61,6 +61,7 @@ setup(
             "mypy==0.812",
             "pytest==6.2.2",
             "coverage==5.5",
+            "memory-profiler==0.58",
         ]
     },
     classifiers=[
