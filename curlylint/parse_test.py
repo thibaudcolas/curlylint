@@ -1,3 +1,5 @@
+import unittest
+
 import parsy as P
 
 from . import ast
@@ -72,112 +74,152 @@ OpeningTag = with_dummy_locations(ast.OpeningTag)
 String = with_dummy_locations(ast.String)
 
 
-def test_dummy_location():
-    dummy = DummyLocation()
-    real = Location(0, 0, 0)
-    assert dummy == real
-    assert real == dummy
+class TestUtil(unittest.TestCase):
+    def test_dummy_location(self):
+        dummy = DummyLocation()
+        real = Location(0, 0, 0)
+        self.assertEqual(dummy, real)
+        self.assertEqual(real, dummy)
 
-    assert not dummy != real  # lgtm [py/redundant-comparison]
-    assert not real != dummy  # lgtm [py/redundant-comparison]
-
-
-def test_tag_name():
-    assert tag_name_char.parse("a") == "a"
-    assert tag_name.parse("bcd-ef9") == "bcd-ef9"
-    assert tag_name.parse("clipPath") == "clipPath"
-    assert tag_name.parse("HTML") == "HTML"
+        self.assertEqual(dummy != real, False)  # lgtm [py/redundant-comparison]
+        self.assertEqual(real != dummy, False)  # lgtm [py/redundant-comparison]
 
 
-def test_attribute_value():
-    assert attribute_value.parse("hello-world") == String(
-        value=Interp("hello-world"), quote=None
-    )
+class TestParser(unittest.TestCase):
+    def test_tag_name(self):
+        self.assertEqual(tag_name_char.parse("a"), "a")
+        self.assertEqual(tag_name.parse("bcd-ef9"), "bcd-ef9")
+        self.assertEqual(tag_name.parse("clipPath"), "clipPath")
+        self.assertEqual(tag_name.parse("HTML"), "HTML")
 
-    assert attribute_value.parse("hello{{a}}world") == String(
-        value=Interp(["hello", JinjaVariable(content="a"), "world"]), quote=None
-    )
+    def test_attribute_value(self):
+        self.assertEqual(
+            attribute_value.parse("hello-world"),
+            String(value=Interp("hello-world"), quote=None),
+        )
 
-    assert attribute_value.parse("123") == Integer(value=123, has_percent=False)
+        self.assertEqual(
+            attribute_value.parse("hello{{a}}world"),
+            String(
+                value=Interp(["hello", JinjaVariable(content="a"), "world"]),
+                quote=None,
+            ),
+        )
 
-    assert attribute_value.parse('"hello"') == String(
-        value=Interp("hello"), quote='"'
-    )
+        self.assertEqual(
+            attribute_value.parse("123"), Integer(value=123, has_percent=False)
+        )
 
-    assert attribute_value.parse("'hello'") == String(
-        value=Interp("hello"), quote="'"
-    )
+        self.assertEqual(
+            attribute_value.parse('"hello"'),
+            String(value=Interp("hello"), quote='"'),
+        )
 
-    assert attribute_value.parse("''") == String(value=Interp([]), quote="'")
+        self.assertEqual(
+            attribute_value.parse("'hello'"),
+            String(value=Interp("hello"), quote="'"),
+        )
 
-    assert attribute_value.parse("'hello{{b}}world'") == String(
-        value=Interp(["hello", JinjaVariable(content="b"), "world"]), quote="'"
-    )
+        self.assertEqual(
+            attribute_value.parse("''"), String(value=Interp([]), quote="'")
+        )
 
+        self.assertEqual(
+            attribute_value.parse("'hello{{b}}world'"),
+            String(
+                value=Interp(["hello", JinjaVariable(content="b"), "world"]),
+                quote="'",
+            ),
+        )
 
-def test_attribute():
-    assert attribute.parse("hello=world") == Attribute(
-        name=Interp("hello"),
-        value=Interp(String(value=Interp("world"), quote=None)),
-    )
+    def test_attribute(self):
+        self.assertEqual(
+            attribute.parse("hello=world"),
+            Attribute(
+                name=Interp("hello"),
+                value=Interp(String(value=Interp("world"), quote=None)),
+            ),
+        )
 
-    assert attribute.parse('a= "b"') == Attribute(
-        name=Interp("a"), value=Interp(String(value=Interp("b"), quote='"'))
-    )
+        self.assertEqual(
+            attribute.parse('a= "b"'),
+            Attribute(
+                name=Interp("a"),
+                value=Interp(String(value=Interp("b"), quote='"')),
+            ),
+        )
 
-    assert attribute.parse('A="b"') == Attribute(
-        name=Interp("A"), value=Interp(String(value=Interp("b"), quote='"'))
-    )
+        self.assertEqual(
+            attribute.parse('A="b"'),
+            Attribute(
+                name=Interp("A"),
+                value=Interp(String(value=Interp("b"), quote='"')),
+            ),
+        )
 
-    assert attribute.parse('viewBox="b"') == Attribute(
-        name=Interp("viewBox"),
-        value=Interp(String(value=Interp("b"), quote='"')),
-    )
+        self.assertEqual(
+            attribute.parse('viewBox="b"'),
+            Attribute(
+                name=Interp("viewBox"),
+                value=Interp(String(value=Interp("b"), quote='"')),
+            ),
+        )
 
-    assert attribute.parse("a =b_c23") == Attribute(
-        name=Interp("a"),
-        value=Interp(String(value=Interp("b_c23"), quote=None)),
-    )
+        self.assertEqual(
+            attribute.parse("a =b_c23"),
+            Attribute(
+                name=Interp("a"),
+                value=Interp(String(value=Interp("b_c23"), quote=None)),
+            ),
+        )
 
-    assert attribute.parse("valueless-attribute") == Attribute(
-        name=Interp("valueless-attribute"), value=None
-    )
+        self.assertEqual(
+            attribute.parse("valueless-attribute"),
+            Attribute(name=Interp("valueless-attribute"), value=None),
+        )
 
+    def test_comment(self):
+        self.assertEqual(
+            comment.parse("<!--hello--world-->"), Comment(text="hello--world")
+        )
 
-def test_comment():
-    assert comment.parse("<!--hello--world-->") == Comment(text="hello--world")
+    def test_jinja_comment(self):
+        self.assertEqual(
+            jinja_comment.parse("{# hello world #}"),
+            JinjaComment(text="hello world"),
+        )
 
+    def test_opening_tag(self):
+        self.assertEqual(
+            opening_tag.parse("<div>"),
+            OpeningTag(name="div", attributes=Interp([])),
+        )
 
-def test_jinja_comment():
-    assert jinja_comment.parse("{# hello world #}") == JinjaComment(
-        text="hello world"
-    )
+        self.assertEqual(
+            opening_tag.parse("<div\n >"),
+            OpeningTag(name="div", attributes=Interp([])),
+        )
 
-
-def test_opening_tag():
-    assert opening_tag.parse("<div>") == OpeningTag(
-        name="div", attributes=Interp([])
-    )
-
-    assert opening_tag.parse("<div\n >") == OpeningTag(
-        name="div", attributes=Interp([])
-    )
-
-    assert opening_tag.parse('<div class="red" style="" >') == OpeningTag(
-        name="div",
-        attributes=Interp(
-            [
-                Attribute(
-                    name=Interp("class"),
-                    value=Interp(String(value=Interp("red"), quote='"')),
+        self.assertEqual(
+            opening_tag.parse('<div class="red" style="" >'),
+            OpeningTag(
+                name="div",
+                attributes=Interp(
+                    [
+                        Attribute(
+                            name=Interp("class"),
+                            value=Interp(
+                                String(value=Interp("red"), quote='"')
+                            ),
+                        ),
+                        Attribute(
+                            name=Interp("style"),
+                            value=Interp(String(value=Interp([]), quote='"')),
+                        ),
+                    ]
                 ),
-                Attribute(
-                    name=Interp("style"),
-                    value=Interp(String(value=Interp([]), quote='"')),
-                ),
-            ]
-        ),
-    )
+            ),
+        )
 
 
 def test_closing_tag():

@@ -1,8 +1,13 @@
+import unittest
+
 from .util import flatten
 
 
-def test():
-    assert list(flatten(())) == []
-    assert list(flatten([])) == []
-    assert list(flatten((1,))) == [1]
-    assert list(flatten([2, [], (), [3, [(4, 5), (6,)]]])) == [2, 3, 4, 5, 6]
+class TestUtil(unittest.TestCase):
+    def test_flatten(self):
+        self.assertEqual(list(flatten(())), [])
+        self.assertEqual(list(flatten([])), [])
+        self.assertEqual(list(flatten((1,))), [1])
+        self.assertEqual(
+            list(flatten([2, [], (), [3, [(4, 5), (6,)]]])), [2, 3, 4, 5, 6]
+        )
