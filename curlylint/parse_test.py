@@ -249,155 +249,188 @@ class TestParser(unittest.TestCase):
         closing_tag = make_closing_tag_parser(P.string("div"))
         self.assertEqual(closing_tag.parse("</div>"), ClosingTag(name="div"))
 
-
-def test_raw_text_elements():
-    assert element.parse("<style a=b> <wont-be-parsed> </style>") == Element(
-        content=" <wont-be-parsed> ",
-        opening_tag=OpeningTag(
-            name="style",
-            attributes=Interp(
-                [
-                    Attribute(
-                        name=Interp("a"),
-                        value=Interp(String(value=Interp("b"), quote=None)),
-                    )
-                ]
-            ),
-        ),
-        closing_tag=ClosingTag(name="style"),
-    )
-
-
-def test_element():
-    assert element.parse("<div> hey </div>") == Element(
-        opening_tag=OpeningTag(name="div", attributes=Interp([])),
-        content=Interp([" hey "]),
-        closing_tag=ClosingTag(name="div"),
-    )
-
-    attributes = [
-        Attribute(
-            name=Interp("onclick"),
-            value=Interp(String(value=Interp([]), quote='"')),
-        ),
-        JinjaVariable(content="var"),
-        Attribute(
-            name=Interp("class"),
-            value=Interp(String(value=Interp("red"), quote='"')),
-        ),
-    ]
-
-    assert element.parse('<br onclick="" {{var}} class="red">') == Element(
-        opening_tag=OpeningTag(name="br", attributes=Interp(attributes)),
-        closing_tag=None,
-        content=None,
-    )
-
-    src = "<{% if a %}bcd{% endif %}></{% if a %}bcd{% endif %}>"
-    assert src == str(element.parse(src))
-
-    src = '<div{{ "ider" }}></div>'
-    assert '<div {{ "ider" }}></div>' == str(element.parse(src))
-
-    src = '<div{% if a %}foo="bar"{% endif %}></div>'
-    assert '<div {% if a %}foo="bar"{% endif %}></div>' == str(
-        element.parse(src)
-    )
-
-    src = '<div{% if a %} foo="bar"  a=2 {% endif %}></div>'
-    assert '<div {% if a %}foo="bar"a=2{% endif %}></div>' == str(
-        element.parse(src)
-    )
-
-    src = "<colgroup></colgroup>"
-    assert src == str(element.parse(src))
-
-
-def test_self_closing_elements():
-    assert element.parse("<br>") == Element(
-        opening_tag=OpeningTag(name="br", attributes=Interp([])),
-        content=None,
-        closing_tag=None,
-    )
-
-    src = "<br />"
-    assert src == str(element.parse(src))
-
-
-def test_jinja_blocks():
-    assert jinja.parse("{% name something == 123 %}") == JinjaElement(
-        parts=[
-            JinjaElementPart(
-                tag=JinjaTag(name="name", content="something == 123"),
-                content=None,
-            )
-        ],
-        closing_tag=None,
-    )
-
-    assert jinja.parse("{% if a %}b{% else %}c{% endif %}") == JinjaElement(
-        parts=[
-            JinjaElementPart(
-                tag=JinjaTag(name="if", content="a"), content=Interp(["b"])
-            ),
-            JinjaElementPart(
-                tag=JinjaTag(name="else", content=""), content=Interp(["c"])
-            ),
-        ],
-        closing_tag=JinjaTag(name="endif", content=""),
-    )
-
-    src = "{% if a %}b{% elif %}c{% elif %}d{% else %}e{% endif %}"
-    assert src == str(jinja.parse(src))
-
-
-def test_jinja_whitespace_controls():
-    assert jinja.parse("{%- foo -%}") == JinjaElement(
-        parts=[
-            JinjaElementPart(
-                tag=JinjaTag(
-                    name="foo", content="", left_minus=True, right_minus=True
+    def test_raw_text_elements(self):
+        self.assertEqual(
+            element.parse("<style a=b> <wont-be-parsed> </style>"),
+            Element(
+                content=" <wont-be-parsed> ",
+                opening_tag=OpeningTag(
+                    name="style",
+                    attributes=Interp(
+                        [
+                            Attribute(
+                                name=Interp("a"),
+                                value=Interp(
+                                    String(value=Interp("b"), quote=None)
+                                ),
+                            )
+                        ]
+                    ),
                 ),
+                closing_tag=ClosingTag(name="style"),
+            ),
+        )
+
+    def test_element(self):
+        self.assertEqual(
+            element.parse("<div> hey </div>"),
+            Element(
+                opening_tag=OpeningTag(name="div", attributes=Interp([])),
+                content=Interp([" hey "]),
+                closing_tag=ClosingTag(name="div"),
+            ),
+        )
+
+        attributes = [
+            Attribute(
+                name=Interp("onclick"),
+                value=Interp(String(value=Interp([]), quote='"')),
+            ),
+            JinjaVariable(content="var"),
+            Attribute(
+                name=Interp("class"),
+                value=Interp(String(value=Interp("red"), quote='"')),
+            ),
+        ]
+
+        self.assertEqual(
+            element.parse('<br onclick="" {{var}} class="red">'),
+            Element(
+                opening_tag=OpeningTag(
+                    name="br", attributes=Interp(attributes)
+                ),
+                closing_tag=None,
                 content=None,
-            )
-        ],
-        closing_tag=None,
-    )
+            ),
+        )
 
-    assert str(jinja.parse("{%- foo -%}")) == "{%- foo -%}"
-    assert str(jinja.parse("{%- foo %}")) == "{%- foo %}"
-    assert str(jinja.parse("{{- bar -}}")) == "{{- bar -}}"
-    assert str(jinja.parse("{{ bar -}}")) == "{{ bar -}}"
-    assert str(jinja.parse("{%+ foo %}")) == "{%+ foo %}"
-    assert str(jinja.parse("{{+ bar }}")) == "{{+ bar }}"
+        src = "<{% if a %}bcd{% endif %}></{% if a %}bcd{% endif %}>"
+        self.assertEqual(src, str(element.parse(src)))
 
+        src = '<div{{ "ider" }}></div>'
+        self.assertEqual('<div {{ "ider" }}></div>', str(element.parse(src)))
 
-def test_doctype():
-    assert content.parse("<!DOCTYPE html>") == Interp("<!DOCTYPE html>")
+        src = '<div{% if a %}foo="bar"{% endif %}></div>'
+        self.assertEqual(
+            '<div {% if a %}foo="bar"{% endif %}></div>',
+            str(element.parse(src)),
+        )
 
+        src = '<div{% if a %} foo="bar"  a=2 {% endif %}></div>'
+        self.assertEqual(
+            '<div {% if a %}foo="bar"a=2{% endif %}></div>',
+            str(element.parse(src)),
+        )
 
-def test_attrs():
-    attrs = make_attributes_parser({}, jinja)
-    parse = attrs.parse
+        src = "<colgroup></colgroup>"
+        self.assertEqual(src, str(element.parse(src)))
 
-    assert str(parse("{% if %}{% endif %}")) == "{% if %}{% endif %}"
-    assert str(parse("{% if %}  {% endif %}")) == "{% if %}{% endif %}"
-    assert str(parse("{% if %}a=b{% endif %}")) == "{% if %}a=b{% endif %}"
-    assert str(parse("{% if %} a=b {% endif %}")) == "{% if %}a=b{% endif %}"
+    def test_self_closing_elements(self):
+        self.assertEqual(
+            element.parse("<br>"),
+            Element(
+                opening_tag=OpeningTag(name="br", attributes=Interp([])),
+                content=None,
+                closing_tag=None,
+            ),
+        )
 
+        src = "<br />"
+        self.assertEqual(src, str(element.parse(src)))
 
-def test_optional_container():
-    src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
-    assert src == str(content.parse(src))
+    def test_jinja_blocks(self):
+        self.assertEqual(
+            jinja.parse("{% name something == 123 %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="name", content="something == 123"),
+                        content=None,
+                    )
+                ],
+                closing_tag=None,
+            ),
+        )
 
-    src = """
-    {% if a %} <a href="b"> {% endif %}
-        c <b> d </b>
-    {% if a %} </a> {% endif %}
-    """
-    content.parse(src)
+        self.assertEqual(
+            jinja.parse("{% if a %}b{% else %}c{% endif %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="if", content="a"),
+                        content=Interp(["b"]),
+                    ),
+                    JinjaElementPart(
+                        tag=JinjaTag(name="else", content=""),
+                        content=Interp(["c"]),
+                    ),
+                ],
+                closing_tag=JinjaTag(name="endif", content=""),
+            ),
+        )
 
+        src = "{% if a %}b{% elif %}c{% elif %}d{% else %}e{% endif %}"
+        self.assertEqual(src, str(jinja.parse(src)))
 
-def test_whole_document():
-    src = '<html lang="fr"><body>Hello<br></body></html>'
-    assert src == str(element.parse(src))
+    def test_jinja_whitespace_controls(self):
+        self.assertEqual(
+            jinja.parse("{%- foo -%}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(
+                            name="foo",
+                            content="",
+                            left_minus=True,
+                            right_minus=True,
+                        ),
+                        content=None,
+                    )
+                ],
+                closing_tag=None,
+            ),
+        )
+
+        self.assertEqual(str(jinja.parse("{%- foo -%}")), "{%- foo -%}")
+        self.assertEqual(str(jinja.parse("{%- foo %}")), "{%- foo %}")
+        self.assertEqual(str(jinja.parse("{{- bar -}}")), "{{- bar -}}")
+        self.assertEqual(str(jinja.parse("{{ bar -}}")), "{{ bar -}}")
+        self.assertEqual(str(jinja.parse("{%+ foo %}")), "{%+ foo %}")
+        self.assertEqual(str(jinja.parse("{{+ bar }}")), "{{+ bar }}")
+
+    def test_doctype(self):
+        self.assertEqual(
+            content.parse("<!DOCTYPE html>"), Interp("<!DOCTYPE html>")
+        )
+
+    def test_attrs(self):
+        attrs = make_attributes_parser({}, jinja)
+        parse = attrs.parse
+
+        self.assertEqual(
+            str(parse("{% if %}{% endif %}")), "{% if %}{% endif %}"
+        )
+        self.assertEqual(
+            str(parse("{% if %}  {% endif %}")), "{% if %}{% endif %}"
+        )
+        self.assertEqual(
+            str(parse("{% if %}a=b{% endif %}")), "{% if %}a=b{% endif %}"
+        )
+        self.assertEqual(
+            str(parse("{% if %} a=b {% endif %}")), "{% if %}a=b{% endif %}"
+        )
+
+    def test_optional_container(self):
+        src = '{% if a %}<a href="b">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
+        self.assertEqual(src, str(content.parse(src)))
+
+        src = """
+        {% if a %} <a href="b"> {% endif %}
+            c <b> d </b>
+        {% if a %} </a> {% endif %}
+        """
+        content.parse(src)
+
+    def test_whole_document(self):
+        src = '<html lang="fr"><body>Hello<br></body></html>'
+        self.assertEqual(src, str(element.parse(src)))
