@@ -522,16 +522,7 @@ quick_text = P.regex(r"[^{<]+", flags=re.DOTALL)
 
 
 def _combine_optional_container(locations, nodes):
-    return JinjaOptionalContainer(
-        first_opening_if=nodes[0],
-        opening_tag=nodes[1],
-        first_closing_if=nodes[2],
-        content=nodes[3],
-        second_opening_if=nodes[4],
-        closing_tag=nodes[5],
-        second_closing_if=nodes[6],
-        **locations,
-    )
+    return JinjaOptionalContainer(nodes=nodes, **locations)
 
 
 # Awkward hack to handle optional HTML containers, for example:
@@ -544,10 +535,21 @@ def _combine_optional_container(locations, nodes):
 #     </div>
 #   {% endif %}
 #
-# Currently, this only works with `if` statements and the two conditions
-# must be exactly the same.
+#   OR
+#
+#   {% if a %}
+#     <div>
+#   {% else %}
+#     <div>
+#   {% endif %}
+#   foo
+#   </div>
+#
+# Currently, this only works with `if` statements. The two conditions
+# must be exactly the same in the first case.
 def make_jinja_optional_container_parser(config, content, jinja):
     jinja_if = make_jinja_tag_parser(P.string("if"))
+    jinja_else = make_jinja_tag_parser(P.string("else"))
     jinja_endif = make_jinja_tag_parser(P.string("endif"))
     opening_tag = make_opening_tag_parser(config, jinja, allow_slash=False)
 
@@ -582,7 +584,39 @@ def make_jinja_optional_container_parser(config, content, jinja):
             c_second_if_node,
         ]
 
-    return locate(opt_container_impl).combine(_combine_optional_container)
+    @P.generate
+    def ifelse_opt_container_impl():
+        o_if_node = yield jinja_if.skip(whitespace)
+        o_first_tag_node = yield opening_tag.skip(whitespace)
+        o_else_node = yield jinja_else.skip(whitespace)
+        o_last_tag_node = yield opening_tag.skip(whitespace)
+        if o_last_tag_node.name != o_first_tag_node.name:
+            yield P.fail(
+                "Expected '" + o_first_tag_node.name + "' to be in else block"
+            )
+            return
+        o_endif_node = yield jinja_endif.skip(whitespace)
+        html_tag_name = o_first_tag_node.name
+        if isinstance(html_tag_name, str):
+            closing_tag = make_closing_tag_parser(P.string(html_tag_name))
+        else:
+            assert isinstance(html_tag_name, Jinja)
+            closing_tag = make_closing_tag_parser(jinja)
+        content_nodes = yield content
+        c_tag_node = yield closing_tag
+        return [
+            o_if_node,
+            o_first_tag_node,
+            o_else_node,
+            o_last_tag_node,
+            o_endif_node,
+            content_nodes,
+            c_tag_node,
+        ]
+
+    return locate(opt_container_impl).combine(
+        _combine_optional_container
+    ) | locate(ifelse_opt_container_impl).combine(_combine_optional_container)
 
 
 def make_jinja_parser(config, content):

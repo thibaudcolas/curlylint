@@ -197,25 +197,10 @@ class JinjaElement(Jinja):
 
 @attr.s(frozen=True)
 class JinjaOptionalContainer(Jinja):
-    first_opening_if = attr.ib()  # JinjaTag
-    opening_tag = attr.ib()  # OpeningTag
-    first_closing_if = attr.ib()  # JinjaTag
-    content = attr.ib()  # Interpolated
-    second_opening_if = attr.ib()  # JinjaTag
-    closing_tag = attr.ib()  # ClosingTag
-    second_closing_if = attr.ib()  # JinjaTag
+    nodes = attr.ib(factory=list)
 
     def __str__(self):
-        nodes = [
-            self.first_opening_if,
-            self.opening_tag,
-            self.first_closing_if,
-            self.content,
-            self.second_opening_if,
-            self.closing_tag,
-            self.second_closing_if,
-        ]
-        return "".join(str(n) for n in nodes)
+        return "".join(str(n) for n in self.nodes)
 
 
 @attr.s(frozen=True)
