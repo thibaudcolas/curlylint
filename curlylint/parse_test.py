@@ -233,10 +233,21 @@ class TestParser(unittest.TestCase):
                 '<a class="govuk-button"href="/cookies">Set cookie preferences</a>'
             )
 
+    def test_opening_tag_jinja_block_attributes_whitespace_after(self):
+        opening_tag.parse(
+            '<form{% if has_file_field %} enctype="multipart/form-data"{% endif %} action="{{ form_url }}">'
+        )
 
-def test_closing_tag():
-    closing_tag = make_closing_tag_parser(P.string("div"))
-    assert closing_tag.parse("</div>") == ClosingTag(name="div")
+    @pytest.mark.skip(reason="no way of currently testing this")
+    def test_opening_tag_jinja_block_attributes_whitespace_before_37(self):
+        # https://github.com/thibaudcolas/curlylint/issues/37
+        opening_tag.parse(
+            '<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}">'
+        )
+
+    def test_closing_tag(self):
+        closing_tag = make_closing_tag_parser(P.string("div"))
+        self.assertEqual(closing_tag.parse("</div>"), ClosingTag(name="div"))
 
 
 def test_raw_text_elements():
