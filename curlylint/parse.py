@@ -150,6 +150,7 @@ DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
 # XXX: It could be better and simpler to only allow ASCII whitespaces here.
 whitespace = P.regex(r"\s*")
 mandatory_whitespace = P.regex(r"\s+")
+spaces_between_attr = mandatory_whitespace.desc("space(s) between attributes")
 
 
 def until(parser):
@@ -415,7 +416,7 @@ def make_attributes_parser(config, jinja):
 
     attrs = interpolated(
         (
-            whitespace.then(jinja_attr) | mandatory_whitespace.then(attribute)
+            whitespace.then(jinja_attr) | spaces_between_attr.then(attribute)
         ).many()
     )
 

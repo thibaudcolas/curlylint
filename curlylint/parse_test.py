@@ -1,4 +1,5 @@
 import unittest
+import pytest
 
 import parsy as P
 
@@ -220,6 +221,17 @@ class TestParser(unittest.TestCase):
                 ),
             ),
         )
+
+    def test_opening_tag_attributes_no_space(self):
+        # See https://html.spec.whatwg.org/multipage/syntax.html#start-tags
+        # "Attributes must be separated from each other by one or more ASCII whitespace."
+        # See https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837
+        with pytest.raises(
+            P.ParseError, match="space\\(s\\) between attributes",
+        ):
+            opening_tag.parse(
+                '<a class="govuk-button"href="/cookies">Set cookie preferences</a>'
+            )
 
 
 def test_closing_tag():
