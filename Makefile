@@ -11,7 +11,7 @@ init: clean-pyc ## Install dependencies and initialise for development.
 lint: ## Lint the project.
 	black --check **/*.py
 	flake8 **/*.py
-	mypy curlylint
+	mypy **/*.py
 
 format: ## Format project files.
 	black **/*.py
@@ -25,6 +25,9 @@ test-watch: ## Restarts the tests whenever a file changes.
 
 test-coverage: ## Run the tests while generating test coverage data.
 	coverage run -m pytest --strict-config && coverage report && coverage html
+
+benchmark: ## Runs a one-off performance (speed, memory) benchmark.
+	python benchmark.py
 
 clean-pyc: ## Remove Python file artifacts.
 	find . -name '*.pyc' -exec rm -f {} +

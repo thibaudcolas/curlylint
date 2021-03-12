@@ -35,6 +35,7 @@ make init           # Install dependencies and initialise for development.
 make lint           # Lint the project.
 make format         # Format project files.
 make test           # Test the project.
+make benchmark       # Runs a one-off performance (speed, memory) benchmark.
 make clean-pyc      # Remove Python file artifacts.
 make sdist          # Builds package version
 make publish        # Publishes a new version to pypi.
