@@ -4,6 +4,8 @@ import click
 
 
 class RuleParamType(click.ParamType):
+    """Validates and converts CLI-provided rule configuration."""
+
     name = "rule"
 
     def convert(self, value, param, ctx):
