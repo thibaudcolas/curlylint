@@ -14,7 +14,7 @@
 On the roadmap:
 
 - More checks for common accessibility issues in HTML.
-- Checks for common security issues – for exameple `rel="noopener noreferrer"`, or known sources of XSS vulnerabilities.
+- Checks for common security issues – for example `rel="noopener noreferrer"`, or known sources of XSS vulnerabilities.
 - More [ideas welcome](https://www.curlylint.org/docs/reference/ideas)!
 
 ## Usage
