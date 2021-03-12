@@ -3,7 +3,15 @@
   // https://renovatebot.com/docs/configuration-options/#commitbodytable
   commitBodyTable: true,
   // https://renovatebot.com/docs/configuration-options/#ignoredeps
-  ignoreDeps: [],
+  ignoreDeps: [
+    "@docusaurus/core",
+    "@docusaurus/preset-classic",
+    "docusaurus-lunr-search",
+    "autocomplete.js",
+    "prismjs",
+    "react",
+    "react-dom",
+  ],
   // https://renovatebot.com/docs/configuration-options/#labels
   labels: ["enhancement"],
   // https://renovatebot.com/docs/configuration-options/#prcreation
@@ -24,23 +32,41 @@
     supportPolicy: ["current"],
   },
   packageRules: [
-    { packageNames: ["prettier"], groupName: "prettier", automerge: true },
-    { packageNames: ["black"], groupName: "black", automerge: true },
-    { packageNames: ["flake8"], groupName: "flake8", automerge: true },
-    { packageNames: ["mypy"], groupName: "mypy", automerge: true },
-    { packageNames: ["pytest"], groupName: "pytest", automerge: true },
-    { packageNames: ["coverage"], groupName: "coverage", automerge: true },
     {
-      packageNames: [
-        "@docusaurus/core",
-        "@docusaurus/preset-classic",
-        "docusaurus-lunr-search",
-        "prismjs",
-        "react",
-        "react-dom",
-      ],
-      groupName: "docusaurus",
+      packageNames: ["prettier"],
+      groupName: "prettier",
       automerge: true,
+      automergeType: "branch",
+    },
+    {
+      packageNames: ["black"],
+      groupName: "black",
+      automerge: true,
+      automergeType: "branch",
+    },
+    {
+      packageNames: ["flake8"],
+      groupName: "flake8",
+      automerge: true,
+      automergeType: "branch",
+    },
+    {
+      packageNames: ["mypy"],
+      groupName: "mypy",
+      automerge: true,
+      automergeType: "branch",
+    },
+    {
+      packageNames: ["pytest"],
+      groupName: "pytest",
+      automerge: true,
+      automergeType: "branch",
+    },
+    {
+      packageNames: ["coverage"],
+      groupName: "coverage",
+      automerge: true,
+      automergeType: "branch",
     },
   ],
 }
