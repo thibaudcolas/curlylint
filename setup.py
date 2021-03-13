@@ -47,7 +47,7 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "parsy==1.1.0",
+        "parsy==1.3.0",
         "attrs>=17.2.0",
         "click>=6.5",
         "toml>=0.9.4",
