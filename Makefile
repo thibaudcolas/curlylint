@@ -25,7 +25,7 @@ test-watch: ## Restarts the tests whenever a file changes.
 	PYTHONDEVMODE=1 nodemon -q -e py,json -w curlylint  -x "clear && pytest --strict-config --exitfirst --new-first -q || true"
 
 test-coverage: ## Run the tests while generating test coverage data.
-	PYTHONDEVMODE=1 coverage run -m pytest --strict-config && coverage report && coverage html
+	PYTHONDEVMODE=1 coverage run -m pytest --strict-config && coverage report
 
 benchmark: ## Runs a one-off performance (speed, memory) benchmark.
 	PYTHONDEVMODE=1 python benchmark.py
