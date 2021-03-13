@@ -25,3 +25,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 testpaths = ["curlylint"]
+# https://docs.pytest.org/en/stable/warnings.html
+filterwarnings = [
+    "error",
+]

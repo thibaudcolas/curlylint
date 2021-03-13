@@ -19,16 +19,16 @@ format: ## Format project files.
 	npm run format
 
 test: ## Test the project.
-	pytest --strict-config
+	PYTHONDEVMODE=1 pytest --strict-config
 
 test-watch: ## Restarts the tests whenever a file changes.
-	nodemon -q -e py,json -w curlylint  -x "clear && pytest --strict-config --exitfirst --new-first -q || true"
+	PYTHONDEVMODE=1 nodemon -q -e py,json -w curlylint  -x "clear && pytest --strict-config --exitfirst --new-first -q || true"
 
 test-coverage: ## Run the tests while generating test coverage data.
-	coverage run -m pytest --strict-config && coverage report && coverage html
+	PYTHONDEVMODE=1 coverage run -m pytest --strict-config && coverage report && coverage html
 
 benchmark: ## Runs a one-off performance (speed, memory) benchmark.
-	python benchmark.py
+	PYTHONDEVMODE=1 python benchmark.py
 
 clean-pyc: ## Remove Python file artifacts.
 	find . -name '*.pyc' -exec rm -f {} +
