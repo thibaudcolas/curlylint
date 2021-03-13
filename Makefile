@@ -6,7 +6,8 @@ help: ## See what commands are available.
 
 init: clean-pyc ## Install dependencies and initialise for development.
 	pip install --upgrade pip setuptools twine wheel
-	pip install -e '.[dev]'
+	pip install -e .
+	pip install -r requirements.txt
 
 lint: ## Lint the project.
 	black --check **/*.py
