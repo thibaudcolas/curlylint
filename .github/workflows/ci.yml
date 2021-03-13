@@ -22,9 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm install --no-optional --no-audit --no-fund --progress=false
-      - run: npm --prefix website install
       - run: npm run lint
-      - run: npm --prefix website run build
   test_python:
     runs-on: ubuntu-latest
     steps:
