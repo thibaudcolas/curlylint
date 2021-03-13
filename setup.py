@@ -54,16 +54,6 @@ setup(
         "pathspec>=0.6, <1",
         "dataclasses>=0.6; python_version < '3.7'",
     ],
-    extras_require={
-        "dev": [
-            "black==19.10b0",
-            "flake8==3.8.4",
-            "mypy==0.812",
-            "pytest==6.2.2",
-            "coverage==5.5",
-            "memory-profiler==0.58",
-        ]
-    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",

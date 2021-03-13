@@ -7,6 +7,7 @@
 ### Changed
 
 - Add more descriptive error message for missing whitespace between HTML attributes ([#23 (comment)](https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837))
+- Move development dependencies from extras to separate `requirements.txt`
 
 ## [v0.12.2](https://github.com/thibaudcolas/curlylint/releases/tag/v0.12.2) 2021-03-06
 
