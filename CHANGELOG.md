@@ -9,6 +9,7 @@
 - Add more descriptive error message for missing whitespace between HTML attributes ([#23 (comment)](https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837), [#68](https://github.com/thibaudcolas/curlylint/pull/68)).
 - Move development dependencies from extras to separate `requirements.txt` ([#68](https://github.com/thibaudcolas/curlylint/pull/68)).
 - Declare support for Python 3.9.
+- Tentatively declare support for Python 3.10 (tested with `Python 3.10.0a6+`).
 
 ### Fixed
 
