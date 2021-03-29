@@ -34,5 +34,20 @@
         "message": "The `<img>` tag must have a `alt` attribute, either with meaningful text, or an empty string for decorative images"
       }
     ]
+  },
+  {
+    "label": "Missing inside django template block (#72)",
+    "template": "{% block content %}<img src=\"foo\" />{% endblock %}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "image_alt",
+        "message": "The `<img>` tag must have a `alt` attribute, either with meaningful text, or an empty string for decorative images"
+      }
+    ]
   }
 ]
