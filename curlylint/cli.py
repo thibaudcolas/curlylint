@@ -1,11 +1,22 @@
 import re
 from functools import partial
 from pathlib import Path
-from typing import Any, Dict, Mapping, Optional, Pattern, Set, Tuple, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Pattern,
+    Set,
+    Tuple,
+    Union,
+)
 
 import click  # lgtm [py/import-and-import-from]
 
 from curlylint.rule_param import RULE
+from curlylint.template_tags_param import TEMPLATE_TAGS
 
 from . import __version__
 from .config import (
@@ -122,6 +133,15 @@ def path_empty(
     ),
     multiple=True,
 )
+@click.option(
+    "--template-tags",
+    type=TEMPLATE_TAGS,
+    default="[]",
+    help=(
+        'Specify additional sets of template tags, with the syntax --template-tags \'[["cache", "endcache"]]\'. '
+    ),
+    show_default=True,
+)
 @click.argument(
     "src",
     nargs=-1,
@@ -161,6 +181,7 @@ def main(
     include: str,
     exclude: str,
     rule: Union[Mapping[str, Any], Tuple[Mapping[str, Any], ...]],
+    template_tags: List[List[str]],
     src: Tuple[str, ...],
 ) -> None:
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
@@ -236,6 +257,7 @@ def main(
     configuration["rules"] = rules
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
+    configuration["template_tags"] = template_tags
 
     if stdin_filepath:
         configuration["stdin_filepath"] = Path(stdin_filepath)

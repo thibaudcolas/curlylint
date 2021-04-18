@@ -372,25 +372,25 @@ class TestParser(unittest.TestCase):
         src = "{% if a %}b{% elif %}c{% elif %}d{% else %}e{% endif %}"
         self.assertEqual(src, str(jinja.parse(src)))
 
-    def test_jinja_custom_block_self_closing(self):
+    def test_jinja_custom_tag_self_closing(self):
         self.assertEqual(
-            jinja.parse("{% exampletest %}"),
+            jinja.parse("{% potato %}"),
             JinjaElement(
                 parts=[
                     JinjaElementPart(
-                        tag=JinjaTag(name="exampletest", content=""),
-                        content=None,
+                        tag=JinjaTag(name="potato", content=""), content=None,
                     )
                 ],
                 closing_tag=None,
             ),
         )
 
-    def test_jinja_custom_block_open_close_unconfigured(self):
+    def test_jinja_custom_tag_open_close_unconfigured(self):
         with pytest.raises(P.ParseError):
             jinja.parse("{% of a %}c{% endof %}")
 
-    def test_jinja_custom_block_open_close_configured(self):
+    def test_jinja_custom_tag_open_close_configured_deprecated(self):
+        # Deprecated, will be removed in a future release.
         parser = make_parser({"jinja_custom_elements_names": [["of", "endof"]]})
         jinja = parser["jinja"]
         self.assertEqual(
@@ -406,11 +406,27 @@ class TestParser(unittest.TestCase):
             ),
         )
 
-    def test_jinja_custom_block_open_middle_close_unconfigured(self):
+    def test_jinja_custom_tag_open_close_configured(self):
+        parser = make_parser({"template_tags": [["of", "endof"]]})
+        jinja = parser["jinja"]
+        self.assertEqual(
+            jinja.parse("{% of a %}c{% endof %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="of", content="a"),
+                        content=Interp(["c"]),
+                    ),
+                ],
+                closing_tag=JinjaTag(name="endof", content=""),
+            ),
+        )
+
+    def test_jinja_custom_tag_open_middle_close_unconfigured(self):
         with pytest.raises(P.ParseError):
             jinja.parse("{% of a %}b{% elseof %}c{% endof %}")
 
-    def test_jinja_custom_block_open_middle_close(self):
+    def test_jinja_custom_tag_open_middle_close(self):
         parser = make_parser(
             {"jinja_custom_elements_names": [["of", "elseof", "endof"]]}
         )

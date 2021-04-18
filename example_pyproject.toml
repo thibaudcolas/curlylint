@@ -1,8 +1,9 @@
 [tool.curlylint]
 # Specify additional Jinja elements which can wrap HTML here. You
-# don't neet to specify simple elements which can't wrap anything like
+# don’t neet to specify simple elements which can't wrap anything like
 # {% extends %} or {% include %}.
-jinja-custom-elements-names = [
+template_tags = [
+  ["of", "elseof", "endof"],
   ["cache", "endcache"],
   ["captureas", "endcaptureas"]
 ]

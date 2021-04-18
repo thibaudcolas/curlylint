@@ -81,6 +81,16 @@ curlylint --rule 'html_has_lang: "en"' template-directory/
 curlylint --rule 'html_has_lang: ["en", "en-US"]' template-directory/
 ```
 
+### `--template-tags`
+
+Specify additional sets of template tags, with the syntax `--template-tags '[["start_tag", "end_tag"]]'`. This is only needed for tags that wrap other markup (like `{% block %}<p>Hello!</p>{% endblock %}`), not for single / “void” tags.
+
+🚧 Note the list of lists is formatted as JSON, with each sub-list containing the tags expected to work together as opening/intermediary/closing tags.
+
+```bash
+curlylint --template-tags '[["cache", "endcache"]]' template-directory/
+```
+
 ### `--config`
 
 Read configuration from the provided file.
