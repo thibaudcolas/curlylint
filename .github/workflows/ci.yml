@@ -35,6 +35,7 @@ jobs:
       - uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: .coverage
       - run: make lint
       - run: make benchmark
       - run: cd website; python build_rules.py
