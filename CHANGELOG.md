@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+## [v0.13.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.13.0) 2021-04-25
+
+This release comes with a blog post! Read on [Quality-of-life improvements](https://www.curlylint.org/blog/quality-of-life-improvements).
+
+### Added
+
+- Implement --template-tags CLI flag ([#25](https://github.com/thibaudcolas/curlylint/issues/25), [#77](https://github.com/thibaudcolas/curlylint/pull/77)).
+
 ### Changed
 
 - Add more descriptive error message for missing whitespace between HTML attributes ([#23 (comment)](https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837), [#68](https://github.com/thibaudcolas/curlylint/pull/68)).
