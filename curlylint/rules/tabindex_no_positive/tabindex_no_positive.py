@@ -8,7 +8,7 @@ RULE = {
     "id": "tabindex_no_positive",
     "type": "accessibility",
     "docs": {
-        "description": "Enforce autofocus is not used on inputs.  Autofocusing elements can cause usability issues for sighted and non-sighted users.",
+        "description": "Prevents using positive `tabindex` values, which are very easy to misuse with problematic consequences for keyboard users.",
         "url": "https://www.curlylint.org/docs/rules/tabindex_no_positive",
         "impact": "Serious",
         "tags": ["cat.language", "wcag2a"],
