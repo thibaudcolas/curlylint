@@ -44,6 +44,6 @@ If you just want to set up the project on your own computer, the contribution gu
 
 ## Credits
 
-Started as a fork of [jinjalint](https://github.com/motet-a/jinjalint). Image credit: [FxEmojis](https://github.com/mozilla/fxemoji). [Test templates](tests/README.md) extracted from third-party projects. Website hosted by [Netlify](https://www.netlify.com/).
+This project starter as a fork of [jinjalint](https://github.com/motet-a/jinjalint). Image credit: [FxEmojis](https://github.com/mozilla/fxemoji). [Test templates](tests/README.md) extracted from third-party projects. Website hosted by [Netlify](https://www.netlify.com/).
 
 View the full list of [contributors](https://github.com/thibaudcolas/curlylint/graphs/contributors). [MIT](LICENSE) licensed. Website content available as [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/).
