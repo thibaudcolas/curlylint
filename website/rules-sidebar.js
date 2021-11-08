@@ -6,5 +6,5 @@ module.exports = [
   "rules/indent",
   "rules/meta_viewport",
   "rules/no_autofocus",
-  "rules/tabindex_no_positive",
+  "rules/tabindex_no_positive"
 ];
