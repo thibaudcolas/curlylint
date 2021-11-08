@@ -107,7 +107,7 @@ def read_pyproject_toml(
 
     if ctx.default_map is None:
         ctx.default_map = {}
-    ctx.default_map.update(config)  # type: ignore  # bad types in .pyi
+    ctx.default_map.update(config)
     return value
 
 
