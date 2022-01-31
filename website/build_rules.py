@@ -233,7 +233,8 @@ import CodeSnippet from "@theme/CodeSnippet";
 
 {fail_section}
 
-{resources_section}"""
+{resources_section}
+"""
             )
 
     rules_list = "\n".join(
@@ -247,9 +248,9 @@ import CodeSnippet from "@theme/CodeSnippet";
     with codecs.open("rules-sidebar.js", "w", "utf-8") as file:
         file.write(
             f"""module.exports = [
-    {rules_id}
+  {rules_id}
 ];
-        """
+"""
         )
 
     all_config_toml = []
