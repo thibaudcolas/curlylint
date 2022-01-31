@@ -288,13 +288,13 @@ def patch_click() -> None:
     """
     try:
         from click import core
-        from click import _unicodefun  # type: ignore
+        from click import _unicodefun
     except ModuleNotFoundError:
         return
 
     for module in (core, _unicodefun):
         if hasattr(module, "_verify_python3_env"):
-            module._verify_python3_env = lambda: None
+            module._verify_python3_env = lambda: None  # type: ignore [attr-defined]
 
 
 def patched_main() -> None:
