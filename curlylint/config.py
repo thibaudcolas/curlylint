@@ -113,7 +113,7 @@ def read_pyproject_toml(
 
 @lru_cache()
 def get_gitignore(root: Path) -> PathSpec:
-    """ Return a PathSpec matching gitignore content if present."""
+    """Return a PathSpec matching gitignore content if present."""
     gitignore = root / ".gitignore"
     lines: List[str] = []
     if gitignore.is_file():

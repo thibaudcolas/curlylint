@@ -227,7 +227,8 @@ class TestParser(unittest.TestCase):
         # "Attributes must be separated from each other by one or more ASCII whitespace."
         # See https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837
         with pytest.raises(
-            P.ParseError, match="space\\(s\\) between attributes",
+            P.ParseError,
+            match="space\\(s\\) between attributes",
         ):
             opening_tag.parse(
                 '<a class="govuk-button"href="/cookies">Set cookie preferences</a>'
@@ -378,7 +379,8 @@ class TestParser(unittest.TestCase):
             JinjaElement(
                 parts=[
                     JinjaElementPart(
-                        tag=JinjaTag(name="potato", content=""), content=None,
+                        tag=JinjaTag(name="potato", content=""),
+                        content=None,
                     )
                 ],
                 closing_tag=None,

@@ -19,7 +19,11 @@ class IssueLocation:
         if isinstance(file_path, File):
             file_path = file_path.path
 
-        return IssueLocation(file_path=file_path, line=line, column=column,)
+        return IssueLocation(
+            file_path=file_path,
+            line=line,
+            column=column,
+        )
 
 
 @attr.s(frozen=True)
