@@ -1,5 +1,5 @@
 black==22.1.0
-flake8==3.9.2
+flake8==4.0.1
 mypy==0.812
 pytest==6.2.5
 coverage==6.3.1
