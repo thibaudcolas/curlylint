@@ -1,6 +1,6 @@
 black==22.1.0
 flake8==4.0.1
 mypy==0.812
-pytest==7.0.0
+pytest==7.0.1
 coverage==6.3.1
 memory-profiler==0.58
