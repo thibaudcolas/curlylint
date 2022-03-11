@@ -1,13 +1,24 @@
 import sys
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Set
 
 import parsy
 
-from .check import check_file, check_files
+from .check import check_file
 from .file import File
 from .issue import Issue, IssueLocation
 from .parse import make_parser
+
+PARSER = None
+
+
+def _make_parser(config):
+    """
+    Process initializer
+    """
+    global PARSER
+    PARSER = make_parser(config)
 
 
 def get_parsy_error_location(error, file_path):
@@ -15,27 +26,23 @@ def get_parsy_error_location(error, file_path):
     return IssueLocation(line=line, column=column, file_path=file_path)
 
 
-def parse_file(path_and_config):
+def parse_file(path):
     """
     Returns a tuple ([Issue], File | None).
     """
-    path, config = path_and_config
-
     with path.open("r") as f:
         source = f.read()
 
-    return parse_source(path, config, source)
+    return parse_source(path, source)
 
 
-def parse_source(path: Path, config, source: str):
-    parser = make_parser(config)
-
+def parse_source(path: Path, source: str):
     try:
         file = File(
             path=path,
             source=source,
             lines=source.split("\n"),
-            tree=parser["content"].parse(source),
+            tree=PARSER["content"].parse(source),
         )
         return [], file
     except parsy.ParseError as error:
@@ -46,36 +53,30 @@ def parse_source(path: Path, config, source: str):
 
 def lint(paths: Set[Path], config):
     issues = []
-    files = []
 
-    from multiprocessing import Pool
-
-    pool = Pool()
-
-    parse_file_args = ((p, config) for p in paths)
-    results = pool.map(parse_file, parse_file_args)
-    for result in results:
-        parse_issues, file = result
-        issues += parse_issues
-        if file is not None:
-            files.append(file)
-
-    if config.get("parse_only", False):
-        return issues
-
+    parse_only = config.get("parse_only", False)
     rules = config.get("rules")
 
-    if rules:
-        issues += check_files(files, rules)
+    with ProcessPoolExecutor(
+        initializer=_make_parser, initargs=(config,)
+    ) as executor:
+        futures = [executor.submit(parse_file, path) for path in paths]
+        for future in as_completed(futures):
+            parse_issues, file = future.result()
+            issues.extend(parse_issues)
+            if file is not None and not parse_only:
+                issues.extend(check_file(file, rules))
 
     return issues
 
 
 def lint_one(path: Path, config):
+    _make_parser(config)
+
     if not path.is_file() and str(path) == "-":
         source = sys.stdin.read()
         parse_issues, file = parse_source(
-            config.get("stdin_filepath", path), config, source
+            config.get("stdin_filepath", path), source
         )
     else:
         parse_issues, file = parse_file((path, config))
