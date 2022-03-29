@@ -294,7 +294,7 @@ def patch_click() -> None:
     else:
         modules.append(core)
     try:
-        from click import _unicodefun
+        from click import _unicodefun  # type: ignore [attr-defined]
     except ImportError:
         pass
     else:
@@ -302,14 +302,14 @@ def patch_click() -> None:
 
     for module in modules:
         if hasattr(module, "_verify_python3_env"):
-            module._verify_python3_env = lambda: None  # type: ignore [attr-defined]
+            module._verify_python3_env = lambda: None
         if hasattr(module, "_verify_python_env"):
-            module._verify_python_env = lambda: None  # type: ignore [attr-defined]
+            module._verify_python_env = lambda: None
 
 
 def patched_main() -> None:
     patch_click()
-    main()
+    main()  # type: ignore [misc]
 
 
 if __name__ == "__main__":
