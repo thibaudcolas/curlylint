@@ -9,13 +9,11 @@ jobs:
   test_js:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - id: nvm
-        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: "${{ steps.nvm.outputs.NVMRC }}"
-      - uses: actions/cache@v2
+          node-version-file: .nvmrc
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -26,15 +24,15 @@ jobs:
   test_python:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: "3.9"
       - run: pip install -e . && pip install -r requirements.txt && pip install coveralls==3.0.1
       - run: make test-coverage
       - run: coveralls || true
         env:
-          COVERALLS_REPO_TOKEN: Q4wXaKN5KvMRikUnvCjRkgySz28zQb11c
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: make lint
       - run: make benchmark
@@ -45,12 +43,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - python: 3.6
-          - python: 3.7
-          - python: 3.8
+          - python: "3.6"
+          - python: "3.7"
+          - python: "3.8"
+          - python: "3.9"
+          - python: "3.10"
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
       - run: pip install -e . && pip install $(cat requirements.txt | grep pytest)

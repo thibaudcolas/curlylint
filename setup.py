@@ -10,7 +10,6 @@ from curlylint import (
     __copyright__,
     __description__,
     __license__,
-    __name__,
     __url__,
     __version__,
 )
@@ -19,7 +18,7 @@ with io.open("README.md", encoding="utf-8") as readme_file:
     long_description = readme_file.read()
 
 setup(
-    name=__name__,
+    name="curlylint",
     version=__version__,
     description=__description__,
     long_description=long_description,
@@ -66,6 +65,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     entry_points={"console_scripts": ["curlylint=curlylint.cli:patched_main"]},
 )

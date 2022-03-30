@@ -4,10 +4,27 @@
 
 ## Unreleased
 
+## [v0.13.1](https://github.com/thibaudcolas/curlylint/releases/tag/v0.13.1) 2022-03-30
+
+### Fixed
+
+- Update `patch_click` to fix compatibility issue with click 8.1.0. Fix [#132](https://github.com/thibaudcolas/curlylint/issues/132) ([#133](https://github.com/thibaudcolas/curlylint/pull/133)). Thanks to [@jmsmkn](https://github.com/jmsmkn) and [@adamchainz](https://github.com/adamchainz)!
+- Fix incorrect documentation for [`no_autofocus`](https://www.curlylint.org/docs/rules/no_autofocus) and [`tabindex_no_positive`](https://www.curlylint.org/docs/rules/tabindex_no_positive).
+
+## [v0.13.0](https://github.com/thibaudcolas/curlylint/releases/tag/v0.13.0) 2021-04-25
+
+This release comes with a blog post! Read on [Quality-of-life improvements](https://www.curlylint.org/blog/quality-of-life-improvements).
+
+### Added
+
+- Implement --template-tags CLI flag ([#25](https://github.com/thibaudcolas/curlylint/issues/25), [#77](https://github.com/thibaudcolas/curlylint/pull/77)).
+
 ### Changed
 
 - Add more descriptive error message for missing whitespace between HTML attributes ([#23 (comment)](https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837), [#68](https://github.com/thibaudcolas/curlylint/pull/68)).
 - Move development dependencies from extras to separate `requirements.txt` ([#68](https://github.com/thibaudcolas/curlylint/pull/68)).
+- Declare support for Python 3.9.
+- Tentatively declare support for Python 3.10 (tested with `Python 3.10.0a6+`).
 
 ### Fixed
 

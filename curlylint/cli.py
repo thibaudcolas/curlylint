@@ -1,11 +1,22 @@
 import re
 from functools import partial
 from pathlib import Path
-from typing import Any, Dict, Mapping, Optional, Pattern, Set, Tuple, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Pattern,
+    Set,
+    Tuple,
+    Union,
+)
 
 import click  # lgtm [py/import-and-import-from]
 
 from curlylint.rule_param import RULE
+from curlylint.template_tags_param import TEMPLATE_TAGS
 
 from . import __version__
 from .config import (
@@ -122,6 +133,15 @@ def path_empty(
     ),
     multiple=True,
 )
+@click.option(
+    "--template-tags",
+    type=TEMPLATE_TAGS,
+    default="[]",
+    help=(
+        'Specify additional sets of template tags, with the syntax --template-tags \'[["cache", "endcache"]]\'. '
+    ),
+    show_default=True,
+)
 @click.argument(
     "src",
     nargs=-1,
@@ -161,6 +181,7 @@ def main(
     include: str,
     exclude: str,
     rule: Union[Mapping[str, Any], Tuple[Mapping[str, Any], ...]],
+    template_tags: List[List[str]],
     src: Tuple[str, ...],
 ) -> None:
     """Prototype linter for Jinja and Django templates, forked from jinjalint"""
@@ -236,6 +257,7 @@ def main(
     configuration["rules"] = rules
     configuration["verbose"] = verbose
     configuration["parse_only"] = parse_only
+    configuration["template_tags"] = template_tags
 
     if stdin_filepath:
         configuration["stdin_filepath"] = Path(stdin_filepath)
@@ -255,7 +277,7 @@ def main(
 
 def patch_click() -> None:
     """Borrowed from black.
-    https://github.com/psf/black/blob/959848c17639bfc646128f6b582c5858164a5001/black.py
+    https://github.com/psf/black/blob/e9681a40dcb3d38b56b301d811bb1c55201fd97e/src/black/__init__.py#L1419-L1448
     Make Click not crash.
     On certain misconfigured environments, Python 3 selects the ASCII encoding as the
     default which restricts paths that it can access during the lifetime of the
@@ -264,20 +286,30 @@ def patch_click() -> None:
     file paths is minimal since it's Python source code.  Moreover, this crash was
     spurious on Python 3.7 thanks to PEP 538 and PEP 540.
     """
+    modules: List[Any] = []
     try:
         from click import core
-        from click import _unicodefun  # type: ignore
-    except ModuleNotFoundError:
-        return
+    except ImportError:
+        pass
+    else:
+        modules.append(core)
+    try:
+        from click import _unicodefun  # type: ignore [attr-defined]
+    except ImportError:
+        pass
+    else:
+        modules.append(_unicodefun)
 
-    for module in (core, _unicodefun):
+    for module in modules:
         if hasattr(module, "_verify_python3_env"):
             module._verify_python3_env = lambda: None
+        if hasattr(module, "_verify_python_env"):
+            module._verify_python_env = lambda: None
 
 
 def patched_main() -> None:
     patch_click()
-    main()
+    main()  # type: ignore [misc]
 
 
 if __name__ == "__main__":

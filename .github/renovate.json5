@@ -68,5 +68,10 @@
       automerge: true,
       automergeType: "branch",
     },
+    {
+      packagePatterns: ["^actions/"],
+      groupName: "actions",
+      automerge: true,
+    },
   ],
 }

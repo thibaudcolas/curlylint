@@ -9,7 +9,7 @@ Start by installing curlylint with pip:
 pip install curlylint
 ```
 
-We support the following Python versions: 3.6, 3.7, 3.8.
+We support [all active Python releases](https://devguide.python.org/#status-of-python-branches).
 
 Make sure curlylint is correctly installed by running:
 
@@ -26,4 +26,4 @@ curlylint template-directory/
 curlylint some-file.html some-other-file.html
 ```
 
-Have a look at our other documentation pages to make the most of it.
+Without any configuration, curlylint will only parse the templates and not run any linting rules. Have a look at our other documentation pages to make the most of it.

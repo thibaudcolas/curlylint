@@ -592,6 +592,8 @@ def make_jinja_parser(config, content):
         (names[0], names)
         for names in (
             DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES
+            + config.get("template_tags", [])
+            # Deprecated, will be removed in a future release.
             + config.get("jinja_custom_elements_names", [])
         )
     ).values()

@@ -1,0 +1,27 @@
+# See https://github.com/protontypes/continuous-reforestation
+name: Plant a tree on a successful merged pull request to your main branch
+on:
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - closed
+jobs:
+  planttrees:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Plant a Tree
+        if: github.event.pull_request.merged == true
+        id: planttrees
+        uses: protontypes/continuous-reforestation@main
+        with:
+          # Enter your API variables below
+          # apikey: ${{ secrets.RAAS_KEY }}
+          enterpriseid: ${{ secrets.RAAS_ENTERPRISE_ID }}
+          user: ${{ github.actor }}
+          treecount: 1
+          projectid: "14442771" # This projectid can be used to have your trees planted where they are needed the most.
+          production: "false"
+      - name: Response of digitalhumani.com RaaS API
+        run: |
+          echo "${{ steps.planttrees.outputs.response }}"

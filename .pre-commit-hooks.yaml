@@ -5,3 +5,4 @@
   language_version: python3
   entry: curlylint
   types_or: [html, jinja, twig]
+  require_serial: true

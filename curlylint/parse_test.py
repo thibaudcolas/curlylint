@@ -227,7 +227,8 @@ class TestParser(unittest.TestCase):
         # "Attributes must be separated from each other by one or more ASCII whitespace."
         # See https://github.com/thibaudcolas/curlylint/issues/23#issuecomment-700622837
         with pytest.raises(
-            P.ParseError, match="space\\(s\\) between attributes",
+            P.ParseError,
+            match="space\\(s\\) between attributes",
         ):
             opening_tag.parse(
                 '<a class="govuk-button"href="/cookies">Set cookie preferences</a>'
@@ -371,6 +372,83 @@ class TestParser(unittest.TestCase):
 
         src = "{% if a %}b{% elif %}c{% elif %}d{% else %}e{% endif %}"
         self.assertEqual(src, str(jinja.parse(src)))
+
+    def test_jinja_custom_tag_self_closing(self):
+        self.assertEqual(
+            jinja.parse("{% potato %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="potato", content=""),
+                        content=None,
+                    )
+                ],
+                closing_tag=None,
+            ),
+        )
+
+    def test_jinja_custom_tag_open_close_unconfigured(self):
+        with pytest.raises(P.ParseError):
+            jinja.parse("{% of a %}c{% endof %}")
+
+    def test_jinja_custom_tag_open_close_configured_deprecated(self):
+        # Deprecated, will be removed in a future release.
+        parser = make_parser({"jinja_custom_elements_names": [["of", "endof"]]})
+        jinja = parser["jinja"]
+        self.assertEqual(
+            jinja.parse("{% of a %}c{% endof %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="of", content="a"),
+                        content=Interp(["c"]),
+                    ),
+                ],
+                closing_tag=JinjaTag(name="endof", content=""),
+            ),
+        )
+
+    def test_jinja_custom_tag_open_close_configured(self):
+        parser = make_parser({"template_tags": [["of", "endof"]]})
+        jinja = parser["jinja"]
+        self.assertEqual(
+            jinja.parse("{% of a %}c{% endof %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="of", content="a"),
+                        content=Interp(["c"]),
+                    ),
+                ],
+                closing_tag=JinjaTag(name="endof", content=""),
+            ),
+        )
+
+    def test_jinja_custom_tag_open_middle_close_unconfigured(self):
+        with pytest.raises(P.ParseError):
+            jinja.parse("{% of a %}b{% elseof %}c{% endof %}")
+
+    def test_jinja_custom_tag_open_middle_close(self):
+        parser = make_parser(
+            {"jinja_custom_elements_names": [["of", "elseof", "endof"]]}
+        )
+        jinja = parser["jinja"]
+        self.assertEqual(
+            jinja.parse("{% of a %}b{% elseof %}c{% endof %}"),
+            JinjaElement(
+                parts=[
+                    JinjaElementPart(
+                        tag=JinjaTag(name="of", content="a"),
+                        content=Interp(["b"]),
+                    ),
+                    JinjaElementPart(
+                        tag=JinjaTag(name="elseof", content=""),
+                        content=Interp(["c"]),
+                    ),
+                ],
+                closing_tag=JinjaTag(name="endof", content=""),
+            ),
+        )
 
     def test_jinja_whitespace_controls(self):
         self.assertEqual(
