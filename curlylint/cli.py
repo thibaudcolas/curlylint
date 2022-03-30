@@ -277,7 +277,7 @@ def main(
 
 def patch_click() -> None:
     """Borrowed from black.
-    https://github.com/psf/black/blob/959848c17639bfc646128f6b582c5858164a5001/black.py
+    https://github.com/psf/black/blob/e9681a40dcb3d38b56b301d811bb1c55201fd97e/src/black/__init__.py#L1419-L1448
     Make Click not crash.
     On certain misconfigured environments, Python 3 selects the ASCII encoding as the
     default which restricts paths that it can access during the lifetime of the
@@ -286,20 +286,30 @@ def patch_click() -> None:
     file paths is minimal since it's Python source code.  Moreover, this crash was
     spurious on Python 3.7 thanks to PEP 538 and PEP 540.
     """
+    modules: List[Any] = []
     try:
         from click import core
-        from click import _unicodefun
-    except ModuleNotFoundError:
-        return
+    except ImportError:
+        pass
+    else:
+        modules.append(core)
+    try:
+        from click import _unicodefun  # type: ignore [attr-defined]
+    except ImportError:
+        pass
+    else:
+        modules.append(_unicodefun)
 
-    for module in (core, _unicodefun):
+    for module in modules:
         if hasattr(module, "_verify_python3_env"):
-            module._verify_python3_env = lambda: None  # type: ignore [attr-defined]
+            module._verify_python3_env = lambda: None
+        if hasattr(module, "_verify_python_env"):
+            module._verify_python_env = lambda: None
 
 
 def patched_main() -> None:
     patch_click()
-    main()
+    main()  # type: ignore [misc]
 
 
 if __name__ == "__main__":
