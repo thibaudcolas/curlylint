@@ -96,7 +96,7 @@ curlylint --template-tags '[["cache", "endcache"]]' template-directory/
 Read configuration from the provided file.
 
 ```bash
-curlylint--config test_pyproject.toml template-directory/
+curlylint --config test_pyproject.toml template-directory/
 ```
 
 ## Reading from standard input
