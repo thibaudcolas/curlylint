@@ -4,5 +4,5 @@
   language: python
   language_version: python3
   entry: curlylint
-  files: '\.(html|jinja|twig)$'
+  types_or: [html, jinja, twig]
   require_serial: true
