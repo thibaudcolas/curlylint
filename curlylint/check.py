@@ -3,6 +3,9 @@ from functools import partial
 import click
 
 from curlylint.rules.aria_role.aria_role import aria_role
+from curlylint.rules.django_block_translate_trimmed.django_block_translate_trimmed import (
+    django_block_translate_trimmed,
+)
 from curlylint.rules.django_forms_rendering.django_forms_rendering import (
     django_forms_rendering,
 )
@@ -20,6 +23,7 @@ err = partial(click.secho, fg="red", err=True)
 
 checks = {
     "aria_role": aria_role,
+    "django_block_translate_trimmed": django_block_translate_trimmed,
     "django_forms_rendering": django_forms_rendering,
     "html_has_lang": html_has_lang,
     "image_alt": image_alt,

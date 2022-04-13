@@ -129,8 +129,9 @@ SVG_SELF_CLOSING_ELEMENTS = (
 
 DEFAULT_JINJA_STRUCTURED_ELEMENTS_NAMES = [
     ("autoescape", "endautoescape"),
-    ("block", "endblock"),
+    ("blocktranslate", "plural", "endblocktranslate"),
     ("blocktrans", "plural", "endblocktrans"),
+    ("block", "endblock"),
     ("comment", "endcomment"),
     ("filter", "endfilter"),
     ("for", "else", "empty", "endfor"),

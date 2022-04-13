@@ -10,6 +10,7 @@ import TabItem from "@theme/TabItem";
 import CodeSnippet from "@theme/CodeSnippet";
 
 - [aria_role](aria_role): Elements with ARIA roles must use a valid, non-abstract ARIA role
+- [django_block_translate_trimmed](django_block_translate_trimmed): Enforces the use of Django’s `trimmed` option when using `blocktranslate`/`blocktrans` so that translations do not contain leading or trailing whitespace.
 - [django_forms_rendering](django_forms_rendering): Disallows using Django’s convenience form rendering helpers, for which the markup isn’t screen-reader-friendly
 - [html_has_lang](html_has_lang): `<html>` elements must have a `lang` attribute, using a [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt) language tag.
 - [image_alt](image_alt): `<img>` elements must have a `alt` attribute, either with meaningful text, or an empty string for decorative images
@@ -32,14 +33,14 @@ Here is a sample configuration with all of Curlylint’s rules enabled. Note **t
 >
   <TabItem value="toml">
     <CodeSnippet
-      snippet={`[tool.curlylint.rules]\n# All role attributes must be valid.\n# See https://www.curlylint.org/docs/rules/aria_role.\naria_role = true\n# Forms cannot be rendered with as_table, as_ul, or as_p\n# See https://www.curlylint.org/docs/rules/django_forms_rendering.\ndjango_forms_rendering = true\n# The \`lang\` attribute must be present.\n# See https://www.curlylint.org/docs/rules/html_has_lang.\nhtml_has_lang = true\n# The \`alt\` attribute must be present.\n# See https://www.curlylint.org/docs/rules/image_alt.\nimage_alt = true\n# Use tabs.\n# See https://www.curlylint.org/docs/rules/indent.\nindent = "tab"\n# \`user-scalable=no\` must not be used, and \`maximum-scale\` should be 2 or above.\n# See https://www.curlylint.org/docs/rules/meta_viewport.\nmeta_viewport = true\n# The \`autofocus\` attribute must not be used.\n# See https://www.curlylint.org/docs/rules/no_autofocus.\nno_autofocus = true\n# Avoid positive \`tabindex\` values, change the order of elements on the page instead.\n# See https://www.curlylint.org/docs/rules/tabindex_no_positive.\ntabindex_no_positive = true`}
+      snippet={`[tool.curlylint.rules]\n# All role attributes must be valid.\n# See https://www.curlylint.org/docs/rules/aria_role.\naria_role = true\n# Template tags of blocktranslate or blocktrans must use the trimmed option\n# See https://www.curlylint.org/docs/rules/django_block_translate_trimmed.\ndjango_block_translate_trimmed = true\n# Forms cannot be rendered with as_table, as_ul, or as_p\n# See https://www.curlylint.org/docs/rules/django_forms_rendering.\ndjango_forms_rendering = true\n# The \`lang\` attribute must be present.\n# See https://www.curlylint.org/docs/rules/html_has_lang.\nhtml_has_lang = true\n# The \`alt\` attribute must be present.\n# See https://www.curlylint.org/docs/rules/image_alt.\nimage_alt = true\n# Use tabs.\n# See https://www.curlylint.org/docs/rules/indent.\nindent = "tab"\n# \`user-scalable=no\` must not be used, and \`maximum-scale\` should be 2 or above.\n# See https://www.curlylint.org/docs/rules/meta_viewport.\nmeta_viewport = true\n# The \`autofocus\` attribute must not be used.\n# See https://www.curlylint.org/docs/rules/no_autofocus.\nno_autofocus = true\n# Avoid positive \`tabindex\` values, change the order of elements on the page instead.\n# See https://www.curlylint.org/docs/rules/tabindex_no_positive.\ntabindex_no_positive = true`}
       annotations={[]}
       lang="toml"
     />
   </TabItem>
   <TabItem value="shell">
     <CodeSnippet
-      snippet={`curlylint --rule 'aria_role: true' --rule 'django_forms_rendering: true' --rule 'html_has_lang: true' --rule 'image_alt: true' --rule 'indent: "tab"' --rule 'meta_viewport: true' --rule 'no_autofocus: true' --rule 'tabindex_no_positive: true' .`}
+      snippet={`curlylint --rule 'aria_role: true' --rule 'django_block_translate_trimmed: true' --rule 'django_forms_rendering: true' --rule 'html_has_lang: true' --rule 'image_alt: true' --rule 'indent: "tab"' --rule 'meta_viewport: true' --rule 'no_autofocus: true' --rule 'tabindex_no_positive: true' .`}
       annotations={[]}
       lang="shell"
     />
