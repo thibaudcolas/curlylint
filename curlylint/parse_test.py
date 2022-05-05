@@ -509,6 +509,52 @@ class TestParser(unittest.TestCase):
         """
         content.parse(src)
 
+    def test_optional_container_with_nesting(self):
+        src = '{% if a %}<a href="{{ b }}">{% endif %}c<b>d</b>{% if a %}</a>{% endif %}'
+        self.assertEqual(src, str(content.parse(src)))
+
+        src = """
+        {% if a %} <a href="{{ b }}"> {% endif %}
+            c <b> d </b>
+        {% if a %} </a> {% endif %}
+        """
+        content.parse(src)
+
+    def test_optional_container_with_else_block(self):
+        src = '{% if a %}<a href="b">{% else %}<b>{% endif %}c<b>d</b>{% if a %}</a>{% else %}</b>{% endif %}'
+        self.assertEqual(src, str(content.parse(src)))
+
+        src = """
+        {% if a %} <a href="b"> {% else %} <b> {% endif %}
+            c <b> d </b>
+        {% if a %} </a> {% else %} </b> {% endif %}
+        """
+        content.parse(src)
+
+    def test_optional_container_with_elif_block(self):
+        src = '{% if a %}<a href="b">{% elif e %}<b>{% endif %}c<b>d</b>{% if a %}</a>{% elif e %}</b>{% endif %}'
+        self.assertEqual(src, str(content.parse(src)))
+
+        src = """
+        {% if a %} <a href="b"> {% elif e %} <b> {% endif %}
+            c <b> d </b>
+        {% if a %} </a> {% elif e %} </b> {% endif %}
+        """
+        content.parse(src)
+
+    def test_different_container_openings(self):
+        src = '{% if a %}<a href="b">{% else %}<a href="c">{% endif %}c<b>d</b></a>'
+        self.assertEqual(src, str(content.parse(src)))
+
+        src = """
+        {% if a %} <a href="b"> {% else %} <a href="c"> {% endif %}
+            c <b> d </b>
+        </a>
+        """
+        content.parse(src)
+
+    
+
     def test_whole_document(self):
         src = '<html lang="fr"><body>Hello<br></body></html>'
         self.assertEqual(src, str(element.parse(src)))
