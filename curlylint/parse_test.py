@@ -553,8 +553,6 @@ class TestParser(unittest.TestCase):
         """
         content.parse(src)
 
-    
-
     def test_whole_document(self):
         src = '<html lang="fr"><body>Hello<br></body></html>'
         self.assertEqual(src, str(element.parse(src)))
