@@ -706,12 +706,7 @@ def make_parser(config=None):
     if config is None:
         config = {}
 
-    content_ = None
-
-    @P.generate
-    def content():
-        c = yield content_
-        return c
+    content = P.forward_declaration()
 
     jinja = make_jinja_parser(config, content)
 
@@ -719,16 +714,18 @@ def make_parser(config=None):
 
     opt_container = make_jinja_optional_container_parser(config, content, jinja)
 
-    content_ = interpolated(
-        (
-            quick_text
-            | comment
-            | dtd
-            | element
-            | opt_container
-            | jinja
-            | slow_text_char
-        ).many()
+    content.become(
+        interpolated(
+            (
+                quick_text
+                | comment
+                | dtd
+                | element
+                | opt_container
+                | jinja
+                | slow_text_char
+            ).many()
+        )
     )
 
-    return {"content": content_, "jinja": jinja, "element": element}
+    return {"content": content, "jinja": jinja, "element": element}
