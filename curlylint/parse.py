@@ -447,7 +447,10 @@ def _combine_closing_tag(locations, name):
 
 def make_closing_tag_parser(tag_name_parser):
     return locate(
-        P.string("</").then(tag_name_parser).skip(P.string(">"))
+        P.string("</")
+        .then(tag_name_parser)
+        .skip(whitespace)
+        .skip(P.string(">"))
     ).combine(_combine_closing_tag)
 
 
