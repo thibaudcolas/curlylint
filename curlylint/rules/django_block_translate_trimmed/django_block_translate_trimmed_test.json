@@ -1,0 +1,97 @@
+[
+  {
+    "label": "Using blocktranslate with trimmed",
+    "template": "{% blocktranslate trimmed %} some value {% endblocktranslate %}",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Using blocktranslate without trimmed",
+    "template": "{% blocktranslate %} some value {% endblocktranslate %}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_block_translate_trimmed",
+        "message": "`{% blocktranslate %}` must use the `trimmed` option"
+      }
+    ]
+  },
+  {
+    "label": "Using blocktrans with trimmed",
+    "template": "{% blocktrans trimmed %} some value {% endblocktrans %}",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Using blocktrans without trimmed",
+    "template": "{% blocktrans %} some value {% endblocktrans %}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_block_translate_trimmed",
+        "message": "`{% blocktrans %}` must use the `trimmed` option"
+      }
+    ]
+  },
+  {
+    "label": "Using blocktranslate with trimmed and other options",
+    "template": "{% blocktranslate trimmed with time_period=revision.created_at|timesince_simple %} some value {% endblocktranslate %}",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Using blocktranslate without trimmed but with other options",
+    "template": "{% blocktranslate count counter=list|length %}\n some value\n{% endblocktranslate %}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_block_translate_trimmed",
+        "message": "`{% blocktranslate count counter=list|length %}` must use the `trimmed` option"
+      }
+    ]
+  },
+  {
+    "label": "Using blocktrans with other options",
+    "template": "{% blocktrans trimmed with book_t=book|title %} some value {% endblocktrans %}",
+    "example": true,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Using blocktrans with other options, with trimmed after these options",
+    "template": "{% blocktrans with book_t=book|title context trimmed %} some value {% endblocktrans %}",
+    "example": false,
+    "config": true,
+    "output": []
+  },
+  {
+    "label": "Using blocktrans without trimmed but with other options",
+    "template": "{% blocktrans with book_t=book|title %}\nsome value\n{% endblocktrans %}",
+    "example": true,
+    "config": true,
+    "output": [
+      {
+        "file": "test.html",
+        "column": 1,
+        "line": 1,
+        "code": "django_block_translate_trimmed",
+        "message": "`{% blocktrans with book_t=book|title %}` must use the `trimmed` option"
+      }
+    ]
+  }
+]

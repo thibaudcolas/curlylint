@@ -1,5 +1,6 @@
 module.exports = [
   "rules/aria_role",
+  "rules/django_block_translate_trimmed",
   "rules/django_forms_rendering",
   "rules/html_has_lang",
   "rules/image_alt",

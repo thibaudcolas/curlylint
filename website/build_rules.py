@@ -8,6 +8,9 @@ import os
 import toml
 
 from curlylint.rules.aria_role import aria_role
+from curlylint.rules.django_block_translate_trimmed import (
+    django_block_translate_trimmed,
+)
 from curlylint.rules.django_forms_rendering import django_forms_rendering
 from curlylint.rules.html_has_lang import html_has_lang
 from curlylint.rules.image_alt import image_alt
@@ -18,6 +21,7 @@ from curlylint.rules.tabindex_no_positive import tabindex_no_positive
 
 rules = [
     aria_role.RULE,
+    django_block_translate_trimmed.RULE,
     django_forms_rendering.RULE,
     html_has_lang.RULE,
     image_alt.RULE,

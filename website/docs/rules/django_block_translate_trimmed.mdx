@@ -1,0 +1,104 @@
+---
+# This file is auto-generated, please do not update manually.
+id: django_block_translate_trimmed
+title: django_block_translate_trimmed
+custom_edit_url: https://github.com/thibaudcolas/curlylint/edit/main/curlylint/rules/django_block_translate_trimmed/django_block_translate_trimmed.py
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeSnippet from "@theme/CodeSnippet";
+
+> Enforces the use of Django’s `trimmed` option when using `blocktranslate`/`blocktrans` so that translations do not contain leading or trailing whitespace.
+>
+> User impact: **Serious**
+
+This rule supports the following configuration:
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`# Template tags of blocktranslate or blocktrans must use the trimmed option\ndjango_block_translate_trimmed = true`}
+      annotations={[]}
+      lang="toml"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`# Template tags of blocktranslate or blocktrans must use the trimmed option\ncurlylint --rule 'django_block_translate_trimmed: true' .`}
+      annotations={[]}
+      lang="shell"
+    />
+  </TabItem>
+</Tabs>
+
+## Success
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Good: Using blocktranslate with trimmed -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktranslate trimmed %} some value {% endblocktranslate %}\n<!-- Good: Using blocktrans with trimmed -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktrans trimmed %} some value {% endblocktrans %}\n<!-- Good: Using blocktranslate with trimmed and other options -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktranslate trimmed with time_period=revision.created_at|timesince_simple %} some value {% endblocktranslate %}\n<!-- Good: Using blocktrans with other options -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktrans trimmed with book_t=book|title %} some value {% endblocktrans %}`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Good: Using blocktranslate with trimmed -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktranslate trimmed %} some value {% endblocktranslate %}\n<!-- Good: Using blocktrans with trimmed -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktrans trimmed %} some value {% endblocktrans %}\n<!-- Good: Using blocktranslate with trimmed and other options -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktranslate trimmed with time_period=revision.created_at|timesince_simple %} some value {% endblocktranslate %}\n<!-- Good: Using blocktrans with other options -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktrans trimmed with book_t=book|title %} some value {% endblocktrans %}`}
+      annotations={[]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Fail
+
+<Tabs
+  groupId="config-language"
+  defaultValue="toml"
+  values={[
+    { label: "TOML", value: "toml" },
+    { label: "Shell", value: "shell" },
+  ]}
+>
+  <TabItem value="toml">
+    <CodeSnippet
+      snippet={`<!-- Bad: Using blocktranslate without trimmed -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktranslate %} some value {% endblocktranslate %}\n<!-- Bad: Using blocktrans without trimmed -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktrans %} some value {% endblocktrans %}\n<!-- Bad: Using blocktranslate without trimmed but with other options -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktranslate count counter=list|length %}
+ some value
+{% endblocktranslate %}\n<!-- Bad: Using blocktrans without trimmed but with other options -->\n<!-- django_block_translate_trimmed = true -->\n{% blocktrans with book_t=book|title %}
+some value
+{% endblocktrans %}\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "django_block_translate_trimmed", "message": "`{% blocktranslate %}` must use the `trimmed` option"}, {"file": "test.html", "column": 1, "line": 6, "code": "django_block_translate_trimmed", "message": "`{% blocktrans %}` must use the `trimmed` option"}, {"file": "test.html", "column": 1, "line": 9, "code": "django_block_translate_trimmed", "message": "`{% blocktranslate count counter=list|length %}` must use the `trimmed` option"}, {"file": "test.html", "column": 1, "line": 12, "code": "django_block_translate_trimmed", "message": "`{% blocktrans with book_t=book|title %}` must use the `trimmed` option"}]}
+      lang="html"
+    />
+  </TabItem>
+  <TabItem value="shell">
+    <CodeSnippet
+      snippet={`<!-- Bad: Using blocktranslate without trimmed -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktranslate %} some value {% endblocktranslate %}\n<!-- Bad: Using blocktrans without trimmed -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktrans %} some value {% endblocktrans %}\n<!-- Bad: Using blocktranslate without trimmed but with other options -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktranslate count counter=list|length %}
+ some value
+{% endblocktranslate %}\n<!-- Bad: Using blocktrans without trimmed but with other options -->\n<!-- curlylint --rule 'django_block_translate_trimmed: true' . -->\n{% blocktrans with book_t=book|title %}
+some value
+{% endblocktrans %}\n\n`}
+      annotations={[{"file": "test.html", "column": 1, "line": 3, "code": "django_block_translate_trimmed", "message": "`{% blocktranslate %}` must use the `trimmed` option"}, {"file": "test.html", "column": 1, "line": 6, "code": "django_block_translate_trimmed", "message": "`{% blocktrans %}` must use the `trimmed` option"}, {"file": "test.html", "column": 1, "line": 9, "code": "django_block_translate_trimmed", "message": "`{% blocktranslate count counter=list|length %}` must use the `trimmed` option"}, {"file": "test.html", "column": 1, "line": 12, "code": "django_block_translate_trimmed", "message": "`{% blocktrans with book_t=book|title %}` must use the `trimmed` option"}]}
+      lang="html"
+    />
+  </TabItem>
+</Tabs>
+
+## Resources
+
+- [Django translations](https://docs.djangoproject.com/en/stable/topics/i18n/translation/)
