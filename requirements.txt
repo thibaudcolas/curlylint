@@ -3,4 +3,4 @@ flake8==4.0.1
 mypy==0.812
 pytest==7.0.1
 coverage==6.3.2
-memory-profiler==0.58
+memory-profiler==0.61.0
