@@ -32,7 +32,7 @@ Can be used as a Twig linter, since the syntax is very similar. All HTML checks 
 
 ## [Liquid](https://shopify.github.io/liquid/)
 
-Can be used as a Liquid linter, since the syntax is very similar. All HTML checks should work as expected. Template syntax checks may be problematic. Curlylint isn’t as well tested on Liquid, but bug reports are definitely appreciated and we would love to have good support for Twig.
+Can be used as a Liquid linter, since the syntax is very similar. All HTML checks should work as expected. Template syntax checks may be problematic. Curlylint isn’t as well tested on Liquid, but bug reports are definitely appreciated and we would love to have good support for Liquid.
 
 ## HTML
 
